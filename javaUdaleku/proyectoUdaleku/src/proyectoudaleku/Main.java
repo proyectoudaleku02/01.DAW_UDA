@@ -4,6 +4,7 @@ import Modelo.BD.LocalidadJpaController;
 import Modelo.BD.MunicipioJpaController;
 import Modelo.BD.ViaJpaController;
 import Modelo.UML.Centro;
+import Modelo.UML.CentroHasModelo;
 import Modelo.UML.Localidad;
 import Modelo.UML.Municipio;
 import Modelo.UML.Provincia;
@@ -32,10 +33,11 @@ public class Main {
     private static PreparedStatement sentencia;
     private static ResultSet rset;
 
-    private static ArrayList<Via> vias;
+     private static ArrayList<Via> vias;
     private static ArrayList<Municipio> municipios;
     private static ArrayList<Localidad> localidades;
     private static ArrayList<Centro> centros;
+    private static ArrayList<CentroHasModelo> centroHasModelo;
     
     private static Provincia provSelected;
     private static Municipio munSelected;
@@ -51,8 +53,11 @@ public class Main {
         panInic.setVisible(true);
         inic.setVisible(true);
         
-        municipios = new ArrayList(); localidades= new ArrayList();
-        vias=new ArrayList(); centros=new ArrayList(); 
+        municipios = new ArrayList();
+        localidades= new ArrayList();
+        vias=new ArrayList();
+        centros=new ArrayList();
+        centroHasModelo=new ArrayList();
                
         provSelected=new Provincia();provSelected.setNombreprov("ARB");
         munSelected=new Municipio(); locSelected=new Localidad();
@@ -199,6 +204,12 @@ public class Main {
     public static void salir() {
         System.exit(0);
     }
+/**
+ * 
+ * @param idProvincia
+ * Método que me devuelve todos los municipios de la provincia seleccionada.
+ * @return 
+ */
     public static ArrayList<Municipio> findMunicipios(String idProvincia) {
 
         //MunicipioJpaController munJpa= new MunicipioJpaController(Persistence.createEntityManagerFactory("udalekuPU"));    
@@ -208,7 +219,6 @@ public class Main {
         conn.setConexion();
 
         try {
-            //preparamos la sentencia y la ejecutamos recogiendo el resultado
             sentencia = conn.getConexion().prepareStatement("select idMunicipio, nombreMunic from municipios where upper(idProvincia)=? order by nombremunic");
             sentencia.setString(1, idProvincia);
             rset = sentencia.executeQuery();
@@ -224,16 +234,18 @@ public class Main {
         conn.desconectar();
         return municipios;
     }
-    public static ArrayList<Localidad> findLocalidades(String idMunicipio) {
-
-        //MunicipioJpaController munJpa= new MunicipioJpaController(Persistence.createEntityManagerFactory("udalekuPU"));    
-        //municipios=(ArrayList<Municipio>) munJpa.findMunicipioEntities2(idProvincia);
+    /**
+     * 
+     * @param idMunicipio
+     * Método que me devuelve todas las localidades del municipio seleccionado.
+     * @return 
+     */
+        public static ArrayList<Localidad> findLocalidades(String idMunicipio) {
         conn = new ConexionOracle();
         //conectamos
         conn.setConexion();
 
         try {
-            //preparamos la sentencia y la ejecutamos recogiendo el resultado
             sentencia = conn.getConexion().prepareStatement("select IDLOCALIDAD, NOMBRELOC from localidades where IDMUNICIPIO=? order by NOMBRELOC");
             sentencia.setString(1, idMunicipio);
             rset = sentencia.executeQuery();
@@ -249,16 +261,18 @@ public class Main {
         conn.desconectar();
         return localidades;
     }
-    public static ArrayList<Via> findVias(String idLocalidad) {
-
-        //MunicipioJpaController munJpa= new MunicipioJpaController(Persistence.createEntityManagerFactory("udalekuPU"));    
-        //municipios=(ArrayList<Municipio>) munJpa.findMunicipioEntities2(idProvincia);
+        /**
+         * 
+         * @param idLocalidad
+         * Método que devuelva todas las vías perteneciente a la localidad seleccionada
+         * @return 
+         */
+   public static ArrayList<Via> findVias(String idLocalidad) {
         conn = new ConexionOracle();
         //conectamos
         conn.setConexion();
 
         try {
-            //preparamos la sentencia y la ejecutamos recogiendo el resultado
             sentencia = conn.getConexion().prepareStatement("select * from vias where idlocalidad=? order by nombreVia");
             sentencia.setString(1, idLocalidad);
             rset = sentencia.executeQuery();
@@ -274,22 +288,33 @@ public class Main {
         conn.desconectar();
         return vias;
     }
-    public static ArrayList<Centro> findCentros(String idProvincia) {
+   /**
+    * 
+    * @param idProvincia
+    * @param seleccion
+    * si ha seleccionado la misma provincia por la que ha entrado se cargan los centros de esa provincia (en cuyo caso seleccion = idProvincia)
+    * sinocarga los restos que no esten en la provincia seleccionada al comienzo de la aplicacion
+    * @return 
+    */
+      public static ArrayList<Centro> findCentros(String idProvincia, String seleccion) {
 
-        //MunicipioJpaController munJpa= new MunicipioJpaController(Persistence.createEntityManagerFactory("udalekuPU"));    
-        //municipios=(ArrayList<Municipio>) munJpa.findMunicipioEntities2(idProvincia);
         conn = new ConexionOracle();
         //conectamos
         conn.setConexion();
 
-        try {
-            //preparamos la sentencia y la ejecutamos recogiendo el resultado
-            sentencia = conn.getConexion().prepareStatement("select * from centros where upper(idProvincia)=? order by nombreCent");
+        try {           
+            if(seleccion.equalsIgnoreCase("ARB")||seleccion.equalsIgnoreCase("GZK")||seleccion.equalsIgnoreCase("BZK")){
+            sentencia = conn.getConexion().prepareStatement("select idCentro, nombreCent from centros where upper(idProvincia)=? order by nombreCent");
             sentencia.setString(1, idProvincia);
             rset = sentencia.executeQuery();
+            }else{               
+            sentencia = conn.getConexion().prepareStatement("select idCentro, nombreCent from centros where upper(idProvincia)<>? order by nombreCent");
+            sentencia.setString(1, idProvincia);
+            rset = sentencia.executeQuery();            
+            }
 
             while (rset.next()) {
-                //centros.add(new Centro(rset.getLong("idCentro"), rset.getString("nombrecent")));
+                centros.add(new Centro(rset.getLong("idCentro"), rset.getString("nombreCent")));
             }
 
         } catch (Exception e) {
@@ -299,6 +324,33 @@ public class Main {
         conn.desconectar();
         return centros;
     }
+      /**
+       * 
+       * @param idCentro
+       * @return 
+       *  sentencia para que devuelva todos los modelos que se imparten en el centro seleccionado
+       */
+      public static ArrayList<CentroHasModelo> findModelosCentro(Long idCentro){
+           conn = new ConexionOracle();
+        //conectamos
+        conn.setConexion();
+
+        try {
+            sentencia = conn.getConexion().prepareStatement("select idCentro,idModelo from Centros_Has_Modelos where idCentro=?");
+            sentencia.setLong(1, idCentro);
+            rset = sentencia.executeQuery();
+
+            while (rset.next()) {
+                centroHasModelo.add(new CentroHasModelo(rset.getLong(1),rset.getString(2)));
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "ERROR" + e.getMessage());
+        }
+        //desconectamos
+        conn.desconectar();
+        return centroHasModelo;
+      }
     
 
     public static boolean sendTutor(String dni, String nombre, String apel1, String apel2) {
