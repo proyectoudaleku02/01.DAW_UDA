@@ -357,7 +357,7 @@ public class Main {
             rset = sentencia.executeQuery();
             ModeloJpaController modJpa=new ModeloJpaController(Persistence.createEntityManagerFactory("udalekuPU"));
             while (rset.next()) {
-                modelosSelected.add(modJpa.findModelo(rset.getString(2)));
+                modelosSelected.add(modJpa.findModelo(rset.getString(1)));
             }
 
         } catch (Exception e) {
