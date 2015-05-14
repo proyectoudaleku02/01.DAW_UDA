@@ -698,6 +698,8 @@ public class panInscripcion extends javax.swing.JPanel {
         // Las lupas quedan desactivadas hasta haber elegido la localidad.
         tfTipoVia.setEditable(false);tfCalle.setEditable(false); lupaCalle.setEnabled(false);
         tfProvinciaCentro.setEditable(false); lupaCentro.setEnabled(false);
+        // Los modelos educativos quedan desactivados hasta haber elegido el centro.
+        rbA.setEnabled(false);rbB.setEnabled(false);rbD.setEnabled(false);
         // Provincia
         String prov=Main.getProvSelected().getNombreprov();
         switch (prov){
@@ -752,7 +754,20 @@ public class panInscripcion extends javax.swing.JPanel {
     public void rellenarTfCentro() {
         tfProvinciaCentro.setText(Main.getCentSelected().getNombrecent());
         // Adecuamos las opciones de modelo educativo que tiene el centro a las del formulario.
-
+        for(int x=0;x<Main.getModelosSelected().size();x++)
+        {
+            switch(Main.getModelosSelected().get(x).getIdmodelo()){
+                case "A":
+                    rbA.setEnabled(true);
+                    break;
+                case "B":
+                    rbB.setEnabled(true);
+                    break;
+                case "C":
+                    rbD.setEnabled(true);
+                    break;
+            }
+        }
     }
     
     // COMBO BOXES

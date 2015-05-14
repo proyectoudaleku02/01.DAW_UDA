@@ -86,6 +86,8 @@ public class Main {
         centros.add(new Centro());centros.get(0).setNombrecent("cent1");
         centros.add(new Centro());centros.get(1).setNombrecent("cent2");
         centros.add(new Centro());centros.get(2).setNombrecent("cent3");
+        
+        modelosSelected.add(new Modelo("A"));modelosSelected.add(new Modelo("B"));modelosSelected.add(new Modelo("C"));
     }
     
     public static Provincia getProvSelected() {
@@ -126,7 +128,7 @@ public class Main {
 
     public static void setCentSelected(Centro centSelected) {
         Main.centSelected = centSelected;
-        findModelosCentro(centSelected.getIdcentro());
+        //findModelosCentro(centSelected.getIdcentro());
     }
 
     public static ArrayList<Modelo> getModelosSelected() {
