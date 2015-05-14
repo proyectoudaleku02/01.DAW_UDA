@@ -696,8 +696,6 @@ public class panInscripcion extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
     // DATOS INICIALES
     private void datosIniciales() {
-        // El botón de guardar queda deshabilitado hasta tener por lo menos un participante.
-        bGuardar.setEnabled(false);
         // Las lupas quedan desactivadas hasta haber elegido la localidad.
         tfTipoVia.setEditable(false);tfCalle.setEditable(false); lupaCalle.setEnabled(false);
         tfProvinciaCentro.setEditable(false); lupaCentro.setEnabled(false);
@@ -728,7 +726,7 @@ public class panInscripcion extends javax.swing.JPanel {
 
     private void bGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bGuardarActionPerformed
         try{
-            verificarDatos();
+            //verificarDatos();
             addMenor();
             borrarFormulario();
             Main.cancelarPanel();
@@ -1004,24 +1002,27 @@ public class panInscripcion extends javax.swing.JPanel {
     private javax.swing.JTextField tfTipoVia;
     // End of variables declaration//GEN-END:variables
 
-    private boolean continuarSolicitud() throws Exception{
 
-        return true;
-    }
-
-    private void controlInscripciones() throws Exception{
-        if(Main.getContadorInscripcion()<3)
-            {            
-                borrarFormulario();
-                if(continuarSolicitud()==false)
-                {
-                    soloGuardarCancelar();
-                }
-            }else{
-                soloGuardarCancelar();
-                throw new ExGenerica("Has alcanzado el límite de 3 participantes por solicitud.");
-            }
-    }
+//    private boolean controlInscripciones() throws Exception{
+//        switch(Main.getContadorInscripcion()){
+//            case 0:
+//                Main.lanzarConfirmacion();
+////                if(JOptionPane.showConfirmDialog(null,"Este el primer participante en su solicitud dentro de un máximo de 3.\n¿Está usted seguro/a?")==0)
+////                return true;
+//                break;
+//            case 1:
+//                if(JOptionPane.showConfirmDialog(null,"Este el segundo participante en su solicitud dentro de un máximo de 3.\n¿Está usted seguro/a?")==0)
+//                return true;
+//                break;
+//            case 2:
+//                if(JOptionPane.showConfirmDialog(null,"Este el tercer y último participante en su solicitud.\n¿Está usted seguro/a?")==0)
+//                return true;
+//                break;
+//            case 3:
+//                throw new ExGenerica("Has alcanzado el límite de 3 participantes por solicitud.");
+//        }
+//        return false;
+//    }
 
     private void soloGuardarCancelar() {
         // Desactivamos todo para que solo pueda guardarse o cancelarse la solicitud.
@@ -1031,8 +1032,10 @@ public class panInscripcion extends javax.swing.JPanel {
 
     private void addMenor() throws Exception{
         // Control de número máximo de inscripciones por solicitud.
-        controlInscripciones();
-        sendDatos();
+        Main.controlInscripciones();
+        Main.setContadorInscripcion(Main.getContadorInscripcion()+1);
+        mostrar("ok");
+        
     }
 
 }

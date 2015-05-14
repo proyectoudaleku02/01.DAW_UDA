@@ -8,6 +8,7 @@ import Modelo.UML.Centro;
 import Modelo.UML.CentroHasModelo;
 import Modelo.UML.CentroHasModeloPK;
 import Modelo.UML.Localidad;
+import Modelo.UML.Menor;
 import Modelo.UML.Modelo;
 import Modelo.UML.Municipio;
 import Modelo.UML.Provincia;
@@ -31,6 +32,7 @@ public class Main {
     private static panInicio panInic;
     private static panInscripcion panInscrip;
     private static panLupa panLupa;
+    private static confInscrip dConfirmacion;
 
     private static ConexionOracle conn;
     private static Connection conexion;
@@ -68,7 +70,6 @@ public class Main {
         provSelected=new Provincia();provSelected.setNombreprov("ARB");
         munSelected=new Municipio();locSelected=new Localidad();
         viaSelected=new Via();centSelected=new Centro();
-        
         
 
         llenarPaPruebas();
@@ -399,6 +400,10 @@ public class Main {
     public static boolean sendCentro(String provCentro, String nomCentro, String modelo) {
 
         return true;
+    }
+
+    public static void controlInscripciones() {
+        
     }
 
 

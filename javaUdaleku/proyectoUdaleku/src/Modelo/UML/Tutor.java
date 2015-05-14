@@ -16,16 +16,16 @@ public class Tutor extends Solicitante{
     
     // Relacion
     private Inscripcion inscripcion;
+    
+    
 
-    public Tutor(String dni, int[] telefonos) {
+    public Tutor(String nombre, String apel1, String apel2, String dni, int[] telefonos) {
+        this.setNombre(nombre);
+        this.setApel1(apel1);
+        this.setApel2(apel2);        
         this.dni = dni;
         this.telefonos = telefonos;
     }
-
-    public Tutor() {
-    }
-    
-    
 
     public String getDni() {
         return dni;
