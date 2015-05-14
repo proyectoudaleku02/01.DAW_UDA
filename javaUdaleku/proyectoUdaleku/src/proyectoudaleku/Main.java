@@ -1,11 +1,14 @@
 package proyectoudaleku;
 
 import Modelo.BD.LocalidadJpaController;
+import Modelo.BD.ModeloJpaController;
 import Modelo.BD.MunicipioJpaController;
 import Modelo.BD.ViaJpaController;
 import Modelo.UML.Centro;
 import Modelo.UML.CentroHasModelo;
+import Modelo.UML.CentroHasModeloPK;
 import Modelo.UML.Localidad;
+import Modelo.UML.Modelo;
 import Modelo.UML.Municipio;
 import Modelo.UML.Provincia;
 import Modelo.UML.Via;
@@ -17,6 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Persistence;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -33,17 +37,17 @@ public class Main {
     private static PreparedStatement sentencia;
     private static ResultSet rset;
 
-     private static ArrayList<Via> vias;
+    private static ArrayList<Via> vias;
     private static ArrayList<Municipio> municipios;
     private static ArrayList<Localidad> localidades;
     private static ArrayList<Centro> centros;
-    private static ArrayList<CentroHasModelo> centroHasModelo;
     
     private static Provincia provSelected;
     private static Municipio munSelected;
     private static Localidad locSelected;
     private static Via viaSelected;
     private static Centro centSelected;
+    private static ArrayList<Modelo> modelosSelected;
     
 
     public static void main(String[] args) {
@@ -57,8 +61,8 @@ public class Main {
         localidades= new ArrayList();
         vias=new ArrayList();
         centros=new ArrayList();
-        centroHasModelo=new ArrayList();
-               
+        modelosSelected=new ArrayList();
+        
         provSelected=new Provincia();provSelected.setNombreprov("ARB");
         munSelected=new Municipio(); locSelected=new Localidad();
         viaSelected=new Via(); centSelected=new Centro();
@@ -122,6 +126,15 @@ public class Main {
 
     public static void setCentSelected(Centro centSelected) {
         Main.centSelected = centSelected;
+        findModelosCentro(centSelected.getIdcentro());
+    }
+
+    public static ArrayList<Modelo> getModelosSelected() {
+        return modelosSelected;
+    }
+
+    public static void setModelosSelected(ArrayList<Modelo> modelosSelected) {
+        Main.modelosSelected = modelosSelected;
     }
 
     public static ArrayList<Municipio> getMunicipios() {
@@ -138,7 +151,8 @@ public class Main {
 
     public static ArrayList<Centro> getCentros() {
         return centros;
-    }
+    }  
+    
     
     // Control de paneles.
     public static void verPanInscrip() {
@@ -330,18 +344,18 @@ public class Main {
        * @return 
        *  sentencia para que devuelva todos los modelos que se imparten en el centro seleccionado
        */
-      public static ArrayList<CentroHasModelo> findModelosCentro(Long idCentro){
+      public static ArrayList<Modelo> findModelosCentro(Long idCentro){
            conn = new ConexionOracle();
         //conectamos
         conn.setConexion();
 
         try {
-            sentencia = conn.getConexion().prepareStatement("select idCentro,idModelo from Centros_Has_Modelos where idCentro=?");
+            sentencia = conn.getConexion().prepareStatement("select idModelo from Centros_Has_Modelos where idCentro=?");
             sentencia.setLong(1, idCentro);
             rset = sentencia.executeQuery();
-
+            ModeloJpaController modJpa=new ModeloJpaController(Persistence.createEntityManagerFactory("udalekuPU"));
             while (rset.next()) {
-                centroHasModelo.add(new CentroHasModelo(rset.getLong(1),rset.getString(2)));
+                modelosSelected.add(modJpa.findModelo(rset.getString(2)));
             }
 
         } catch (Exception e) {
@@ -349,7 +363,7 @@ public class Main {
         }
         //desconectamos
         conn.desconectar();
-        return centroHasModelo;
+        return modelosSelected;
       }
     
 

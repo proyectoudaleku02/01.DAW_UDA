@@ -17,12 +17,11 @@ public class Menor extends Solicitante{
     private String sexo;
     private Date fechaNac;
     private boolean discapacidad;
-
- 
-    
     private int idCentro;
     private int idDireccion;
     private String idInscripcion;
+    
+    //private long idModelo; 
 
     public Menor(String dni, String sexo, Date fechaNac, boolean discapacidad, int idCentro, int idDireccion, String idInscripcion) {
         this.dni = dni;
