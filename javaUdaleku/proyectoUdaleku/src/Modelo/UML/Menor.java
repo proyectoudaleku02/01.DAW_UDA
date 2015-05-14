@@ -12,29 +12,30 @@ import java.util.Date;
  * @author Noemi
  */
 public class Menor extends Solicitante{
+
     
     private String dni;
     private String sexo;
     private Date fechaNac;
     private boolean discapacidad;
 
-
-    private int idCentro;
-    private int idDireccion;
     private String idInscripcion;
+    private int idDireccion;
+    private int idCentro;
     private String idModelo;
     
-
-
-    public Menor(String dni, String sexo, Date fechaNac, boolean discapacidad, int idCentro, int idDireccion, String idInscripcion, String idModelo) {
+    public Menor(String dni, String sexo, Date fechaNac, boolean discapacidad, String idInscripcion, int idDireccion, int idCentro, String idModelo) {
         this.dni = dni;
         this.sexo = sexo;
         this.fechaNac = fechaNac;
         this.discapacidad = discapacidad;
-        this.idCentro = idCentro;
-        this.idDireccion = idDireccion;
         this.idInscripcion = idInscripcion;
+        this.idDireccion = idDireccion;
+        this.idCentro = idCentro;
+        this.idModelo = idModelo;
     }
+
+ 
     
     
 
