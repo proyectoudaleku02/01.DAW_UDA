@@ -381,7 +381,7 @@ public class panInscripcion extends javax.swing.JPanel {
         }
 
         jLabel28.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel28.setText("Indique el teléfono de loicalización durante la estancia en la colonia, marcando la casilla al lado del teléfono.");
+        jLabel28.setText("Indique el teléfono de localización durante la estancia en la colonia, marcando la casilla al lado del teléfono.");
 
         lupaCalle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/lupa.png"))); // NOI18N
         lupaCalle.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -465,10 +465,10 @@ public class panInscripcion extends javax.swing.JPanel {
                                         .addComponent(tfTfn1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(tfTfn2, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addContainerGap())))
+                        .addContainerGap(76, Short.MAX_VALUE))))
             .addGroup(pDireccionLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 525, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         pDireccionLayout.setVerticalGroup(
@@ -641,32 +641,33 @@ public class panInscripcion extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(59, 59, 59)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(pMenor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(pTutor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(bBorrar)
-                                .addGap(106, 106, 106)
-                                .addComponent(bGuardar)
-                                .addGap(108, 108, 108)))
+                        .addGap(154, 154, 154)
+                        .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 685, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(13, 13, 13)
+                                .addGap(43, 43, 43)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(pDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(pOtrosDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(59, 59, 59)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(pMenor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(pTutor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(257, 257, 257)
+                                .addComponent(bGuardar)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(pDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(pOtrosDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(bBorrar)
+                                .addGap(121, 121, 121)
                                 .addComponent(bCancelar)
-                                .addGap(226, 226, 226))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(154, 154, 154)
-                        .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 685, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(136, Short.MAX_VALUE))
+                                .addGap(296, 296, 296)))))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -688,13 +689,15 @@ public class panInscripcion extends javax.swing.JPanel {
                     .addComponent(bBorrar)
                     .addComponent(bGuardar)
                     .addComponent(bCancelar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
                 .addComponent(jLabel27)
                 .addGap(14, 14, 14))
         );
     }// </editor-fold>//GEN-END:initComponents
     // DATOS INICIALES
     private void datosIniciales() {
+        // El botón de guardar queda deshabilitado hasta tener por lo menos un participante.
+        bGuardar.setEnabled(false);
         // Las lupas quedan desactivadas hasta haber elegido la localidad.
         tfTipoVia.setEditable(false);tfCalle.setEditable(false); lupaCalle.setEnabled(false);
         tfProvinciaCentro.setEditable(false); lupaCentro.setEnabled(false);
@@ -726,7 +729,7 @@ public class panInscripcion extends javax.swing.JPanel {
     private void bGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bGuardarActionPerformed
         try{
             verificarDatos();
-            sendDatos();
+            addMenor();
             borrarFormulario();
             Main.cancelarPanel();
         }
@@ -1000,5 +1003,36 @@ public class panInscripcion extends javax.swing.JPanel {
     private javax.swing.JFormattedTextField tfTfn4;
     private javax.swing.JTextField tfTipoVia;
     // End of variables declaration//GEN-END:variables
+
+    private boolean continuarSolicitud() throws Exception{
+
+        return true;
+    }
+
+    private void controlInscripciones() throws Exception{
+        if(Main.getContadorInscripcion()<3)
+            {            
+                borrarFormulario();
+                if(continuarSolicitud()==false)
+                {
+                    soloGuardarCancelar();
+                }
+            }else{
+                soloGuardarCancelar();
+                throw new ExGenerica("Has alcanzado el límite de 3 participantes por solicitud.");
+            }
+    }
+
+    private void soloGuardarCancelar() {
+        // Desactivamos todo para que solo pueda guardarse o cancelarse la solicitud.
+        bBorrar.setEnabled(false);
+        pTutor.setEnabled(false);pMenor.setEnabled(false);pDireccion.setEnabled(false);pOtrosDatos.setEnabled(false);
+    }
+
+    private void addMenor() throws Exception{
+        // Control de número máximo de inscripciones por solicitud.
+        controlInscripciones();
+        sendDatos();
+    }
 
 }

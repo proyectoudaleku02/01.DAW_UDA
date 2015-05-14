@@ -15,47 +15,30 @@ public class Menor extends Solicitante{
 
     
     private String dni;
+    private String nombre;
+    private String apel1;
+    private String apel2;
     private String sexo;
     private Date fechaNac;
     private boolean discapacidad;
-
-    private String idInscripcion;
-    private int idDireccion;
-    private int idCentro;
-    private String idModelo;
     
-    public Menor(String dni, String sexo, Date fechaNac, boolean discapacidad, String idInscripcion, int idDireccion, int idCentro, String idModelo) {
-        this.dni = dni;
-        this.sexo = sexo;
-        this.fechaNac = fechaNac;
-        this.discapacidad = discapacidad;
-        this.idInscripcion = idInscripcion;
-        this.idDireccion = idDireccion;
-        this.idCentro = idCentro;
-        this.idModelo = idModelo;
-    }
-
- 
+    // Relaciones
+    private Inscripcion inscripcion;
+    private Direccion direccion;
+    private Centro centro;
+    private Modelo modelo;
     
     
 
-    public Menor(String sexo, Date fechaNac, boolean discapacidad) {
+    public Menor(String nombre, String apel1, String apel2, String sexo, Date fechaNac, boolean discapacidad) {
+        this.nombre = nombre;
+        this.apel1 = apel1;
+        this.apel2 = apel2;
         this.sexo = sexo;
         this.fechaNac = fechaNac;
         this.discapacidad = discapacidad;
     }
-
-    public Menor(String dni, String sexo, Date fechaNac, boolean discapacidad) {
-        this.dni = dni;
-        this.sexo = sexo;
-        this.fechaNac = fechaNac;
-        this.discapacidad = discapacidad;
-    }
-
-    public Menor() {
-    }
     
-
     public String getDni() {
         return dni;
     }
@@ -87,36 +70,39 @@ public class Menor extends Solicitante{
     public void setDiscapacidad(boolean discapacidad) {
         this.discapacidad = discapacidad;
     }
+
+    public Inscripcion getInscripcion() {
+        return inscripcion;
+    }
+
+    public void setInscripcion(Inscripcion inscripcion) {
+        this.inscripcion = inscripcion;
+    }
+
+    public Direccion getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(Direccion direccion) {
+        this.direccion = direccion;
+    }
+
+    public Centro getCentro() {
+        return centro;
+    }
+
+    public void setCentro(Centro centro) {
+        this.centro = centro;
+    }
+
+    public Modelo getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(Modelo modelo) {
+        this.modelo = modelo;
+    }
     
-       public int getIdCentro() {
-        return idCentro;
-    }
-
-    public void setIdCentro(int idCentro) {
-        this.idCentro = idCentro;
-    }
-
-    public int getIdDireccion() {
-        return idDireccion;
-    }
-
-    public void setIdDireccion(int idDireccion) {
-        this.idDireccion = idDireccion;
-    }
-
-    public String getIdInscripcion() {
-        return idInscripcion;
-    }
-
-    public void setIdInscripcion(String idInscripcion) {
-        this.idInscripcion = idInscripcion;
-    }
     
-        public String getIdModelo() {
-        return idModelo;
-    }
-
-    public void setIdModelo(String idModelo) {
-        this.idModelo = idModelo;
-    }
+    
 }

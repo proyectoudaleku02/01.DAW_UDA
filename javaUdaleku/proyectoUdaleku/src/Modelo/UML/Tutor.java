@@ -13,6 +13,9 @@ public class Tutor extends Solicitante{
     
     private String dni;
     private int telefonos[];
+    
+    // Relacion
+    private Inscripcion inscripcion;
 
     public Tutor(String dni, int[] telefonos) {
         this.dni = dni;
@@ -38,6 +41,14 @@ public class Tutor extends Solicitante{
 
     public void setTelefonos(int[] telefonos) {
         this.telefonos = telefonos;
+    }
+
+    public Inscripcion getInscripcion() {
+        return inscripcion;
+    }
+
+    public void setInscripcion(Inscripcion inscripcion) {
+        this.inscripcion = inscripcion;
     }
     
     

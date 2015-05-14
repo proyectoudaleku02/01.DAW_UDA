@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Direccione.findByEscalera", query = "SELECT d FROM Direccione d WHERE d.escalera = :escalera"),
     @NamedQuery(name = "Direccione.findByMano", query = "SELECT d FROM Direccione d WHERE d.mano = :mano"),
     @NamedQuery(name = "Direccione.findByCp", query = "SELECT d FROM Direccione d WHERE d.cp = :cp")})
-public class Direccione implements Serializable {
+public class Direccion implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -56,14 +56,14 @@ public class Direccione implements Serializable {
     @ManyToOne
     private Via idvia;
 
-    public Direccione() {
+    public Direccion() {
     }
 
-    public Direccione(String iddireccion) {
+    public Direccion(String iddireccion) {
         this.iddireccion = iddireccion;
     }
 
-    public Direccione(String iddireccion, String cp) {
+    public Direccion(String iddireccion, String cp) {
         this.iddireccion = iddireccion;
         this.cp = cp;
     }
@@ -142,10 +142,10 @@ public class Direccione implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Direccione)) {
+        if (!(object instanceof Direccion)) {
             return false;
         }
-        Direccione other = (Direccione) object;
+        Direccion other = (Direccion) object;
         if ((this.iddireccion == null && other.iddireccion != null) || (this.iddireccion != null && !this.iddireccion.equals(other.iddireccion))) {
             return false;
         }

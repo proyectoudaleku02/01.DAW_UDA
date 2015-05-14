@@ -49,6 +49,8 @@ public class Main {
     private static Centro centSelected;
     private static ArrayList<Modelo> modelosSelected;
     
+    private static int contadorInscripcion=0;
+    
 
     public static void main(String[] args) {
         panInic = new panInicio();
@@ -61,11 +63,13 @@ public class Main {
         localidades= new ArrayList();
         vias=new ArrayList();
         centros=new ArrayList();
-        modelosSelected=new ArrayList();
         
+        modelosSelected=new ArrayList();
         provSelected=new Provincia();provSelected.setNombreprov("ARB");
-        munSelected=new Municipio(); locSelected=new Localidad();
-        viaSelected=new Via(); centSelected=new Centro();
+        munSelected=new Municipio();locSelected=new Localidad();
+        viaSelected=new Via();centSelected=new Centro();
+        
+        
 
         llenarPaPruebas();
     }
@@ -154,6 +158,14 @@ public class Main {
     public static ArrayList<Centro> getCentros() {
         return centros;
     }  
+
+    public static int getContadorInscripcion() {
+        return contadorInscripcion;
+    }
+
+    public static void setContadorInscripcion(int contadorInscripcion) {
+        Main.contadorInscripcion = contadorInscripcion;
+    }
     
     
     // Control de paneles.
