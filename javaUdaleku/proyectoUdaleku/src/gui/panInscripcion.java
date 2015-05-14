@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 import proyectoudaleku.Main;
 
 
@@ -728,7 +729,7 @@ public class panInscripcion extends javax.swing.JPanel {
         try{
             //verificarDatos();
             construirObjetos();
-            addMenor();
+            Main.controlInscripciones();
             borrarFormulario();
             Main.cancelarPanel();
         }
@@ -914,6 +915,8 @@ public class panInscripcion extends javax.swing.JPanel {
         // Datos tutor
         Main.constTutor(tfDniTutor.getText(),tfNombreTutor.getText(),tfApel1Tutor.getText(),tfApel2Tutor.getText());
         // Datos Menor
+
+        ///////RadioButtons
         Main.constMenor(tfDniMenor.getText(),tfNombreMenor.getText(),tfApel1Menor.getText(),tfApel2Menor.getText(),grupoSexo.getSelection().toString(),tfFehcaNacMenor.getText(),cbDiscapacidad.getSelectedItem().toString());
         // Datos Direccion
         ArrayList<String> telefonos = makeArrayTfn();
@@ -1003,14 +1006,6 @@ public class panInscripcion extends javax.swing.JPanel {
         // Desactivamos todo para que solo pueda guardarse o cancelarse la solicitud.
         bBorrar.setEnabled(false);
         pTutor.setEnabled(false);pMenor.setEnabled(false);pDireccion.setEnabled(false);pOtrosDatos.setEnabled(false);
-    }
-
-    private void addMenor() throws Exception{
-        // Control de número máximo de inscripciones por solicitud.
-        Main.controlInscripciones();
-        //Aquí hay que añadir la inscripción a la solicitud.
-        mostrar("ok");
-        
     }
 
 }

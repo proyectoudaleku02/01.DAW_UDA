@@ -420,7 +420,9 @@ public class Main {
     }
 
     public static void constMenor(String dni, String nombre, String apel1, String apel2, String sexo, String fechaNac, String discapacidad) throws Exception{
-        menorSelected=new Menor(dni, nombre, apel1, apel2, sexo, parseFechaJava(fechaNac));
+        menorSelected=new Menor();
+        //menorSelected=new Menor(dni, nombre, apel1, apel2, sexo, parseFechaJava(fechaNac));
+        menorSelected.setFechaNac(parseFechaJava(fechaNac));
     }
 
     public static void constDireccion(String municipio, String localidad, String calle, String cp, String numero, String letra, String piso, String escalera, String mano, ArrayList<String> telefonos) throws Exception{
