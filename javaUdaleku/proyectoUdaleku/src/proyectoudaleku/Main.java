@@ -12,8 +12,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Persistence;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -41,6 +46,7 @@ public class Main {
     private static Localidad locSelected;
     private static Via viaSelected;
     private static Centro centSelected;
+    private static Direccion dirSelected;
     private static ArrayList<Modelo> modelosSelected;
     private static Tutor tutorSelected;
     private static Menor menorSelected;
@@ -85,6 +91,9 @@ public class Main {
         centros.add(new Centro());centros.get(0).setNombrecent("cent1");
         centros.add(new Centro());centros.get(1).setNombrecent("cent2");
         centros.add(new Centro());centros.get(2).setNombrecent("cent3");
+        
+//        insSelected.setMenor(new Menor());insSelected.getMenor().setNombre("a");insSelected.getMenor().setApel1("a");insSelected.getMenor().setApel2("a");
+//        insSelected.setMenor(new Menor());insSelected.getMenor().setNombre("b");insSelected.getMenor().setApel1("b");insSelected.getMenor().setApel2("b");
         
         modelosSelected.add(new Modelo("A"));modelosSelected.add(new Modelo("B"));modelosSelected.add(new Modelo("C"));
     }
@@ -247,7 +256,12 @@ public class Main {
         {
             cbLocalidad.insertItemAt(localidades.get(x).getNombreloc(), x);
         }
-    } 
+    }
+    
+    public static void controlInscripciones() {
+        dConfirmacion = new confInscrip(inic, true, solSelected.getInscripciones().size());
+        dConfirmacion.setVisible(true);
+    }
     
     public static void salir() {
         System.exit(0);
@@ -401,30 +415,21 @@ public class Main {
       }
     
 
-    public static boolean sendTutor(String dni, String nombre, String apel1, String apel2) {
-
-        return true;
+    public static void constTutor(String dni, String nombre, String apel1, String apel2) throws Exception{
+        
     }
 
-    public static boolean sendMenor(String dni, String nombre, String apel1, String apel2, String sexo, String fechaNac, String discapacidad) {
-
-        return true;
+    public static void constMenor(String dni, String nombre, String apel1, String apel2, String sexo, String fechaNac, String discapacidad) throws Exception{
+        menorSelected=new Menor(dni, nombre, apel1, apel2, sexo, parseFechaJava(fechaNac));
     }
 
-    public static boolean sendDireccion(String municipio, String localidad, String calle, String cp, String numero, String letra, String piso, String escalera, String mano, ArrayList<String> telefonos) {
-
-        return true;
+    public static void constDireccion(String municipio, String localidad, String calle, String cp, String numero, String letra, String piso, String escalera, String mano, ArrayList<String> telefonos) throws Exception{
+        dirSelected = new Direccion(cp,numero,letra,piso,escalera,mano,viaSelected);
     }
 
-    public static boolean sendCentro(String provCentro, String nomCentro, String modelo) {
-
-        return true;
+    private static Date parseFechaJava(String fechaNac) throws Exception{
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.parse(fechaNac); 
     }
-
-    public static void controlInscripciones() {
-        dConfirmacion = new confInscrip(inic, true, solSelected.getInscripciones().length);
-        dConfirmacion.setVisible(true);
-    }
-
 
 }

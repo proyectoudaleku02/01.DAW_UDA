@@ -28,6 +28,10 @@ public class Tutor extends Solicitante{
         this.inscripcion = new Inscripcion();
     }
 
+    public Tutor() {
+        this.inscripcion = new Inscripcion();
+    }  
+    
     public String getDni() {
         return dni;
     }
@@ -52,6 +56,8 @@ public class Tutor extends Solicitante{
         this.inscripcion = inscripcion;
     }
     
-    
-    
+    public String getNomAps(){
+        return this.getNombre()+" "+this.getApel1()+" "+this.getApel2();
+    }
+
 }

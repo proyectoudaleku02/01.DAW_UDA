@@ -14,6 +14,8 @@ public class Inscripcion {
     
     // Relacion
     private Solicitud idSolicitud;
+    private Menor menor;
+    private Tutor tutor;
 
     public Inscripcion(String idInscripcion) {
         this.idInscripcion = idInscripcion;
@@ -39,6 +41,22 @@ public class Inscripcion {
     public void setIdSolicitud(Solicitud idSolicitud) {
         this.idSolicitud = idSolicitud;
     }  
+
+    public Menor getMenor() {
+        return menor;
+    }
+
+    public void setMenor(Menor menor) {
+        this.menor = menor;
+    }
+
+    public Tutor getTutor() {
+        return tutor;
+    }
+
+    public void setTutor(Tutor tutor) {
+        this.tutor = tutor;
+    }
     
     
 }

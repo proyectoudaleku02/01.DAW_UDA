@@ -6,6 +6,7 @@
 package Modelo.UML;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -56,6 +57,16 @@ public class Direccion implements Serializable {
     @ManyToOne
     private Via idvia;
 
+    public Direccion(String cp, String numero, String letra, String piso, String escalera, String mano,Via via) {
+        numdir=numero;
+        this.letra=letra;
+        this.piso=piso;
+        this.escalera=escalera;
+        this.mano=mano;
+        this.cp=cp;
+        idvia=via;
+    }    
+    
     public Direccion() {
     }
 

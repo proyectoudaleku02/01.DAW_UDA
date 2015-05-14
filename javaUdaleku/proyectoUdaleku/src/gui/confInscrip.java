@@ -41,21 +41,31 @@ public class confInscrip extends javax.swing.JDialog {
     private void initComponents() {
 
         bAceptar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        lAviso3 = new javax.swing.JLabel();
         bCancelar = new javax.swing.JButton();
-        lAviso = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        taInfo = new javax.swing.JTextArea();
+        lAviso1 = new javax.swing.JLabel();
+        lAviso2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         bAceptar.setText("Aceptar");
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel1.setText("¿Está usted seguro/a?");
+        lAviso3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lAviso3.setText("¿Está usted seguro/a?");
 
         bCancelar.setText("Cancelar");
 
-        lAviso.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        lAviso.setText("Confirme");
+        taInfo.setColumns(20);
+        taInfo.setRows(5);
+        jScrollPane1.setViewportView(taInfo);
+
+        lAviso1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lAviso1.setText("Inscripción del primer participante");
+
+        lAviso2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lAviso2.setText("Hay 3 plazas en esta solcitud");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -64,26 +74,37 @@ public class confInscrip extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(223, 223, 223)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(272, 272, 272)
-                        .addComponent(lAviso))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(177, 177, 177)
                         .addComponent(bAceptar)
                         .addGap(100, 100, 100)
-                        .addComponent(bCancelar)))
-                .addContainerGap(179, Short.MAX_VALUE))
+                        .addComponent(bCancelar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(225, 225, 225)
+                        .addComponent(lAviso3, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(213, 213, 213)
+                        .addComponent(lAviso2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(26, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(lAviso1, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(100, 100, 100))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(45, Short.MAX_VALUE)
-                .addComponent(lAviso)
+                .addContainerGap(19, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lAviso1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
-                .addGap(45, 45, 45)
+                .addComponent(lAviso2)
+                .addGap(10, 10, 10)
+                .addComponent(lAviso3)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bAceptar)
                     .addComponent(bCancelar))
@@ -138,18 +159,28 @@ public class confInscrip extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bAceptar;
     private javax.swing.JButton bCancelar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel lAviso;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lAviso1;
+    private javax.swing.JLabel lAviso2;
+    private javax.swing.JLabel lAviso3;
+    private javax.swing.JTextArea taInfo;
     // End of variables declaration//GEN-END:variables
 
     private void controlInicio(int inscripciones) {
+        String text = "RESUMEN DE LA SOLICITUD\n\n";
+        for(int x=0;x<inscripciones;x++){
+            text = text + "Participante: "+Main.getSolSelected().getInscripciones().get(x).getMenor().getNomAps()+" ---- "+
+                    "Padre/madre o Tutor/a: "+Main.getSolSelected().getInscripciones().get(x).getTutor().getNomAps();
+        }
         switch(inscripciones){
             case 0:
-                lAviso.setText("Primer partcipante: "+Main.getMenorSelected());
+                taInfo.setText(text+"Participante: "+Main.getMenorSelected().getNomAps()+" ---- "+"Padre/madre o Tutor/a: "+Main.getTutorSelected().getNomAps()+"\n");
                 break;
             case 1:
+                taInfo.setText(text+"Participante: "+Main.getMenorSelected().getNomAps()+" ---- "+"Padre/madre o Tutor/a: "+Main.getTutorSelected().getNomAps());
                 break;
             case 2:
+                taInfo.setText(text+"Participante: "+Main.getMenorSelected().getNomAps()+" ---- "+"Padre/madre o Tutor/a: "+Main.getTutorSelected().getNomAps());
                 break;
             case 3:
                 break;    

@@ -727,6 +727,7 @@ public class panInscripcion extends javax.swing.JPanel {
     private void bGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bGuardarActionPerformed
         try{
             //verificarDatos();
+            construirObjetos();
             addMenor();
             borrarFormulario();
             Main.cancelarPanel();
@@ -909,21 +910,15 @@ public class panInscripcion extends javax.swing.JPanel {
         return telefonos;
     }
 
-    private void sendDatos() throws Exception{
+    private void construirObjetos() throws Exception{
         // Datos tutor
-        if(Main.sendTutor(tfDniTutor.getText(),tfNombreTutor.getText(),tfApel1Tutor.getText(),tfApel2Tutor.getText())==false)
-            throw new Exception();
+        Main.constTutor(tfDniTutor.getText(),tfNombreTutor.getText(),tfApel1Tutor.getText(),tfApel2Tutor.getText());
         // Datos Menor
-        if(Main.sendMenor(tfDniMenor.getText(),tfNombreMenor.getText(),tfApel1Menor.getText(),tfApel2Menor.getText(),grupoSexo.getSelection().toString(),tfFehcaNacMenor.getText(),cbDiscapacidad.getSelectedItem().toString())==false)
-            throw new Exception();
+        Main.constMenor(tfDniMenor.getText(),tfNombreMenor.getText(),tfApel1Menor.getText(),tfApel2Menor.getText(),grupoSexo.getSelection().toString(),tfFehcaNacMenor.getText(),cbDiscapacidad.getSelectedItem().toString());
         // Datos Direccion
         ArrayList<String> telefonos = makeArrayTfn();
-        if(Main.sendDireccion(cbMunicipio.getSelectedItem().toString(),cbLocalidad.getSelectedItem().toString(),tfCalle.getText(),tfCp.getText(),tfNumero.getText(),tfLetra.getText(),tfPiso.getText(),tfEscalera.getText(),tfMano.getText(),telefonos)==false)
-            throw new Exception();
-        // Datos Centro
-        if(Main.sendCentro(grupoProvincia.getSelection().toString(),tfProvinciaCentro.getText(),grupoModelo.getSelection().toString())==false)
-            throw new Exception();
-            
+        Main.constDireccion(cbMunicipio.getSelectedItem().toString(),cbLocalidad.getSelectedItem().toString(),tfCalle.getText(),tfCp.getText(),tfNumero.getText(),tfLetra.getText(),tfPiso.getText(),tfEscalera.getText(),tfMano.getText(),telefonos);
+
     }
 
     

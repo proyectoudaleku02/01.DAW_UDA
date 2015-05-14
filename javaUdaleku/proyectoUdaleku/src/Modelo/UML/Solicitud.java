@@ -5,6 +5,7 @@
  */
 package Modelo.UML;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -19,16 +20,16 @@ public class Solicitud {
     private Date fechaHoraCita;
     
     // Relación
-    private Inscripcion[] inscripciones;
+    private ArrayList<Inscripcion> inscripciones;
 
     public Solicitud() {
-        this.inscripciones = new Inscripcion[3];
+        this.inscripciones = new ArrayList();
     }
 
     public Solicitud(int idSolicitud, String situacionSolc) {
         this.idSolicitud = idSolicitud;
         this.situacionSolc = situacionSolc;
-        this.inscripciones = new Inscripcion[3];
+        this.inscripciones = new ArrayList();
     }
 
     public Solicitud(int idSolicitud, String situacionSolc, int ordenSorteo, Date fechaHoraCita) {
@@ -70,11 +71,11 @@ public class Solicitud {
         this.fechaHoraCita = fechaHoraCita;
     }
 
-    public Inscripcion[] getInscripciones() {
+    public ArrayList<Inscripcion> getInscripciones() {
         return inscripciones;
     }
 
-    public void setInscripciones(Inscripcion[] inscripciones) {
+    public void setInscripciones(ArrayList<Inscripcion> inscripciones) {
         this.inscripciones = inscripciones;
     }
     

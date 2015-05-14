@@ -25,7 +25,8 @@ public class Menor extends Solicitante{
     private Centro centro;
     private Modelo modelo;
 
-    public Menor(String nombre, String apel1, String apel2, String sexo, Date fechaNac) {
+    public Menor(String dni, String nombre, String apel1, String apel2, String sexo, Date fechaNac) {
+        this.setDni(dni);
         this.setNombre(nombre);
         this.setApel1(apel1);
         this.setApel2(apel2);
@@ -37,6 +38,13 @@ public class Menor extends Solicitante{
         this.modelo = new Modelo();     
     }
 
+    public Menor() {
+        this.inscripcion = new Inscripcion();
+        this.direccion = new Direccion();
+        this.centro = new Centro();
+        this.modelo = new Modelo();     
+    }
+    
     public String getDni() {
         return dni;
     }
