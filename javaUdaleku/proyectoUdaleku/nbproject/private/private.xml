@@ -3,8 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/Noemi/Documents/01.DAW_UDA/javaUdaleku/proyectoUdaleku/src/Modelo/UML/Menor.java</file>
             <file>file:/C:/Users/Noemi/Documents/01.DAW_UDA/javaUdaleku/proyectoUdaleku/src/proyectoudaleku/Main.java</file>
+=======
+            <file>file:/H:/00.FPARRIAGA/01.DAW_UDA/javaUdaleku/proyectoUdaleku/src/conexionoracle/ConexionOracle.java</file>
+            <file>file:/H:/00.FPARRIAGA/01.DAW_UDA/javaUdaleku/proyectoUdaleku/src/proyectoudaleku/Main.java</file>
+            <file>file:/H:/00.FPARRIAGA/01.DAW_UDA/javaUdaleku/proyectoUdaleku/src/gui/panInscripcion.java</file>
+            <file>file:/H:/00.FPARRIAGA/01.DAW_UDA/javaUdaleku/proyectoUdaleku/src/gui/panLupa.java</file>
+            <file>file:/H:/00.FPARRIAGA/01.DAW_UDA/javaUdaleku/proyectoUdaleku/src/Modelo/BD/ModeloJpaController.java</file>
+>>>>>>> 951a00c3234ec42c027e2fb818ab736bfdf8a811
         </group>
     </open-files>
 </project-private>

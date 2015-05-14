@@ -7,7 +7,7 @@ package Modelo.BD;
 
 import Excepciones.exceptions.NonexistentEntityException;
 import Excepciones.exceptions.PreexistingEntityException;
-import Modelo.UML.Direccione;
+import Modelo.UML.Direccion;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -33,7 +33,7 @@ public class DireccioneJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Direccione direccione) throws PreexistingEntityException, Exception {
+    public void create(Direccion direccione) throws PreexistingEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -61,12 +61,12 @@ public class DireccioneJpaController implements Serializable {
         }
     }
 
-    public void edit(Direccione direccione) throws NonexistentEntityException, Exception {
+    public void edit(Direccion direccione) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Direccione persistentDireccione = em.find(Direccione.class, direccione.getIddireccion());
+            Direccion persistentDireccione = em.find(Direccion.class, direccione.getIddireccion());
             Via idviaOld = persistentDireccione.getIdvia();
             Via idviaNew = direccione.getIdvia();
             if (idviaNew != null) {
@@ -104,9 +104,9 @@ public class DireccioneJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Direccione direccione;
+            Direccion direccione;
             try {
-                direccione = em.getReference(Direccione.class, id);
+                direccione = em.getReference(Direccion.class, id);
                 direccione.getIddireccion();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The direccione with id " + id + " no longer exists.", enfe);
@@ -125,19 +125,19 @@ public class DireccioneJpaController implements Serializable {
         }
     }
 
-    public List<Direccione> findDireccioneEntities() {
+    public List<Direccion> findDireccioneEntities() {
         return findDireccioneEntities(true, -1, -1);
     }
 
-    public List<Direccione> findDireccioneEntities(int maxResults, int firstResult) {
+    public List<Direccion> findDireccioneEntities(int maxResults, int firstResult) {
         return findDireccioneEntities(false, maxResults, firstResult);
     }
 
-    private List<Direccione> findDireccioneEntities(boolean all, int maxResults, int firstResult) {
+    private List<Direccion> findDireccioneEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Direccione.class));
+            cq.select(cq.from(Direccion.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -149,10 +149,10 @@ public class DireccioneJpaController implements Serializable {
         }
     }
 
-    public Direccione findDireccione(String id) {
+    public Direccion findDireccione(String id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Direccione.class, id);
+            return em.find(Direccion.class, id);
         } finally {
             em.close();
         }
@@ -162,7 +162,7 @@ public class DireccioneJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Direccione> rt = cq.from(Direccione.class);
+            Root<Direccion> rt = cq.from(Direccion.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

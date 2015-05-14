@@ -8,6 +8,7 @@ import Modelo.UML.Centro;
 import Modelo.UML.CentroHasModelo;
 import Modelo.UML.CentroHasModeloPK;
 import Modelo.UML.Localidad;
+import Modelo.UML.Menor;
 import Modelo.UML.Modelo;
 import Modelo.UML.Municipio;
 import Modelo.UML.Provincia;
@@ -31,6 +32,7 @@ public class Main {
     private static panInicio panInic;
     private static panInscripcion panInscrip;
     private static panLupa panLupa;
+    private static confInscrip dConfirmacion;
 
     private static ConexionOracle conn;
     private static Connection conexion;
@@ -49,6 +51,8 @@ public class Main {
     private static Centro centSelected;
     private static ArrayList<Modelo> modelosSelected;
     
+    private static int contadorInscripcion=0;
+    
 
     public static void main(String[] args) {
         panInic = new panInicio();
@@ -61,11 +65,12 @@ public class Main {
         localidades= new ArrayList();
         vias=new ArrayList();
         centros=new ArrayList();
-        modelosSelected=new ArrayList();
         
+        modelosSelected=new ArrayList();
         provSelected=new Provincia();provSelected.setNombreprov("ARB");
-        munSelected=new Municipio(); locSelected=new Localidad();
-        viaSelected=new Via(); centSelected=new Centro();
+        munSelected=new Municipio();locSelected=new Localidad();
+        viaSelected=new Via();centSelected=new Centro();
+        
 
         llenarPaPruebas();
     }
@@ -154,6 +159,14 @@ public class Main {
     public static ArrayList<Centro> getCentros() {
         return centros;
     }  
+
+    public static int getContadorInscripcion() {
+        return contadorInscripcion;
+    }
+
+    public static void setContadorInscripcion(int contadorInscripcion) {
+        Main.contadorInscripcion = contadorInscripcion;
+    }
     
     
     // Control de paneles.
@@ -387,6 +400,10 @@ public class Main {
     public static boolean sendCentro(String provCentro, String nomCentro, String modelo) {
 
         return true;
+    }
+
+    public static void controlInscripciones() {
+        
     }
 
 
