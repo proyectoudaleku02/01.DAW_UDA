@@ -11,16 +11,16 @@ package Modelo.UML;
  */
 public abstract class Solicitante  {
     
-    protected int idSolicitante;
+    protected long idSolicitante;
     protected String nombre;
     protected String apel1;
     protected String apel2;
 
-    public int getIdSolicitante() {
+    public long getIdSolicitante() {
         return idSolicitante;
     }
 
-    public void setIdSolicitante(int idSolicitante) {
+    public void setIdSolicitante(long idSolicitante) {
         this.idSolicitante = idSolicitante;
     }
 

@@ -1,3 +1,3 @@
-Insert de datos iniciales en el script sql: noemi
+posible problema con tipos de datos long. He cambiado los del modelo.
 
-Clases del modelo que faltan: Sergio
+Hacer inscripcion <--> solicitud bidireccional en el de clases.

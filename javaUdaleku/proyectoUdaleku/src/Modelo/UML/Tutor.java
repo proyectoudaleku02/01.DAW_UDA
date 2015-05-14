@@ -25,6 +25,7 @@ public class Tutor extends Solicitante{
         this.setApel2(apel2);        
         this.dni = dni;
         this.telefonos = telefonos;
+        this.inscripcion = new Inscripcion();
     }
 
     public String getDni() {

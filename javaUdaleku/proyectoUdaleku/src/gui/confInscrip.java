@@ -5,6 +5,10 @@
  */
 package gui;
 
+import Modelo.UML.Inscripcion;
+import javax.swing.JOptionPane;
+import proyectoudaleku.Main;
+
 /**
  *
  * @author sergio
@@ -17,6 +21,14 @@ public class confInscrip extends javax.swing.JDialog {
     public confInscrip(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setLocationRelativeTo(null);
+    }
+    
+    public confInscrip(java.awt.Frame parent, boolean modal, int inscripciones) {
+        super(parent, modal);
+        initComponents();
+        setLocationRelativeTo(null);
+        controlInicio(inscripciones);
     }
 
     /**
@@ -28,48 +40,53 @@ public class confInscrip extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        bAceptar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        bCancelar = new javax.swing.JButton();
+        lAviso = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jButton1.setText("jButton1");
+        bAceptar.setText("Aceptar");
 
-        jButton2.setText("jButton2");
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setText("¿Está usted seguro/a?");
 
-        jButton3.setText("jButton3");
+        bCancelar.setText("Cancelar");
 
-        jLabel1.setText("jLabel1");
+        lAviso.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lAviso.setText("Confirme");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(78, 78, 78)
-                .addComponent(jButton2)
-                .addGap(73, 73, 73)
-                .addComponent(jButton3)
-                .addGap(121, 121, 121))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(223, 223, 223)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(272, 272, 272)
+                        .addComponent(lAviso))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(177, 177, 177)
+                        .addComponent(bAceptar)
+                        .addGap(100, 100, 100)
+                        .addComponent(bCancelar)))
+                .addContainerGap(179, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(54, 54, 54)
+                .addContainerGap(45, Short.MAX_VALUE)
+                .addComponent(lAviso)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(bAceptar)
+                    .addComponent(bCancelar))
                 .addGap(37, 37, 37))
         );
 
@@ -119,9 +136,25 @@ public class confInscrip extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton bAceptar;
+    private javax.swing.JButton bCancelar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lAviso;
     // End of variables declaration//GEN-END:variables
+
+    private void controlInicio(int inscripciones) {
+        switch(inscripciones){
+            case 0:
+                lAviso.setText("Primer partcipante: "+Main.getMenorSelected());
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;    
+        }
+
+    
+    }
 }

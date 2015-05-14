@@ -11,12 +11,17 @@ package Modelo.UML;
  */
 public class Inscripcion {
     private String idInscripcion;
+    
+    // Relacion
+    private Solicitud idSolicitud;
 
     public Inscripcion(String idInscripcion) {
         this.idInscripcion = idInscripcion;
+        this.idSolicitud = new Solicitud();
     }
 
     public Inscripcion() {
+        this.idSolicitud = new Solicitud();
     }
 
     public String getIdInscripcion() {
@@ -26,7 +31,14 @@ public class Inscripcion {
     public void setIdInscripcion(String idInscripcion) {
         this.idInscripcion = idInscripcion;
     }
-    
+
+    public Solicitud getIdSolicitud() {
+        return idSolicitud;
+    }
+
+    public void setIdSolicitud(Solicitud idSolicitud) {
+        this.idSolicitud = idSolicitud;
+    }  
     
     
 }

@@ -31,6 +31,10 @@ public class Menor extends Solicitante{
         this.setApel2(apel2);
         this.sexo = sexo;
         this.fechaNac = fechaNac;
+        this.inscripcion = new Inscripcion();
+        this.direccion = new Direccion();
+        this.centro = new Centro();
+        this.modelo = new Modelo();     
     }
 
     public String getDni() {
@@ -96,5 +100,8 @@ public class Menor extends Solicitante{
     public void setModelo(Modelo modelo) {
         this.modelo = modelo;
     }
-        
+    
+    public String getNomAps(){
+        return this.getNombre()+" "+this.getApel1()+" "+this.getApel2();
+    }
 }

@@ -734,6 +734,7 @@ public class panInscripcion extends javax.swing.JPanel {
         catch(CampoVacio ex){mostrar(ex.getMensaje());}
         catch(ExGenerica ex){mostrar(ex.getMessage());}
         catch(Exception ex){
+            System.out.println(ex.getMessage());
             mostrar("Ha sido imposible registrar la inscripción");
         }
     }//GEN-LAST:event_bGuardarActionPerformed
@@ -1003,27 +1004,6 @@ public class panInscripcion extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
 
-//    private boolean controlInscripciones() throws Exception{
-//        switch(Main.getContadorInscripcion()){
-//            case 0:
-//                Main.lanzarConfirmacion();
-////                if(JOptionPane.showConfirmDialog(null,"Este el primer participante en su solicitud dentro de un máximo de 3.\n¿Está usted seguro/a?")==0)
-////                return true;
-//                break;
-//            case 1:
-//                if(JOptionPane.showConfirmDialog(null,"Este el segundo participante en su solicitud dentro de un máximo de 3.\n¿Está usted seguro/a?")==0)
-//                return true;
-//                break;
-//            case 2:
-//                if(JOptionPane.showConfirmDialog(null,"Este el tercer y último participante en su solicitud.\n¿Está usted seguro/a?")==0)
-//                return true;
-//                break;
-//            case 3:
-//                throw new ExGenerica("Has alcanzado el límite de 3 participantes por solicitud.");
-//        }
-//        return false;
-//    }
-
     private void soloGuardarCancelar() {
         // Desactivamos todo para que solo pueda guardarse o cancelarse la solicitud.
         bBorrar.setEnabled(false);
@@ -1033,7 +1013,7 @@ public class panInscripcion extends javax.swing.JPanel {
     private void addMenor() throws Exception{
         // Control de número máximo de inscripciones por solicitud.
         Main.controlInscripciones();
-        Main.setContadorInscripcion(Main.getContadorInscripcion()+1);
+        //Aquí hay que añadir la inscripción a la solicitud.
         mostrar("ok");
         
     }

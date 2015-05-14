@@ -4,15 +4,7 @@ import Modelo.BD.LocalidadJpaController;
 import Modelo.BD.ModeloJpaController;
 import Modelo.BD.MunicipioJpaController;
 import Modelo.BD.ViaJpaController;
-import Modelo.UML.Centro;
-import Modelo.UML.CentroHasModelo;
-import Modelo.UML.CentroHasModeloPK;
-import Modelo.UML.Localidad;
-import Modelo.UML.Menor;
-import Modelo.UML.Modelo;
-import Modelo.UML.Municipio;
-import Modelo.UML.Provincia;
-import Modelo.UML.Via;
+import Modelo.UML.*;
 import conexionoracle.ConexionOracle;
 import gui.*;
 import java.sql.CallableStatement;
@@ -50,8 +42,10 @@ public class Main {
     private static Via viaSelected;
     private static Centro centSelected;
     private static ArrayList<Modelo> modelosSelected;
-    
-    private static int contadorInscripcion=0;
+    private static Tutor tutorSelected;
+    private static Menor menorSelected;
+    private static Inscripcion insSelected;
+    private static Solicitud solSelected;
     
 
     public static void main(String[] args) {
@@ -160,17 +154,42 @@ public class Main {
         return centros;
     }  
 
-    public static int getContadorInscripcion() {
-        return contadorInscripcion;
+    public static Tutor getTutorSelected() {
+        return tutorSelected;
     }
 
-    public static void setContadorInscripcion(int contadorInscripcion) {
-        Main.contadorInscripcion = contadorInscripcion;
+    public static void setTutorSelected(Tutor tutorSelected) {
+        Main.tutorSelected = tutorSelected;
     }
-    
+
+    public static Menor getMenorSelected() {
+        return menorSelected;
+    }
+
+    public static void setMenorSelected(Menor menorSelected) {
+        Main.menorSelected = menorSelected;
+    }
+
+    public static Inscripcion getInsSelected() {
+        return insSelected;
+    }
+
+    public static void setInsSelected(Inscripcion insSelected) {
+        Main.insSelected = insSelected;
+    }
+
+    public static Solicitud getSolSelected() {
+        return solSelected;
+    }
+
+    public static void setSolSelected(Solicitud solSelected) {
+        Main.solSelected = solSelected;
+    }      
     
     // Control de paneles.
     public static void verPanInscrip() {
+        insSelected=new Inscripcion();
+        solSelected=new Solicitud();
         panInscrip = new panInscripcion();
         inic.getContentPane().setVisible(false);
         inic.setContentPane(panInscrip);
@@ -403,7 +422,8 @@ public class Main {
     }
 
     public static void controlInscripciones() {
-        
+        dConfirmacion = new confInscrip(inic, true, solSelected.getInscripciones().length);
+        dConfirmacion.setVisible(true);
     }
 
 

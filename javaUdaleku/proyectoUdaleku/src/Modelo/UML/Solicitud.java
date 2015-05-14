@@ -12,18 +12,23 @@ import java.util.Date;
  * @author Noemi
  */
 public class Solicitud {
-    private int idSolicitud;
+    private long idSolicitud;
     
     private String situacionSolc;
     private int ordenSorteo;
     private Date fechaHoraCita;
+    
+    // Relación
+    private Inscripcion[] inscripciones;
 
     public Solicitud() {
+        this.inscripciones = new Inscripcion[3];
     }
 
     public Solicitud(int idSolicitud, String situacionSolc) {
         this.idSolicitud = idSolicitud;
         this.situacionSolc = situacionSolc;
+        this.inscripciones = new Inscripcion[3];
     }
 
     public Solicitud(int idSolicitud, String situacionSolc, int ordenSorteo, Date fechaHoraCita) {
@@ -33,11 +38,11 @@ public class Solicitud {
         this.fechaHoraCita = fechaHoraCita;
     }
 
-    public int getIdSolicitud() {
+    public long getIdSolicitud() {
         return idSolicitud;
     }
 
-    public void setIdSolicitud(int idSolicitud) {
+    public void setIdSolicitud(long idSolicitud) {
         this.idSolicitud = idSolicitud;
     }
 
@@ -64,6 +69,15 @@ public class Solicitud {
     public void setFechaHoraCita(Date fechaHoraCita) {
         this.fechaHoraCita = fechaHoraCita;
     }
+
+    public Inscripcion[] getInscripciones() {
+        return inscripciones;
+    }
+
+    public void setInscripciones(Inscripcion[] inscripciones) {
+        this.inscripciones = inscripciones;
+    }
+    
     
     
     
