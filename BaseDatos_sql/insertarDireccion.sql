@@ -10,7 +10,8 @@
 				-Mano
 				-Codigo de postal
 				-IdVia
-				y devuelve en caso de error un parámetro de tipo String con el mensaje de error correspondiente
+				y devuelve por un lado el idDirección que se asigna de modo autoincremental a la dirección y que tendremos que insertar en la tabla de Menores
+				y por otro, en caso de error, un parámetro de tipo String con el mensaje de error correspondiente
 
 */
 
@@ -22,11 +23,13 @@
 	pmano IN direcciones.mano%TYPE,
 	pcp IN direcciones.cp%TYPE
 	pidViaFK IN direcciones.idVia%TYPE,
+	pidDireccion OUT direcciones.idDireccion%TYPE,
 	perror OUT varchar2(45))
 	AS 
 	
 	BEGIN
-		INSERT INTO DIRECCIONES VALUES (idDirecciones_seq.NEXTVAL,pnumDir, pletra, ppiso, pescalera, pmano, pcp, pidViaFK);
+		pidDireccion:=idDirecciones_seq.NEXTVAL;
+		INSERT INTO DIRECCIONES VALUES (pidDireccion,pnumDir, pletra, ppiso, pescalera, pmano, pcp, pidViaFK);
 		COMMIT;
 	
 	EXCEPTION
