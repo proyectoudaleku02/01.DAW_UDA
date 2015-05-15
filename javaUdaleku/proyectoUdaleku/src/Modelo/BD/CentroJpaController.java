@@ -14,13 +14,16 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import Modelo.UML.Provincia;
+import Modelo.UML.Modelo;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author 1glm02
+ * @author 1gprog07
  */
 public class CentroJpaController implements Serializable {
 
@@ -34,6 +37,9 @@ public class CentroJpaController implements Serializable {
     }
 
     public void create(Centro centro) throws PreexistingEntityException, Exception {
+        if (centro.getModeloCollection() == null) {
+            centro.setModeloCollection(new ArrayList<Modelo>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -43,10 +49,20 @@ public class CentroJpaController implements Serializable {
                 idprovincia = em.getReference(idprovincia.getClass(), idprovincia.getIdprovincia());
                 centro.setIdprovincia(idprovincia);
             }
+            Collection<Modelo> attachedModeloCollection = new ArrayList<Modelo>();
+            for (Modelo modeloCollectionModeloToAttach : centro.getModeloCollection()) {
+                modeloCollectionModeloToAttach = em.getReference(modeloCollectionModeloToAttach.getClass(), modeloCollectionModeloToAttach.getIdmodelo());
+                attachedModeloCollection.add(modeloCollectionModeloToAttach);
+            }
+            centro.setModeloCollection(attachedModeloCollection);
             em.persist(centro);
             if (idprovincia != null) {
                 idprovincia.getCentroCollection().add(centro);
                 idprovincia = em.merge(idprovincia);
+            }
+            for (Modelo modeloCollectionModelo : centro.getModeloCollection()) {
+                modeloCollectionModelo.getCentroCollection().add(centro);
+                modeloCollectionModelo = em.merge(modeloCollectionModelo);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -69,10 +85,19 @@ public class CentroJpaController implements Serializable {
             Centro persistentCentro = em.find(Centro.class, centro.getIdcentro());
             Provincia idprovinciaOld = persistentCentro.getIdprovincia();
             Provincia idprovinciaNew = centro.getIdprovincia();
+            Collection<Modelo> modeloCollectionOld = persistentCentro.getModeloCollection();
+            Collection<Modelo> modeloCollectionNew = centro.getModeloCollection();
             if (idprovinciaNew != null) {
                 idprovinciaNew = em.getReference(idprovinciaNew.getClass(), idprovinciaNew.getIdprovincia());
                 centro.setIdprovincia(idprovinciaNew);
             }
+            Collection<Modelo> attachedModeloCollectionNew = new ArrayList<Modelo>();
+            for (Modelo modeloCollectionNewModeloToAttach : modeloCollectionNew) {
+                modeloCollectionNewModeloToAttach = em.getReference(modeloCollectionNewModeloToAttach.getClass(), modeloCollectionNewModeloToAttach.getIdmodelo());
+                attachedModeloCollectionNew.add(modeloCollectionNewModeloToAttach);
+            }
+            modeloCollectionNew = attachedModeloCollectionNew;
+            centro.setModeloCollection(modeloCollectionNew);
             centro = em.merge(centro);
             if (idprovinciaOld != null && !idprovinciaOld.equals(idprovinciaNew)) {
                 idprovinciaOld.getCentroCollection().remove(centro);
@@ -81,6 +106,18 @@ public class CentroJpaController implements Serializable {
             if (idprovinciaNew != null && !idprovinciaNew.equals(idprovinciaOld)) {
                 idprovinciaNew.getCentroCollection().add(centro);
                 idprovinciaNew = em.merge(idprovinciaNew);
+            }
+            for (Modelo modeloCollectionOldModelo : modeloCollectionOld) {
+                if (!modeloCollectionNew.contains(modeloCollectionOldModelo)) {
+                    modeloCollectionOldModelo.getCentroCollection().remove(centro);
+                    modeloCollectionOldModelo = em.merge(modeloCollectionOldModelo);
+                }
+            }
+            for (Modelo modeloCollectionNewModelo : modeloCollectionNew) {
+                if (!modeloCollectionOld.contains(modeloCollectionNewModelo)) {
+                    modeloCollectionNewModelo.getCentroCollection().add(centro);
+                    modeloCollectionNewModelo = em.merge(modeloCollectionNewModelo);
+                }
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -115,6 +152,11 @@ public class CentroJpaController implements Serializable {
             if (idprovincia != null) {
                 idprovincia.getCentroCollection().remove(centro);
                 idprovincia = em.merge(idprovincia);
+            }
+            Collection<Modelo> modeloCollection = centro.getModeloCollection();
+            for (Modelo modeloCollectionModelo : modeloCollection) {
+                modeloCollectionModelo.getCentroCollection().remove(centro);
+                modeloCollectionModelo = em.merge(modeloCollectionModelo);
             }
             em.remove(centro);
             em.getTransaction().commit();

@@ -7,19 +7,22 @@ package Modelo.BD;
 
 import Excepciones.exceptions.NonexistentEntityException;
 import Excepciones.exceptions.PreexistingEntityException;
-import Modelo.UML.Modelo;
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import Modelo.UML.Centro;
+import Modelo.UML.Modelo;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author 1glm02
+ * @author 1gprog07
  */
 public class ModeloJpaController implements Serializable {
 
@@ -33,11 +36,24 @@ public class ModeloJpaController implements Serializable {
     }
 
     public void create(Modelo modelo) throws PreexistingEntityException, Exception {
+        if (modelo.getCentroCollection() == null) {
+            modelo.setCentroCollection(new ArrayList<Centro>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Collection<Centro> attachedCentroCollection = new ArrayList<Centro>();
+            for (Centro centroCollectionCentroToAttach : modelo.getCentroCollection()) {
+                centroCollectionCentroToAttach = em.getReference(centroCollectionCentroToAttach.getClass(), centroCollectionCentroToAttach.getIdcentro());
+                attachedCentroCollection.add(centroCollectionCentroToAttach);
+            }
+            modelo.setCentroCollection(attachedCentroCollection);
             em.persist(modelo);
+            for (Centro centroCollectionCentro : modelo.getCentroCollection()) {
+                centroCollectionCentro.getModeloCollection().add(modelo);
+                centroCollectionCentro = em.merge(centroCollectionCentro);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findModelo(modelo.getIdmodelo()) != null) {
@@ -56,7 +72,29 @@ public class ModeloJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Modelo persistentModelo = em.find(Modelo.class, modelo.getIdmodelo());
+            Collection<Centro> centroCollectionOld = persistentModelo.getCentroCollection();
+            Collection<Centro> centroCollectionNew = modelo.getCentroCollection();
+            Collection<Centro> attachedCentroCollectionNew = new ArrayList<Centro>();
+            for (Centro centroCollectionNewCentroToAttach : centroCollectionNew) {
+                centroCollectionNewCentroToAttach = em.getReference(centroCollectionNewCentroToAttach.getClass(), centroCollectionNewCentroToAttach.getIdcentro());
+                attachedCentroCollectionNew.add(centroCollectionNewCentroToAttach);
+            }
+            centroCollectionNew = attachedCentroCollectionNew;
+            modelo.setCentroCollection(centroCollectionNew);
             modelo = em.merge(modelo);
+            for (Centro centroCollectionOldCentro : centroCollectionOld) {
+                if (!centroCollectionNew.contains(centroCollectionOldCentro)) {
+                    centroCollectionOldCentro.getModeloCollection().remove(modelo);
+                    centroCollectionOldCentro = em.merge(centroCollectionOldCentro);
+                }
+            }
+            for (Centro centroCollectionNewCentro : centroCollectionNew) {
+                if (!centroCollectionOld.contains(centroCollectionNewCentro)) {
+                    centroCollectionNewCentro.getModeloCollection().add(modelo);
+                    centroCollectionNewCentro = em.merge(centroCollectionNewCentro);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -85,6 +123,11 @@ public class ModeloJpaController implements Serializable {
                 modelo.getIdmodelo();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The modelo with id " + id + " no longer exists.", enfe);
+            }
+            Collection<Centro> centroCollection = modelo.getCentroCollection();
+            for (Centro centroCollectionCentro : centroCollection) {
+                centroCollectionCentro.getModeloCollection().remove(modelo);
+                centroCollectionCentro = em.merge(centroCollectionCentro);
             }
             em.remove(modelo);
             em.getTransaction().commit();

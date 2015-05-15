@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 1glm02
+ * @author 1gprog07
  */
 @Entity
 @Table(name = "PROVINCIAS")

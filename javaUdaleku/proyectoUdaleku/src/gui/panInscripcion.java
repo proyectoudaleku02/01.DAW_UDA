@@ -7,6 +7,10 @@ package gui;
 
 import Excepciones.CampoVacio;
 import Excepciones.ExGenerica;
+import Modelo.UML.Centro;
+import Modelo.UML.Localidad;
+import Modelo.UML.Modelo;
+import Modelo.UML.Municipio;
 import Modelo.UML.Via;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import proyectoudaleku.Main;
@@ -25,12 +30,17 @@ import proyectoudaleku.Main;
 
 public class panInscripcion extends javax.swing.JPanel {
 
+    ArrayList<Municipio> municipios;
+    ArrayList<Localidad> localidades;
     
     public panInscripcion() {
         initComponents();
-        datosIniciales();
     }
     
+    public panInscripcion(String prov) {
+    initComponents();
+    datosIniciales(prov);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -696,14 +706,13 @@ public class panInscripcion extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     // DATOS INICIALES
-    private void datosIniciales() {
+    private void datosIniciales(String prov) {
         // Las lupas quedan desactivadas hasta haber elegido la localidad.
         tfTipoVia.setEditable(false);tfCalle.setEditable(false); lupaCalle.setEnabled(false);
         tfProvinciaCentro.setEditable(false); lupaCentro.setEnabled(false);
         // Los modelos educativos quedan desactivados hasta haber elegido el centro.
         rbA.setEnabled(false);rbB.setEnabled(false);rbD.setEnabled(false);
         // Provincia
-        String prov=Main.getProvSelected().getNombreprov();
         switch (prov){
             case "ARB":
                 rbProv.setText("Araba");
@@ -716,8 +725,15 @@ public class panInscripcion extends javax.swing.JPanel {
                 break;
         }
         // Municipios
-        //Main.findMunicipios(prov);
-        Main.fillComboMun(cbMunicipio);
+        municipios =Main.findMunicipios();
+        // Vaciamos lista desplegable de municipios.
+        cbMunicipio.removeAllItems();
+        // Llenar lista desplegable de municipios.
+        for(int x=0;x<municipios.size();x++)
+        {
+            cbMunicipio.insertItemAt(municipios.get(x).getNombremunic(), x);
+        }
+
     }
     
     private void bCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCancelarActionPerformed
@@ -743,24 +759,31 @@ public class panInscripcion extends javax.swing.JPanel {
     
 // LUPAS
     private void lupaCalleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lupaCalleMouseClicked
-        Main.buildLupa("calles",cbLocalidad.getSelectedItem().toString(),cbMunicipio.getSelectedItem().toString());
+        
+        Main.buildLupa("calles","");
     }//GEN-LAST:event_lupaCalleMouseClicked
     
-    public void rellenarTfCalle() {
-        tfTipoVia.setText(Main.getViaSelected().getTipovia());
-        tfCalle.setText(Main.getViaSelected().getNombrevia());
+    public void rellenarTfCalle(Via via) {
+        tfTipoVia.setText(via.getTipovia());
+        tfCalle.setText(via.getNombrevia());
     }
 
     private void lupaCentroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lupaCentroMouseClicked
-        Main.buildLupa("centros",cbLocalidad.getSelectedItem().toString(),cbMunicipio.getSelectedItem().toString());
+        String prov;
+        if(rbProv.isSelected())
+            prov="seleccionada";
+        else
+            prov="otra";
+        Main.buildLupa("centros",prov);
     }//GEN-LAST:event_lupaCentroMouseClicked
     
-    public void rellenarTfCentro() {
-        tfProvinciaCentro.setText(Main.getCentSelected().getNombrecent());
+    public void rellenarTfCentro(Centro centro) {
+        tfProvinciaCentro.setText(centro.getNombrecent());
         // Adecuamos las opciones de modelo educativo que tiene el centro a las del formulario.
-        for(int x=0;x<Main.getModelosSelected().size();x++)
+        ArrayList<Modelo> modelos=Main.findModelosCentro(centro.getIdcentro());
+        for(int x=0;x<modelos.size();x++)
         {
-            switch(Main.getModelosSelected().get(x).getIdmodelo()){
+            switch(modelos.get(x).getIdmodelo()){
                 case "A":
                     rbA.setEnabled(true);
                     break;
@@ -778,25 +801,30 @@ public class panInscripcion extends javax.swing.JPanel {
     private void cbMunicipioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMunicipioActionPerformed
         if(cbMunicipio.getSelectedIndex()!= -1)
         {
-        ////Main.findLocalidades(String.valueOf(Main.getMunSelected().getIdmunicipio()));
-        
-        Main.fillComboLoc(cbLocalidad);
+            Municipio munSel = municipios.get(cbMunicipio.getSelectedIndex());
+            localidades=Main.findLocalidades(munSel.getIdmunicipio().toString());
+            // Vaciamos lista desplegable de municipios.
+            cbLocalidad.removeAllItems();
+            // Llenar lista desplegable de municipios.
+            for(int x=0;x<localidades.size();x++)
+            {
+                cbLocalidad.insertItemAt(localidades.get(x).getNombreloc(), x);
+            }     
         // Tanto la combo box de los municipios como el array de municipios es coincidente.
-        // Hacemos set del municipio seleccionado en el Main.
-        Main.setMunSelected(Main.getMunicipios().get(cbMunicipio.getSelectedIndex()));
+        // Mandamos el municipio seleccionado al Main.
+            Main.sendMunicipio(munSel);
         }
     }//GEN-LAST:event_cbMunicipioActionPerformed
 
     private void cbLocalidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLocalidadActionPerformed
         if(cbLocalidad.getSelectedIndex()!= -1)
         {
-            ////Main.findCentros(String.valueOf(Main.getLocSelected().getIdlocalidad()));
-        
+            Localidad locSel = localidades.get(cbLocalidad.getSelectedIndex());       
             // Activamos las lupas.
             lupaCalle.setEnabled(true); lupaCentro.setEnabled(true);
             // Tanto la combo box de los municipios como el array de municipios es coincidente.
-            // Hacemos set del municipio seleccionado en el Main.
-            Main.setLocSelected(Main.getLocalidades().get(cbLocalidad.getSelectedIndex()));
+        // Mandamos el municipio seleccionado al Main.
+        Main.sendLocalidad(locSel);
         }
         
     }//GEN-LAST:event_cbLocalidadActionPerformed
@@ -915,9 +943,13 @@ public class panInscripcion extends javax.swing.JPanel {
         // Datos tutor
         Main.constTutor(tfDniTutor.getText(),tfNombreTutor.getText(),tfApel1Tutor.getText(),tfApel2Tutor.getText());
         // Datos Menor
-
+        String sexo="";
+        if(rbMasculino.isSelected())
+            sexo="M";
+        else
+            sexo="F";
         ///////RadioButtons
-        Main.constMenor(tfDniMenor.getText(),tfNombreMenor.getText(),tfApel1Menor.getText(),tfApel2Menor.getText(),grupoSexo.getSelection().toString(),tfFehcaNacMenor.getText(),cbDiscapacidad.getSelectedItem().toString());
+        Main.constMenor(tfDniMenor.getText(),tfNombreMenor.getText(),tfApel1Menor.getText(),tfApel2Menor.getText(),sexo,tfFehcaNacMenor.getText(),cbDiscapacidad.getSelectedItem().toString());
         // Datos Direccion
         ArrayList<String> telefonos = makeArrayTfn();
         Main.constDireccion(cbMunicipio.getSelectedItem().toString(),cbLocalidad.getSelectedItem().toString(),tfCalle.getText(),tfCp.getText(),tfNumero.getText(),tfLetra.getText(),tfPiso.getText(),tfEscalera.getText(),tfMano.getText(),telefonos);

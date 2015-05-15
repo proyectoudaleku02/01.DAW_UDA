@@ -23,7 +23,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author 1glm02
+ * @author 1gprog07
  */
 public class ProvinciaJpaController implements Serializable {
 

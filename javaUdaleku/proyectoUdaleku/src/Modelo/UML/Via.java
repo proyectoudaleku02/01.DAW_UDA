@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 1glm02
+ * @author 1gprog07
  */
 @Entity
 @Table(name = "VIAS")
@@ -45,10 +45,10 @@ public class Via implements Serializable {
     @Column(name = "NOMBREVIA")
     private String nombrevia;
     @OneToMany(mappedBy = "idvia")
-    private Collection<Direccion> direccioneCollection;
-    @JoinColumn(name = "IDMUNICIPIO", referencedColumnName = "IDMUNICIPIO")
+    private Collection<Direccion> direccionCollection;
+    @JoinColumn(name = "IDLOCALIDAD", referencedColumnName = "IDLOCALIDAD")
     @ManyToOne
-    private Municipio idmunicipio;
+    private Localidad idlocalidad;
 
     public Via() {
     }
@@ -88,20 +88,20 @@ public class Via implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Direccion> getDireccioneCollection() {
-        return direccioneCollection;
+    public Collection<Direccion> getDireccionCollection() {
+        return direccionCollection;
     }
 
-    public void setDireccioneCollection(Collection<Direccion> direccioneCollection) {
-        this.direccioneCollection = direccioneCollection;
+    public void setDireccionCollection(Collection<Direccion> direccionCollection) {
+        this.direccionCollection = direccionCollection;
     }
 
-    public Municipio getIdmunicipio() {
-        return idmunicipio;
+    public Localidad getIdlocalidad() {
+        return idlocalidad;
     }
 
-    public void setIdmunicipio(Municipio idmunicipio) {
-        this.idmunicipio = idmunicipio;
+    public void setIdlocalidad(Localidad idlocalidad) {
+        this.idlocalidad = idlocalidad;
     }
 
     @Override

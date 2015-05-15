@@ -14,13 +14,16 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import Modelo.UML.Municipio;
+import Modelo.UML.Via;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author 1glm02
+ * @author 1gprog07
  */
 public class LocalidadJpaController implements Serializable {
 
@@ -34,6 +37,9 @@ public class LocalidadJpaController implements Serializable {
     }
 
     public void create(Localidad localidad) throws PreexistingEntityException, Exception {
+        if (localidad.getViaCollection() == null) {
+            localidad.setViaCollection(new ArrayList<Via>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -43,10 +49,25 @@ public class LocalidadJpaController implements Serializable {
                 idmunicipio = em.getReference(idmunicipio.getClass(), idmunicipio.getIdmunicipio());
                 localidad.setIdmunicipio(idmunicipio);
             }
+            Collection<Via> attachedViaCollection = new ArrayList<Via>();
+            for (Via viaCollectionViaToAttach : localidad.getViaCollection()) {
+                viaCollectionViaToAttach = em.getReference(viaCollectionViaToAttach.getClass(), viaCollectionViaToAttach.getIdvia());
+                attachedViaCollection.add(viaCollectionViaToAttach);
+            }
+            localidad.setViaCollection(attachedViaCollection);
             em.persist(localidad);
             if (idmunicipio != null) {
                 idmunicipio.getLocalidadCollection().add(localidad);
                 idmunicipio = em.merge(idmunicipio);
+            }
+            for (Via viaCollectionVia : localidad.getViaCollection()) {
+                Localidad oldIdlocalidadOfViaCollectionVia = viaCollectionVia.getIdlocalidad();
+                viaCollectionVia.setIdlocalidad(localidad);
+                viaCollectionVia = em.merge(viaCollectionVia);
+                if (oldIdlocalidadOfViaCollectionVia != null) {
+                    oldIdlocalidadOfViaCollectionVia.getViaCollection().remove(viaCollectionVia);
+                    oldIdlocalidadOfViaCollectionVia = em.merge(oldIdlocalidadOfViaCollectionVia);
+                }
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -69,10 +90,19 @@ public class LocalidadJpaController implements Serializable {
             Localidad persistentLocalidad = em.find(Localidad.class, localidad.getIdlocalidad());
             Municipio idmunicipioOld = persistentLocalidad.getIdmunicipio();
             Municipio idmunicipioNew = localidad.getIdmunicipio();
+            Collection<Via> viaCollectionOld = persistentLocalidad.getViaCollection();
+            Collection<Via> viaCollectionNew = localidad.getViaCollection();
             if (idmunicipioNew != null) {
                 idmunicipioNew = em.getReference(idmunicipioNew.getClass(), idmunicipioNew.getIdmunicipio());
                 localidad.setIdmunicipio(idmunicipioNew);
             }
+            Collection<Via> attachedViaCollectionNew = new ArrayList<Via>();
+            for (Via viaCollectionNewViaToAttach : viaCollectionNew) {
+                viaCollectionNewViaToAttach = em.getReference(viaCollectionNewViaToAttach.getClass(), viaCollectionNewViaToAttach.getIdvia());
+                attachedViaCollectionNew.add(viaCollectionNewViaToAttach);
+            }
+            viaCollectionNew = attachedViaCollectionNew;
+            localidad.setViaCollection(viaCollectionNew);
             localidad = em.merge(localidad);
             if (idmunicipioOld != null && !idmunicipioOld.equals(idmunicipioNew)) {
                 idmunicipioOld.getLocalidadCollection().remove(localidad);
@@ -81,6 +111,23 @@ public class LocalidadJpaController implements Serializable {
             if (idmunicipioNew != null && !idmunicipioNew.equals(idmunicipioOld)) {
                 idmunicipioNew.getLocalidadCollection().add(localidad);
                 idmunicipioNew = em.merge(idmunicipioNew);
+            }
+            for (Via viaCollectionOldVia : viaCollectionOld) {
+                if (!viaCollectionNew.contains(viaCollectionOldVia)) {
+                    viaCollectionOldVia.setIdlocalidad(null);
+                    viaCollectionOldVia = em.merge(viaCollectionOldVia);
+                }
+            }
+            for (Via viaCollectionNewVia : viaCollectionNew) {
+                if (!viaCollectionOld.contains(viaCollectionNewVia)) {
+                    Localidad oldIdlocalidadOfViaCollectionNewVia = viaCollectionNewVia.getIdlocalidad();
+                    viaCollectionNewVia.setIdlocalidad(localidad);
+                    viaCollectionNewVia = em.merge(viaCollectionNewVia);
+                    if (oldIdlocalidadOfViaCollectionNewVia != null && !oldIdlocalidadOfViaCollectionNewVia.equals(localidad)) {
+                        oldIdlocalidadOfViaCollectionNewVia.getViaCollection().remove(viaCollectionNewVia);
+                        oldIdlocalidadOfViaCollectionNewVia = em.merge(oldIdlocalidadOfViaCollectionNewVia);
+                    }
+                }
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -115,6 +162,11 @@ public class LocalidadJpaController implements Serializable {
             if (idmunicipio != null) {
                 idmunicipio.getLocalidadCollection().remove(localidad);
                 idmunicipio = em.merge(idmunicipio);
+            }
+            Collection<Via> viaCollection = localidad.getViaCollection();
+            for (Via viaCollectionVia : viaCollection) {
+                viaCollectionVia.setIdlocalidad(null);
+                viaCollectionVia = em.merge(viaCollectionVia);
             }
             em.remove(localidad);
             em.getTransaction().commit();

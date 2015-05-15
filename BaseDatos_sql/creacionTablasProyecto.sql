@@ -106,7 +106,7 @@ CREATE TABLE VIAS (
     REFERENCES LOCALIDADES (idLocalidad));
 	
 CREATE TABLE DIRECCIONES (
-  idDireccion VARCHAR2(40),
+  idDireccion NUMBER(10),
   numDir VARCHAR2(3),
   letra VARCHAR2(1),
   piso VARCHAR2(2),
@@ -121,6 +121,7 @@ CREATE TABLE DIRECCIONES (
 CREATE TABLE INSCRIPCIONES (
   idInscripcion VARCHAR2(10),
   idSolicitud NUMBER(10),
+  idDireccion v
   CONSTRAINT inscripciones_pk PRIMARY KEY (idInscripcion),
   CONSTRAINT insSol_fk FOREIGN KEY (idSolicitud)
     REFERENCES SOLICITUDES (idSolicitud));

@@ -6,6 +6,7 @@
 package Modelo.UML;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,12 +15,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 1glm02
+ * @author 1gprog07
  */
 @Entity
 @Table(name = "LOCALIDADES")
@@ -40,6 +43,8 @@ public class Localidad implements Serializable {
     @JoinColumn(name = "IDMUNICIPIO", referencedColumnName = "IDMUNICIPIO")
     @ManyToOne
     private Municipio idmunicipio;
+    @OneToMany(mappedBy = "idlocalidad")
+    private Collection<Via> viaCollection;
 
     public Localidad() {
     }
@@ -75,6 +80,15 @@ public class Localidad implements Serializable {
 
     public void setIdmunicipio(Municipio idmunicipio) {
         this.idmunicipio = idmunicipio;
+    }
+
+    @XmlTransient
+    public Collection<Via> getViaCollection() {
+        return viaCollection;
+    }
+
+    public void setViaCollection(Collection<Via> viaCollection) {
+        this.viaCollection = viaCollection;
     }
 
     @Override

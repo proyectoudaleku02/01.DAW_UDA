@@ -6,18 +6,21 @@
 package Modelo.UML;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 1glm02
+ * @author 1gprog07
  */
 @Entity
 @Table(name = "MODELOS")
@@ -35,6 +38,8 @@ public class Modelo implements Serializable {
     @Basic(optional = false)
     @Column(name = "DESCMODELO")
     private String descmodelo;
+    @ManyToMany(mappedBy = "modeloCollection")
+    private Collection<Centro> centroCollection;
 
     public Modelo() {
     }
@@ -62,6 +67,15 @@ public class Modelo implements Serializable {
 
     public void setDescmodelo(String descmodelo) {
         this.descmodelo = descmodelo;
+    }
+
+    @XmlTransient
+    public Collection<Centro> getCentroCollection() {
+        return centroCollection;
+    }
+
+    public void setCentroCollection(Collection<Centro> centroCollection) {
+        this.centroCollection = centroCollection;
     }
 
     @Override

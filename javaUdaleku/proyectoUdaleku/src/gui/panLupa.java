@@ -27,25 +27,27 @@ public class panLupa extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
-    public panLupa(String tipo, String loc) {
+    public panLupa(String tipo, String parametro) {
         initComponents();
         setLocationRelativeTo(null);
-        lTitulo.setText(tipo.toUpperCase()); lProv.setText(loc.toUpperCase());
+        lTitulo.setText(tipo.toUpperCase()); lProv.setText(parametro.toUpperCase());
         switch(tipo){
             case "calles":
                 DefaultListModel modeloCalles = new DefaultListModel();
-                for(int x=0;x<Main.getVias().size();x++)
+                ArrayList<Via> vias=Main.findVias(parametro);
+                for(int x=0;x<vias.size();x++)
                 {
-                    modeloCalles.add(x, Main.getVias().get(x).getNombrevia());
+                    modeloCalles.add(x, vias.get(x).getNombrevia());
                 }
                 list.setModel(modeloCalles);
                 break;
                 
             case "centros":
                 DefaultListModel modeloCentros = new DefaultListModel();
-                for(int x=0;x<Main.getCentros().size();x++)
+                ArrayList<Centro> centros=Main.findCentros(parametro);
+                for(int x=0;x<centros.size();x++)
                 {
-                    modeloCentros.add(x, Main.getCentros().get(x).getNombrecent());
+                    modeloCentros.add(x, centros.get(x).getNombrecent());
                 }
                 list.setModel(modeloCentros);
                 break;
@@ -148,13 +150,11 @@ public class panLupa extends javax.swing.JFrame {
         switch (lTitulo.getText()){
             case "CALLES":
                 // El ArrayList de municipios del Main es coincidente con esta lista. Así sabemos qué municipio seleccionamos.
-                Main.setViaSelected(Main.getVias().get(list.getSelectedIndex()));
-                Main.sendViaToInscripcion();
+                Main.sendViaToInscripcion(list.getSelectedIndex());
                 break;
             case "CENTROS":
                 // El ArrayList de centros del Main es coincidente con esta lista. Así sabemos qué municipio seleccionamos.
-                Main.setCentSelected(Main.getCentros().get(list.getSelectedIndex()));
-                Main.sendCentroToInscripcion();
+                Main.sendCentroToInscripcion(list.getSelectedIndex());
                 break;
         }
     }//GEN-LAST:event_bAceptarActionPerformed

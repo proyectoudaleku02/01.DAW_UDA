@@ -6,20 +6,24 @@
 package Modelo.UML;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 1glm02
+ * @author 1gprog07
  */
 @Entity
 @Table(name = "CENTROS")
@@ -37,6 +41,11 @@ public class Centro implements Serializable {
     @Basic(optional = false)
     @Column(name = "NOMBRECENT")
     private String nombrecent;
+    @JoinTable(name = "CENTROS_HAS_MODELOS", joinColumns = {
+        @JoinColumn(name = "IDCENTRO", referencedColumnName = "IDCENTRO")}, inverseJoinColumns = {
+        @JoinColumn(name = "IDMODELO", referencedColumnName = "IDMODELO")})
+    @ManyToMany
+    private Collection<Modelo> modeloCollection;
     @JoinColumn(name = "IDPROVINCIA", referencedColumnName = "IDPROVINCIA")
     @ManyToOne
     private Provincia idprovincia;
@@ -67,6 +76,15 @@ public class Centro implements Serializable {
 
     public void setNombrecent(String nombrecent) {
         this.nombrecent = nombrecent;
+    }
+
+    @XmlTransient
+    public Collection<Modelo> getModeloCollection() {
+        return modeloCollection;
+    }
+
+    public void setModeloCollection(Collection<Modelo> modeloCollection) {
+        this.modeloCollection = modeloCollection;
     }
 
     public Provincia getIdprovincia() {

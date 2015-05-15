@@ -6,7 +6,6 @@
 package Modelo.UML;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,26 +19,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author 1glm02
+ * @author 1gprog07
  */
 @Entity
 @Table(name = "DIRECCIONES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Direccione.findAll", query = "SELECT d FROM Direccione d"),
-    @NamedQuery(name = "Direccione.findByIddireccion", query = "SELECT d FROM Direccione d WHERE d.iddireccion = :iddireccion"),
-    @NamedQuery(name = "Direccione.findByNumdir", query = "SELECT d FROM Direccione d WHERE d.numdir = :numdir"),
-    @NamedQuery(name = "Direccione.findByLetra", query = "SELECT d FROM Direccione d WHERE d.letra = :letra"),
-    @NamedQuery(name = "Direccione.findByPiso", query = "SELECT d FROM Direccione d WHERE d.piso = :piso"),
-    @NamedQuery(name = "Direccione.findByEscalera", query = "SELECT d FROM Direccione d WHERE d.escalera = :escalera"),
-    @NamedQuery(name = "Direccione.findByMano", query = "SELECT d FROM Direccione d WHERE d.mano = :mano"),
-    @NamedQuery(name = "Direccione.findByCp", query = "SELECT d FROM Direccione d WHERE d.cp = :cp")})
+    @NamedQuery(name = "Direccion.findAll", query = "SELECT d FROM Direccion d"),
+    @NamedQuery(name = "Direccion.findByIddireccion", query = "SELECT d FROM Direccion d WHERE d.iddireccion = :iddireccion"),
+    @NamedQuery(name = "Direccion.findByNumdir", query = "SELECT d FROM Direccion d WHERE d.numdir = :numdir"),
+    @NamedQuery(name = "Direccion.findByLetra", query = "SELECT d FROM Direccion d WHERE d.letra = :letra"),
+    @NamedQuery(name = "Direccion.findByPiso", query = "SELECT d FROM Direccion d WHERE d.piso = :piso"),
+    @NamedQuery(name = "Direccion.findByEscalera", query = "SELECT d FROM Direccion d WHERE d.escalera = :escalera"),
+    @NamedQuery(name = "Direccion.findByMano", query = "SELECT d FROM Direccion d WHERE d.mano = :mano"),
+    @NamedQuery(name = "Direccion.findByCp", query = "SELECT d FROM Direccion d WHERE d.cp = :cp")})
 public class Direccion implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @Column(name = "IDDIRECCION")
-    private String iddireccion;
+    private Long iddireccion;
     @Column(name = "NUMDIR")
     private String numdir;
     @Column(name = "LETRA")
@@ -57,33 +56,23 @@ public class Direccion implements Serializable {
     @ManyToOne
     private Via idvia;
 
-    public Direccion(String cp, String numero, String letra, String piso, String escalera, String mano,Via via) {
-        numdir=numero;
-        this.letra=letra;
-        this.piso=piso;
-        this.escalera=escalera;
-        this.mano=mano;
-        this.cp=cp;
-        idvia=via;
-    }    
-    
     public Direccion() {
     }
 
-    public Direccion(String iddireccion) {
+    public Direccion(Long iddireccion) {
         this.iddireccion = iddireccion;
     }
 
-    public Direccion(String iddireccion, String cp) {
+    public Direccion(Long iddireccion, String cp) {
         this.iddireccion = iddireccion;
         this.cp = cp;
     }
 
-    public String getIddireccion() {
+    public Long getIddireccion() {
         return iddireccion;
     }
 
-    public void setIddireccion(String iddireccion) {
+    public void setIddireccion(Long iddireccion) {
         this.iddireccion = iddireccion;
     }
 
@@ -165,7 +154,7 @@ public class Direccion implements Serializable {
 
     @Override
     public String toString() {
-        return "Modelo.UML.Direccione[ iddireccion=" + iddireccion + " ]";
+        return "Modelo.UML.Direccion[ iddireccion=" + iddireccion + " ]";
     }
     
 }

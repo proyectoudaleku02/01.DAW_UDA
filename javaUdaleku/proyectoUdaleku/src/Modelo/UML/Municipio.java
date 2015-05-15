@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 1glm02
+ * @author 1gprog07
  */
 @Entity
 @Table(name = "MUNICIPIOS")
@@ -45,8 +45,6 @@ public class Municipio implements Serializable {
     private Provincia idprovincia;
     @OneToMany(mappedBy = "idmunicipio")
     private Collection<Localidad> localidadCollection;
-    @OneToMany(mappedBy = "idmunicipio")
-    private Collection<Via> viaCollection;
 
     public Municipio() {
     }
@@ -91,15 +89,6 @@ public class Municipio implements Serializable {
 
     public void setLocalidadCollection(Collection<Localidad> localidadCollection) {
         this.localidadCollection = localidadCollection;
-    }
-
-    @XmlTransient
-    public Collection<Via> getViaCollection() {
-        return viaCollection;
-    }
-
-    public void setViaCollection(Collection<Via> viaCollection) {
-        this.viaCollection = viaCollection;
     }
 
     @Override
