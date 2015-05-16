@@ -131,8 +131,16 @@ public class Main {
 
     // Control de paneles.
     public static void verPanInscrip() {
+        // Inicialización de inscripción y solicitud.
         insSelected = new Inscripcion();
         solSelected = new Solicitud();
+        // Las relacionamos bidireccionalmente
+        solSelected.getInscripciones().add(insSelected);
+        insSelected.setSolicitud(solSelected);
+        // Inicialización de menor y tutor. Puesta en relación con la inscripción.
+        menorSelected=new Menor(); menorSelected.setInscripcion(insSelected);
+        tutorSelected=new Tutor(); tutorSelected.setInscripcion(insSelected);
+        
         panInscrip = new panInscripcion();
         inic.getContentPane().setVisible(false);
         inic.setContentPane(panInscrip);
@@ -182,7 +190,7 @@ public class Main {
     }
 
     public static void controlInscripciones() {
-        dConfirmacion = new confInscrip(inic, true, solSelected.getInscripciones().size());
+        dConfirmacion = new confInscrip(inic, true, solSelected);
         dConfirmacion.setVisible(true);
     }
 

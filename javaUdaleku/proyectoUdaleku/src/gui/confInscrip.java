@@ -6,6 +6,7 @@
 package gui;
 
 import Modelo.UML.Inscripcion;
+import Modelo.UML.Solicitud;
 import javax.swing.JOptionPane;
 import proyectoudaleku.Main;
 
@@ -24,11 +25,11 @@ public class confInscrip extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }
     
-    public confInscrip(java.awt.Frame parent, boolean modal, int inscripciones) {
+    public confInscrip(java.awt.Frame parent, boolean modal, Solicitud solSelected) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        controlInicio(inscripciones);
+        controlInicio(solSelected);
     }
 
     /**
@@ -166,13 +167,9 @@ public class confInscrip extends javax.swing.JDialog {
     private javax.swing.JTextArea taInfo;
     // End of variables declaration//GEN-END:variables
 
-    private void controlInicio(int inscripciones) {
+    private void controlInicio(Solicitud solSelected) {
         String text = "RESUMEN DE LA SOLICITUD\n\n";
-        for(int x=0;x<inscripciones;x++){
-            text = text + "Participante: "+Main.getSolSelected().getInscripciones().get(x).getMenor().getNomAps()+" ---- "+
-                    "Padre/madre o Tutor/a: "+Main.getSolSelected().getInscripciones().get(x).getTutor().getNomAps();
-        }
-        switch(inscripciones){
+        switch(solSelected.getInscripciones().size()){
             case 0:
                 taInfo.setText(text+"Participante: "+Main.getMenorSelected().getNomAps()+" ---- "+"Padre/madre o Tutor/a: "+Main.getTutorSelected().getNomAps()+"\n");
                 break;
