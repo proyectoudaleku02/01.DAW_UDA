@@ -11,6 +11,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,6 +23,7 @@ import java.util.logging.Logger;
 import javax.persistence.Persistence;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import oracle.jdbc.OracleTypes;
 
 public class Main {
 
@@ -349,6 +351,37 @@ public class Main {
         conn.desconectar();
         return modelosSelected;
     }
+    /**
+     * 
+     * @throws SQLException 
+     * constructor de Solicitud. llama a un procedimiento definido dentro de un paquete de base de datos mediante el cual insertará ala solicitud
+     */
+    public static void constSolicitud() throws SQLException {
+        // Ejecución de un procedimiento contenido dentro del paquete que gestiona las altas de inscripciones
+        conn = new ConexionOracle();
+        //conectamos
+        conn.setConexion();
+
+        String sql = "{call alta_inscripciones.insertar_solicitud(?)}";
+        CallableStatement cs = conexion.prepareCall(sql);
+        try {
+            // Cargamos los parametros de entrada IN
+            cs.setString(1, "Solicitud realizada a espera de sorteo");
+            
+              // la select devuelve datos (parámetro de salida)
+           cs.registerOutParameter(1,OracleTypes.NUMBER);
+           cs.registerOutParameter(2,OracleTypes.VARCHAR);
+
+           // Con getObject Obtenemos un valor generico al que posteriormente se le hará cast para convertirlo en el tipo adecuado en este caso ResultSet
+            rset = (ResultSet)cs.getObject(1);
+            // Ejecutamos
+            cs.execute();
+
+            //desconectamos
+            conn.desconectar();
+        } catch (Exception e) {
+        }
+    }
 
     public static void constTutor(String dni, String nombre, String apel1, String apel2) throws Exception {
 
@@ -361,7 +394,7 @@ public class Main {
     }
 
     public static void constDireccion(String municipio, String localidad, String calle, String cp, String numero, String letra, String piso, String escalera, String mano, ArrayList<String> telefonos) throws Exception {
-        dirSelected = new Direccion(cp, numero, letra, piso, escalera, mano, viaSelected);
+        //dirSelected = new Direccion(cp, numero, letra, piso, escalera, mano, viaSelected);
     }
 
     private static Date parseFechaJava(String fechaNac) throws Exception {
