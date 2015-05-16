@@ -121,10 +121,12 @@ CREATE TABLE DIRECCIONES (
 CREATE TABLE INSCRIPCIONES (
   idInscripcion VARCHAR2(10),
   idSolicitud NUMBER(10),
-  idDireccion v
+  idDireccion NUMBER(10),
   CONSTRAINT inscripciones_pk PRIMARY KEY (idInscripcion),
   CONSTRAINT insSol_fk FOREIGN KEY (idSolicitud)
-    REFERENCES SOLICITUDES (idSolicitud));
+    REFERENCES SOLICITUDES (idSolicitud),
+	CONSTRAINT incri_direcc_fk FOREIGN KEY (idDireccion)
+		REFERENCES DIRECCIONES(idDireccion));
 
  
 
@@ -160,14 +162,11 @@ CREATE TABLE MENORES (
   fechaNacMenor DATE NOT NULL,
   discapacidadMenor VARCHAR2(2) NOT NULL,
   idInscrip VARCHAR2(10),
-  idDir VARCHAR2(40),
   idCentro NUMBER(10),
   idModelo VARCHAR2(1),
   CONSTRAINT menores_pk PRIMARY KEY (idSolicitante),
   CONSTRAINT menIns_fk FOREIGN KEY (idInscrip)
     REFERENCES INSCRIPCIONES (idInscripcion),
-  CONSTRAINT menDir_fk FOREIGN KEY (idDir)
-    REFERENCES DIRECCIONES (idDireccion),
   CONSTRAINT discapacidadMenor_ck CHECK(lower(discapacidadMenor) IN('si','no')),
   CONSTRAINT menores_centro_fk FOREIGN KEY (idCentro)
     REFERENCES CENTROS (idCentro),
@@ -177,13 +176,16 @@ CREATE TABLE MENORES (
 
 
 
-CREATE OR REPLACE SEQUENCE idSolicitud_seq INCREMENT BY 1 START WITH 1;
+CREATE SEQUENCE idSolicitud_seq INCREMENT BY 1 START WITH 1;
 		
-CREATE OR REPLACE SEQUENCE idCentro_seq INCREMENT BY 1 START WITH 1;
+CREATE  SEQUENCE idCentro_seq INCREMENT BY 1 START WITH 1;
 
-CREATE OR REPLACE SEQUENCE idSolicitante_seq INCREMENT BY 1 START WITH 1;
+CREATE SEQUENCE idSolicitante_seq INCREMENT BY 1 START WITH 1;
 
-CREATE OR REPLACE SEQUENCE idMunicipio_seq INCREMENT BY 1 START WITH 1;
+CREATE SEQUENCE idMunicipio_seq INCREMENT BY 1 START WITH 1;
+
+CREATE SEQUENCE idDireccion_seq;
+
 
 
 INSERT INTO PROVINCIAS VALUES ('ARB','ARABA');
