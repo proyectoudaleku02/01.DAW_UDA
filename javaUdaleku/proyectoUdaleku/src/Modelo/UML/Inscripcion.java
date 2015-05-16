@@ -13,17 +13,22 @@ public class Inscripcion {
     private String idInscripcion;
     
     // Relacion
-    private Solicitud idSolicitud;
+    private Solicitud solicitud;
     private Menor menor;
     private Tutor tutor;
+    private Direccion direccion;
 
     public Inscripcion(String idInscripcion) {
         this.idInscripcion = idInscripcion;
-        this.idSolicitud = new Solicitud();
+        this.solicitud = new Solicitud();
+        this.menor = new Menor();
+        this.tutor = new Tutor();
     }
 
     public Inscripcion() {
-        this.idSolicitud = new Solicitud();
+        this.solicitud = new Solicitud();
+        this.menor = new Menor();
+        this.tutor = new Tutor();
     }
 
     public String getIdInscripcion() {
@@ -34,12 +39,12 @@ public class Inscripcion {
         this.idInscripcion = idInscripcion;
     }
 
-    public Solicitud getIdSolicitud() {
-        return idSolicitud;
+    public Solicitud getSolicitud() {
+        return solicitud;
     }
 
-    public void setIdSolicitud(Solicitud idSolicitud) {
-        this.idSolicitud = idSolicitud;
+    public void setSolicitud(Solicitud idSolicitud) {
+        this.solicitud = idSolicitud;
     }  
 
     public Menor getMenor() {
@@ -57,6 +62,15 @@ public class Inscripcion {
     public void setTutor(Tutor tutor) {
         this.tutor = tutor;
     }
+
+    public Direccion getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(Direccion direccion) {
+        this.direccion = direccion;
+    }
+    
     
     
 }

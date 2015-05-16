@@ -942,14 +942,17 @@ public class panInscripcion extends javax.swing.JPanel {
     private void construirObjetos() throws Exception{
         // Datos tutor
         Main.constTutor(tfDniTutor.getText(),tfNombreTutor.getText(),tfApel1Tutor.getText(),tfApel2Tutor.getText());
+        
         // Datos Menor
+        //RadioButtons
         String sexo="";
         if(rbMasculino.isSelected())
             sexo="M";
         else
             sexo="F";
-        ///////RadioButtons
+        
         Main.constMenor(tfDniMenor.getText(),tfNombreMenor.getText(),tfApel1Menor.getText(),tfApel2Menor.getText(),sexo,tfFehcaNacMenor.getText(),cbDiscapacidad.getSelectedItem().toString());
+        
         // Datos Direccion
         ArrayList<String> telefonos = makeArrayTfn();
         Main.constDireccion(cbMunicipio.getSelectedItem().toString(),cbLocalidad.getSelectedItem().toString(),tfCalle.getText(),tfCp.getText(),tfNumero.getText(),tfLetra.getText(),tfPiso.getText(),tfEscalera.getText(),tfMano.getText(),telefonos);

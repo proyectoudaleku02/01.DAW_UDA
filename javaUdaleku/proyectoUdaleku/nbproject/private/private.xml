@@ -3,8 +3,20 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
+            <file>file:/H:/00.FPARRIAGA/01.DAW_UDA/javaUdaleku/proyectoUdaleku/src/Modelo/UML/Inscripcion.java</file>
+            <file>file:/H:/00.FPARRIAGA/01.DAW_UDA/javaUdaleku/proyectoUdaleku/src/proyectoudaleku/Main.java</file>
+            <file>file:/H:/00.FPARRIAGA/01.DAW_UDA/javaUdaleku/proyectoUdaleku/src/Modelo/UML/Solicitud.java</file>
+            <file>file:/H:/00.FPARRIAGA/01.DAW_UDA/javaUdaleku/proyectoUdaleku/src/gui/panInscripcion.java</file>
+            <file>file:/H:/00.FPARRIAGA/01.DAW_UDA/javaUdaleku/proyectoUdaleku/src/Modelo/UML/Menor.java</file>
+            <file>file:/H:/00.FPARRIAGA/01.DAW_UDA/javaUdaleku/proyectoUdaleku/src/conexionoracle/ConexionOracle.java</file>
+            <file>file:/H:/00.FPARRIAGA/01.DAW_UDA/javaUdaleku/proyectoUdaleku/src/Modelo/UML/Tutor.java</file>
+            <file>file:/H:/00.FPARRIAGA/01.DAW_UDA/javaUdaleku/proyectoUdaleku/src/gui/confInscrip.java</file>
+            <file>file:/H:/00.FPARRIAGA/01.DAW_UDA/javaUdaleku/proyectoUdaleku/src/Modelo/UML/Direccion.java</file>
+=======
             <file>file:/C:/Users/Noemi/Documents/01.DAW_UDA/javaUdaleku/proyectoUdaleku/src/proyectoudaleku/Main.java</file>
             <file>file:/C:/Users/Noemi/Documents/01.DAW_UDA/javaUdaleku/proyectoUdaleku/src/Modelo/UML/Menor.java</file>
+>>>>>>> 259234f72bc107e7ff9cc5a0833e5fc5d95f5081
         </group>
     </open-files>
 </project-private>
