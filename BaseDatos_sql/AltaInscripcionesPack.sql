@@ -1,7 +1,7 @@
 /*
 	Autor: Grupo Sergio, Álvaro y Noemi
 
-	Descripcion: se crea un paquete que se ejecutará cuando todos los datos introducidos en la vista de inscripción estén rellenados y validados y se quiera formalizar la inscriptión.
+	Descripcion: se crea un paquete que se ejecutará cuando todos los datos introducidos en la vista de inscripción estén rellenados y validados y se quiera formalizar la inscripción.
 	1. Se dará de alta al tutor y al menor mediante procedimientos independientes
 
 */
