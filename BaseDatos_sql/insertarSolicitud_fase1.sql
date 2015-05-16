@@ -13,7 +13,7 @@
 CREATE OR REPLACE PROCEDURE insertar_solicitud (
 psituacionSolic IN solicitudes.situacionSolic%TYPE,
 pidSolicitud out solicitudes.idSolicitud%TYPE,
-perror OUT varchar2(45),
+perror OUT varchar2
 )
 AS
 

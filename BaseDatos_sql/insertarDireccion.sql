@@ -15,20 +15,20 @@
 
 */
 
-	PROCEDURE OR REPLACE PROCEDURE insertar_direccion(
+	CREATE OR REPLACE PROCEDURE insertar_direccion(
 	pnumDir IN direcciones.numDir%TYPE,
 	pletra IN direcciones.letra%TYPE,
 	ppiso IN direcciones.piso%TYPE,
 	pescalera IN direcciones.escalera%TYPE,
 	pmano IN direcciones.mano%TYPE,
-	pcp IN direcciones.cp%TYPE
+	pcp IN direcciones.cp%TYPE,
 	pidViaFK IN direcciones.idVia%TYPE,
 	pidDireccion OUT direcciones.idDireccion%TYPE,
-	perror OUT varchar2(45))
+	perror OUT varchar2)
 	AS 
 	
 	BEGIN
-		pidDireccion:=idDirecciones_seq.NEXTVAL;
+		pidDireccion:=idDireccion_seq.NEXTVAL;
 		INSERT INTO DIRECCIONES VALUES (pidDireccion,pnumDir, pletra, ppiso, pescalera, pmano, pcp, pidViaFK);
 		COMMIT;
 	
@@ -40,4 +40,4 @@
 	perror:='Han Ocurrido Errores';
 	rollback;
 	
-	END;
+	END insertar_direccion;
