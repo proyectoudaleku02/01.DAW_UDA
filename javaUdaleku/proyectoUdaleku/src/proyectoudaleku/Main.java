@@ -67,7 +67,7 @@ public class Main {
         localidades = new ArrayList();
         vias = new ArrayList();
         centros = new ArrayList();
-        modelos=new ArrayList();
+        modelos = new ArrayList();
 
         modelosSelected = new ArrayList();
         provSelected = new Provincia();
@@ -140,9 +140,11 @@ public class Main {
         solSelected.getInscripciones().add(insSelected);
         insSelected.setSolicitud(solSelected);
         // Inicialización de menor y tutor. Puesta en relación con la inscripción.
-        menorSelected=new Menor(); menorSelected.setInscripcion(insSelected);
-        tutorSelected=new Tutor(); tutorSelected.setInscripcion(insSelected);
-        
+        menorSelected = new Menor();
+        menorSelected.setInscripcion(insSelected);
+        tutorSelected = new Tutor();
+        tutorSelected.setInscripcion(insSelected);
+
         panInscrip = new panInscripcion();
         inic.getContentPane().setVisible(false);
         inic.setContentPane(panInscrip);
@@ -343,7 +345,7 @@ public class Main {
             while (rset.next()) {
                 modelos.add(new Modelo(rset.getString("idModelo")));
             }
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "ERROR" + e.getMessage());
         }
@@ -351,10 +353,45 @@ public class Main {
         conn.desconectar();
         return modelosSelected;
     }
+
+    public static void constDireccion(int num, String letra, int piso, String escalera, String mano, String cp, Long idVia) throws SQLException {
+        // Ejecución de un procedimiento contenido dentro del paquete que gestiona las altas de inscripciones
+        conn = new ConexionOracle();
+        //conectamos
+        conn.setConexion();
+
+        String sql = "{call alta_inscripciones.insertar_direccion(?,?,?,?,?,?,?)}";
+        CallableStatement cs = conexion.prepareCall(sql);
+        try {
+            // Cargamos los parametros de entrada IN
+            cs.setInt(1, num);
+            cs.setString(2, letra);
+            cs.setInt(3, piso);
+            cs.setString(4, escalera);
+            cs.setString(5, mano);
+            cs.setString(6, cp);
+            cs.setLong(7, idVia);
+
+            // la select devuelve datos (parámetro de salida)
+            cs.registerOutParameter(1, OracleTypes.NUMBER);
+            cs.registerOutParameter(2, OracleTypes.VARCHAR);
+
+            // Con getObject Obtenemos un valor generico al que posteriormente se le hará cast para convertirlo en el tipo adecuado en este caso ResultSet
+            rset = (ResultSet) cs.getObject(1);
+            // Ejecutamos
+            cs.execute();
+
+            //desconectamos
+            conn.desconectar();
+        } catch (Exception e) {
+        }
+    }
+
     /**
-     * 
-     * @throws SQLException 
-     * constructor de Solicitud. llama a un procedimiento definido dentro de un paquete de base de datos mediante el cual insertará ala solicitud
+     *
+     * @throws SQLException constructor de Solicitud. llama a un procedimiento
+     * definido dentro de un paquete de base de datos mediante el cual insertará
+     * ala solicitud
      */
     public static void constSolicitud() throws SQLException {
         // Ejecución de un procedimiento contenido dentro del paquete que gestiona las altas de inscripciones
@@ -367,13 +404,49 @@ public class Main {
         try {
             // Cargamos los parametros de entrada IN
             cs.setString(1, "Solicitud realizada a espera de sorteo");
-            
-              // la select devuelve datos (parámetro de salida)
-           cs.registerOutParameter(1,OracleTypes.NUMBER);
-           cs.registerOutParameter(2,OracleTypes.VARCHAR);
 
-           // Con getObject Obtenemos un valor generico al que posteriormente se le hará cast para convertirlo en el tipo adecuado en este caso ResultSet
-            rset = (ResultSet)cs.getObject(1);
+            // la select devuelve datos (parámetro de salida)
+            cs.registerOutParameter(1, OracleTypes.NUMBER);
+            cs.registerOutParameter(2, OracleTypes.VARCHAR);
+
+            // Con getObject Obtenemos un valor generico al que posteriormente se le hará cast para convertirlo en el tipo adecuado en este caso ResultSet
+            rset = (ResultSet) cs.getObject(1);
+            // Ejecutamos
+            cs.execute();
+
+            //desconectamos
+            conn.desconectar();
+        } catch (Exception e) {
+        }
+    }
+
+    /**
+     *
+     * @param idSolicitud
+     * @param numero
+     * @param idDireccion
+     * @throws SQLException
+     */
+    public static void constIncrip(long idSolicitud, int numero, long idDireccion) throws SQLException {
+        // Ejecución de un procedimiento contenido dentro del paquete que gestiona las altas de inscripciones
+        conn = new ConexionOracle();
+        //conectamos
+        conn.setConexion();
+
+        String sql = "{call alta_inscripciones.insertar_inscripcion(?,?,?)}";
+        CallableStatement cs = conexion.prepareCall(sql);
+        try {
+            // Cargamos los parametros de entrada IN
+            cs.setLong(1, idSolicitud);
+            cs.setInt(2, numero);
+            cs.setLong(3, idDireccion);
+
+            // la select devuelve datos (parámetro de salida)
+            cs.registerOutParameter(1, OracleTypes.VARCHAR);
+            cs.registerOutParameter(2, OracleTypes.VARCHAR);
+
+            // Con getObject Obtenemos un valor generico al que posteriormente se le hará cast para convertirlo en el tipo adecuado en este caso ResultSet
+            rset = (ResultSet) cs.getObject(1);
             // Ejecutamos
             cs.execute();
 
