@@ -1,4 +1,4 @@
-package Excepciones.exceptions;
+package Modelo.BD.exceptions;
 
 public class PreexistingEntityException extends Exception {
     public PreexistingEntityException(String message, Throwable cause) {

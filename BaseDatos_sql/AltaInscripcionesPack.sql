@@ -148,7 +148,7 @@ IS
 
 	EXCEPTION
 	WHEN inscrip_noValid THEN
-	pcontrol:='Este número de solicitud ya no puede acarcar más inscripciones';
+	pcontrol:='Este número de solicitud ya no puede abarcar más inscripciones';
 	WHEN DUP_VAL_ON_INDEX THEN
 	pcontrol:='Imposible crear solicitud.Se ha intentado duplicar la clave primaria';
 	 rollback;
@@ -192,16 +192,16 @@ END insert_inscripcion;
 		AS
 			error_telefono EXCEPTION;
 	BEGIN
-		IF (telefono1=0)THEN
+		IF (telefono1='         ')THEN
 			RAISE error_telefono;
-		ELSIF (telefono2=0) THEN
+		ELSIF (telefono2='         ') THEN
 			pcontrol:='solo un teléfono de contacto para este solicitante';
 			INSERT INTO TELEFONOS VALUES (telefono1,idSolicitante);
-		ELSIF (telefono3=0) THEN
+		ELSIF (telefono3='         ') THEN
 			pcontrol:='Hay dos teléfonos de contacto para este solicitante';
 			INSERT INTO TELEFONOS VALUES (telefono1,idSolicitante);
 			INSERT INTO TELEFONOS VALUES (telefono2,idSolicitante);
-		ELSIF (telefono4=0) THEN
+		ELSIF (telefono4='         ') THEN
 			pcontrol:='Hay tres teléfonos de contacto para este solicitante';
 			INSERT INTO TELEFONOS VALUES (telefono1,idSolicitante);
 			INSERT INTO TELEFONOS VALUES (telefono2,idSolicitante);

@@ -21,7 +21,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="itemInscribirse">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Inscribirse"/>
+                <Property name="text" type="java.lang.String" value="Nueva solicitud"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemInscribirseActionPerformed"/>
@@ -33,6 +33,16 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Consultas"/>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="mConSolicitud">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Consultar solicitud"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mConSolicitudActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="mSalir">
           <Properties>

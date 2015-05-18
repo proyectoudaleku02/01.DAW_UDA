@@ -20,23 +20,25 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import oracle.jdbc.OracleTypes;
+import static org.eclipse.persistence.expressions.ExpressionOperator.all;
 
 public class Main {
 
-    private static Inicio inic;
-    private static panInicio panInic;
-    private static panInscripcion panInscrip;
-    private static panLupa panLupa;
-    private static confInscrip dConfirmacion;
-
-    private static ConexionOracle conn;
-    private static Connection conexion;
-    private static PreparedStatement sentencia;
-    private static ResultSet rset;
+    private static boolean periodoIns;
+    private static boolean sorteo;
+    // Declaración del número máximo de inscripciones por solicitud.
+    private static final int maxInscrip = 3;
 
     private static ArrayList<Via> vias;
     private static ArrayList<Municipio> municipios;
@@ -48,7 +50,7 @@ public class Main {
     private static Municipio munSelected;
     private static Localidad locSelected;
     private static Via viaSelected;
-    private static Centro centSelected;
+    private static Centro cenSelected;
     private static Direccion dirSelected;
     private static ArrayList<Modelo> modelosSelected;
     private static Tutor tutorSelected;
@@ -56,12 +58,18 @@ public class Main {
     private static Inscripcion insSelected;
     private static Solicitud solSelected;
 
+    private static Inicio inic;
+    private static PanInicio panInic;
+    private static PanInscripcion panInscrip;
+    private static PanLupa panLupa;
+    private static ConfInscrip dConfirmacion;
+
+    private static ConexionOracle conn;
+    private static Connection conexion;
+    private static PreparedStatement sentencia;
+    private static ResultSet rset;
+
     public static void main(String[] args) {
-        panInic = new panInicio();
-        inic = new Inicio();
-        inic.setContentPane(panInic);
-        panInic.setVisible(true);
-        inic.setVisible(true);
 
         municipios = new ArrayList();
         localidades = new ArrayList();
@@ -71,84 +79,160 @@ public class Main {
 
         modelosSelected = new ArrayList();
         provSelected = new Provincia();
-        provSelected.setNombreprov("ARB");
         munSelected = new Municipio();
         locSelected = new Localidad();
         viaSelected = new Via();
-        centSelected = new Centro();
+        cenSelected = new Centro();
 
-        llenarPaPruebas();
+        //llenarPaPruebas();
+        DSimulacion dProv = new DSimulacion(null, true);
+        dProv.setVisible(true);
     }
 
-    private static void llenarPaPruebas() {
-        municipios.add(new Municipio());
-        municipios.get(0).setNombremunic("mun1");
-        municipios.add(new Municipio());
-        municipios.get(1).setNombremunic("mun2");
-        municipios.add(new Municipio());
-        municipios.get(2).setNombremunic("mun3");
-
-        localidades.add(new Localidad());
-        localidades.get(0).setNombreloc("loc1");
-        localidades.add(new Localidad());
-        localidades.get(1).setNombreloc("loc2");
-        localidades.add(new Localidad());
-        localidades.get(2).setNombreloc("loc3");
-
-        vias.add(new Via());
-        vias.get(0).setNombrevia("via1");
-        vias.get(0).setTipovia("calle");
-        vias.add(new Via());
-        vias.get(1).setNombrevia("via2");
-        vias.get(1).setTipovia("calle");
-        vias.add(new Via());
-        vias.get(2).setNombrevia("via3");
-        vias.get(2).setTipovia("calle");
-
-        centros.add(new Centro());
-        centros.get(0).setNombrecent("cent1");
-        centros.add(new Centro());
-        centros.get(1).setNombrecent("cent2");
-        centros.add(new Centro());
-        centros.get(2).setNombrecent("cent3");
-
-//        insSelected.setMenor(new Menor());insSelected.getMenor().setNombre("a");insSelected.getMenor().setApel1("a");insSelected.getMenor().setApel2("a");
-//        insSelected.setMenor(new Menor());insSelected.getMenor().setNombre("b");insSelected.getMenor().setApel1("b");insSelected.getMenor().setApel2("b");
-        modelosSelected.add(new Modelo("A"));
-        modelosSelected.add(new Modelo("B"));
-        modelosSelected.add(new Modelo("C"));
-    }
-
+//    // SECCION DE PRUEBAS
+//    private static void llenarPaPruebas() {
+//        municipios.add(new Municipio());
+//        municipios.get(0).setNombremunic("mun1");
+//        municipios.add(new Municipio());
+//        municipios.get(1).setNombremunic("mun2");
+//        municipios.add(new Municipio());
+//        municipios.get(2).setNombremunic("mun3");
+//
+//        localidades.add(new Localidad());
+//        localidades.get(0).setNombreloc("loc1");
+//        localidades.add(new Localidad());
+//        localidades.get(1).setNombreloc("loc2");
+//        localidades.add(new Localidad());
+//        localidades.get(2).setNombreloc("loc3");
+//
+//        vias.add(new Via());
+//        vias.get(0).setNombrevia("via1");
+//        vias.get(0).setTipovia("calle");
+//        vias.add(new Via());
+//        vias.get(1).setNombrevia("via2");
+//        vias.get(1).setTipovia("calle");
+//        vias.add(new Via());
+//        vias.get(2).setNombrevia("via3");
+//        vias.get(2).setTipovia("calle");
+//
+//        centros.add(new Centro());
+//        centros.get(0).setNombrecent("cent1");
+//        centros.add(new Centro());
+//        centros.get(1).setNombrecent("cent2");
+//        centros.add(new Centro());
+//        centros.get(2).setNombrecent("cent3");
+//
+////        insSelected.setMenor(new Menor());insSelected.getMenor().setNombre("a");insSelected.getMenor().setApel1("a");insSelected.getMenor().setApel2("a");
+////        insSelected.setMenor(new Menor());insSelected.getMenor().setNombre("b");insSelected.getMenor().setApel1("b");insSelected.getMenor().setApel2("b");
+//        modelosSelected.add(new Modelo("A"));
+//        modelosSelected.add(new Modelo("B"));
+//        modelosSelected.add(new Modelo("C"));
+//    }
+//
+//    public static ArrayList<Via> getVias() {
+//        return vias;
+//    }
+//
+//    public static void setVias(ArrayList<Via> vias) {
+//        Main.vias = vias;
+//    }
+//
+//    public static ArrayList<Municipio> getMunicipios() {
+//        return municipios;
+//    }
+//
+//    public static void setMunicipios(ArrayList<Municipio> municipios) {
+//        Main.municipios = municipios;
+//    }
+//
+//    public static ArrayList<Localidad> getLocalidades() {
+//        return localidades;
+//    }
+//
+//    public static void setLocalidades(ArrayList<Localidad> localidades) {
+//        Main.localidades = localidades;
+//    }
+//
+//    public static ArrayList<Centro> getCentros() {
+//        return centros;
+//    }
+//
+//    public static void setCentros(ArrayList<Centro> centros) {
+//        Main.centros = centros;
+//    }
+//
+//    public static ArrayList<Modelo> getModelos() {
+//        return modelos;
+//    }
+//
+//    public static void setModelos(ArrayList<Modelo> modelos) {
+//        Main.modelos = modelos;
+//    }
+//
+//    public static ArrayList<Modelo> getModelosSelected() {
+//        return modelosSelected;
+//    }
+//
+//    //////////////////////////// FIN SECCION DE PRUEBAS
     public static void cambioProv(String prov) {
+        provSelected = new Provincia();
         provSelected.setIdprovincia(prov);
     }
 
-    public static void sendMunicipio(Municipio munSel) {
-        munSelected = munSel;
-    }
-
-    public static void sendLocalidad(Localidad locSel) {
-        locSelected = locSel;
-    }
-
     // Control de paneles.
-    public static void verPanInscrip() {
-        // Inicialización de inscripción y solicitud.
-        insSelected = new Inscripcion();
-        solSelected = new Solicitud();
-        // Las relacionamos bidireccionalmente
-        solSelected.getInscripciones().add(insSelected);
-        insSelected.setSolicitud(solSelected);
-        // Inicialización de menor y tutor. Puesta en relación con la inscripción.
-        menorSelected = new Menor();
-        menorSelected.setInscripcion(insSelected);
-        tutorSelected = new Tutor();
-        tutorSelected.setInscripcion(insSelected);
+    public static void terminarSimulacion(DSimulacion dialogo, String prov, boolean periodoInscripcion, boolean estadoSorteo) {
+        dialogo.dispose();
 
-        panInscrip = new panInscripcion();
+        //Recogida de datos de simulación.
+        provSelected.setIdprovincia(prov);
+        periodoIns = periodoInscripcion;
+        sorteo = estadoSorteo;
+
+        panInic = new PanInicio(provSelected.getIdprovincia(), periodoIns, sorteo);
+        inic = new Inicio();
+        inic.setContentPane(panInic);
+        panInic.setVisible(true);
+        inic.setVisible(true);
+    }
+
+    public static void verPanInscrip() {
+        // Inicialización de la solicitud e inscripción.
+        solSelected = new Solicitud();
+        insSelected = new Inscripcion();
+        // Creación del arbol de objetos que cuelgan de la inscripción.
+        crearArbolInscripción();
+
+        panInscrip = new PanInscripcion(provSelected.getIdprovincia());
         inic.getContentPane().setVisible(false);
         inic.setContentPane(panInscrip);
         panInscrip.setVisible(true);
+    }
+
+    private static void crearArbolInscripción() {
+        // Inicialización de los objetos distintos por cada inscripción.
+        menorSelected = new Menor();
+        tutorSelected = new Tutor();
+        dirSelected = new Direccion();
+        viaSelected = new Via();
+        locSelected = new Localidad();
+        munSelected = new Municipio();
+        cenSelected = new Centro();
+        // Relación bidireccional de tutor y menor con la inscripción.
+        menorSelected.setInscripcion(insSelected);
+        insSelected.setMenor(menorSelected);
+        tutorSelected.setInscripcion(insSelected);
+        insSelected.setTutor(tutorSelected);
+        // Relación entre inscripción y dirección.
+        insSelected.setDireccion(dirSelected);
+        // Relación entre objetos que forman la dirección.
+        dirSelected.setIdvia(viaSelected);
+        viaSelected.setIdlocalidad(locSelected);
+        locSelected.setIdmunicipio(munSelected);
+        munSelected.setIdprovincia(provSelected);
+        // Relación entre provincia y centro.
+        cenSelected.setIdprovincia(provSelected);
+        // Relación entre menor y centro.
+        menorSelected.setModelo(new Modelo());
     }
 
     public static void cancelarPanel() {
@@ -157,19 +241,20 @@ public class Main {
         panInic.setVisible(true);
     }
 
-    public static void buildLupa(String tipo, String prov) {
+    public static void buildLupa(String tipo, String prov, int indice) {
 
         switch (tipo) {
             case "calles":
-                panLupa = new panLupa(tipo, locSelected.getIdlocalidad().toString());
+                // El índice elegido en el combo box coincide con el del array de localidades.
+                panLupa = new PanLupa(tipo, String.valueOf(locSelected.getNombreloc()));
                 panLupa.setVisible(true);
                 break;
             case "centros":
                 if (prov.equalsIgnoreCase("seleccionada")) {
-                    panLupa = new panLupa(tipo, provSelected.getIdprovincia());
+                    panLupa = new PanLupa(tipo, "tu provincia");
                     panLupa.setVisible(true);
                 } else {
-                    panLupa = new panLupa(tipo, "otros");
+                    panLupa = new PanLupa(tipo, "otra provincia");
                 }
                 panLupa.setVisible(true);
                 break;
@@ -177,25 +262,34 @@ public class Main {
         }
     }
 
-    public static void sendViaToInscripcion(int viaSel) {
+    public static void sendViaToInscripcion(int viaIndex) {
         cancelarLupa();
-        viaSelected = vias.get(viaSel);
+        viaSelected = vias.get(viaIndex);
         panInscrip.rellenarTfCalle(viaSelected);
     }
 
-    public static void sendCentroToInscripcion(int cenSel) {
+    public static void sendCentroToInscripcion(int cenIndex) {
         cancelarLupa();
-        centSelected = centros.get(cenSel);
-        panInscrip.rellenarTfCentro(centSelected);
+        cenSelected = centros.get(cenIndex);
+        panInscrip.rellenarTfCentro(cenSelected);
     }
 
     public static void cancelarLupa() {
         panLupa.dispose();
     }
 
-    public static void controlInscripciones() {
-        dConfirmacion = new confInscrip(inic, true, solSelected);
-        dConfirmacion.setVisible(true);
+    public static void cancelarDialogo(ConfInscrip dialogo) {
+        dialogo.dispose();
+    }
+
+    public static boolean controlInscripciones() {
+        if (solSelected.getInscripciones().size() < maxInscrip) {
+            dConfirmacion = new ConfInscrip(inic, true, solSelected, insSelected);
+            dConfirmacion.setVisible(true);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static void salir() {
@@ -240,33 +334,55 @@ public class Main {
      * @return
      */
     public static ArrayList<Localidad> findLocalidades(String idMunicipio) {
-        conn = new ConexionOracle();
-        //conectamos
-        conn.setConexion();
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("proyectoUdalekuPU");
+        EntityManager em = emf.createEntityManager();
+        
+        LocalidadJpaController locJpa= new LocalidadJpaController(Persistence.createEntityManagerFactory("proyectoUdalekuPU"));
+        
+        localidades=(ArrayList<Localidad>) locJpa.findLocalidadEntities();
+        
 
-        try {
-            sentencia = conn.getConexion().prepareStatement("select IDLOCALIDAD, NOMBRELOC from localidades where IDMUNICIPIO=? order by NOMBRELOC");
-            sentencia.setString(1, idMunicipio);
-            rset = sentencia.executeQuery();
+        em.getTransaction().begin();
 
-            while (rset.next()) {
-                localidades.add(new Localidad(rset.getLong("IDLOCALIDAD"), rset.getString(2)));
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "ERROR" + e.getMessage());
+        Query q = em.createQuery("select loc.* FROM LOCALIDADES loc order by loc.nombreLoc");
+        //q.setParameter("mun", idMunicipio);
+        List<Object[]> result = q.getResultList();
+        for (Object[] resultElement : result) {
+            Long idLocalidad = (Long) resultElement[0];
+            String nombreLoc = (String) resultElement[1];
+            localidades.add(new Localidad(idLocalidad,nombreLoc));
         }
-        //desconectamos
-        conn.desconectar();
-        return localidades;
-    }
 
-    /**
-     *
-     * @param idLocalidad Método que devuelva todas las vías perteneciente a la
-     * localidad seleccionada
-     * @return
-     */
+            em.close();
+            emf.close();
+            return localidades;
+//        
+//        conn = new ConexionOracle();
+//        //conectamos
+//        conn.setConexion();
+//
+//        try {
+//            sentencia = conn.getConexion().prepareStatement("select IDLOCALIDAD, NOMBRELOC from localidades where IDMUNICIPIO=? order by NOMBRELOC");
+//            sentencia.setString(1, idMunicipio);
+//            rset = sentencia.executeQuery();
+//
+//            while (rset.next()) {
+//                localidades.add(new Localidad(rset.getLong("IDLOCALIDAD"), rset.getString(2)));
+//            }
+//
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(null, "ERROR" + e.getMessage());
+//        }
+//        //desconectamos
+//        conn.desconectar();
+
+        }
+        /**
+         *
+         * @param idLocalidad Método que devuelva todas las vías perteneciente a
+         * la localidad seleccionada
+         * @return
+         */
     public static ArrayList<Via> findVias(String idLocalidad) {
         conn = new ConexionOracle();
         //conectamos
@@ -354,7 +470,64 @@ public class Main {
         return modelosSelected;
     }
 
-    public static void constDireccion(int num, String letra, int piso, String escalera, String mano, String cp, Long idVia) throws SQLException {
+    // Construccion de objetos para registros en base de datos;
+    public static void constTutor(String dni, String nombre, String apel1, String apel2, ArrayList<String> telefonos) throws Exception {
+        // Llenamos los datos del tutor
+        tutorSelected.setDni(dni);
+        tutorSelected.setNombre(nombre);
+        tutorSelected.setApel1(apel1);
+        tutorSelected.setApel2(apel2);
+        tutorSelected.setTelefonos(telefonos);
+    }
+
+    public static void constMenor(String dni, String nombre, String apel1, String apel2, String sexo, String fechaNac, String discapacidad, String modelo) throws Exception {
+        // Buscamos el modelo educativo seleccionado.
+        for (int x = 0; x < modelosSelected.size(); x++) {
+            if (modelosSelected.get(x).getIdmodelo().equalsIgnoreCase(modelo)) {
+                menorSelected.setModelo(modelosSelected.get(x));
+            }
+        }
+        // Llenamos los datos del menor
+        menorSelected.setDni(dni);
+        menorSelected.setNombre(nombre);
+        menorSelected.setApel1(apel1);
+        menorSelected.setApel2(apel2);
+        menorSelected.setSexo(sexo);
+        menorSelected.setFechaNac(parseFechaJava(fechaNac));
+        menorSelected.setDiscapacidad(discapacidad);
+    }
+
+    public static void constDireccion(String cp, String numero, String letra, String piso, String escalera, String mano) throws Exception {
+        dirSelected.setCp(cp);
+        dirSelected.setNumdir(numero);
+        dirSelected.setLetra(letra);
+        dirSelected.setPiso(piso);
+        dirSelected.setEscalera(escalera);
+        dirSelected.setMano(mano);
+
+    }
+
+    private static Date parseFechaJava(String fechaNac) throws Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.parse(fechaNac);
+    }
+
+    public static void inscribir(String tipo) {
+        // Relacionamos bidireccionalmente la inscripción con la solicitud.
+        solSelected.getInscripciones().add(insSelected);
+        insSelected.setSolicitud(solSelected);
+        ////
+        /// IDSOLICITUD / IDINSCRIPCIÓN
+        ////
+        dConfirmacion.mostrarHecho(tipo);
+        cancelarDialogo(dConfirmacion);
+        if (tipo.equalsIgnoreCase("end")) {
+            cancelarPanel();
+        }
+
+    }
+
+    public static void insertDireccion(int num, String letra, int piso, String escalera, String mano, String cp, Long idVia) throws SQLException {
         // Ejecución de un procedimiento contenido dentro del paquete que gestiona las altas de inscripciones
         conn = new ConexionOracle();
         //conectamos
@@ -393,7 +566,7 @@ public class Main {
      * definido dentro de un paquete de base de datos mediante el cual insertará
      * ala solicitud
      */
-    public static void constSolicitud() throws SQLException {
+    public static void insertSolicitud() throws SQLException {
         // Ejecución de un procedimiento contenido dentro del paquete que gestiona las altas de inscripciones
         conn = new ConexionOracle();
         //conectamos
@@ -427,7 +600,7 @@ public class Main {
      * @param idDireccion
      * @throws SQLException
      */
-    public static void constIncrip(long idSolicitud, int numero, long idDireccion) throws SQLException {
+    public static void insertInscrip(long idSolicitud, int numero, long idDireccion) throws SQLException {
         // Ejecución de un procedimiento contenido dentro del paquete que gestiona las altas de inscripciones
         conn = new ConexionOracle();
         //conectamos
@@ -454,25 +627,6 @@ public class Main {
             conn.desconectar();
         } catch (Exception e) {
         }
-    }
-
-    public static void constTutor(String dni, String nombre, String apel1, String apel2) throws Exception {
-
-    }
-
-    public static void constMenor(String dni, String nombre, String apel1, String apel2, String sexo, String fechaNac, String discapacidad) throws Exception {
-        menorSelected = new Menor();
-        //menorSelected=new Menor(dni, nombre, apel1, apel2, sexo, parseFechaJava(fechaNac));
-        menorSelected.setFechaNac(parseFechaJava(fechaNac));
-    }
-
-    public static void constDireccion(String municipio, String localidad, String calle, String cp, String numero, String letra, String piso, String escalera, String mano, ArrayList<String> telefonos) throws Exception {
-        //dirSelected = new Direccion(cp, numero, letra, piso, escalera, mano, viaSelected);
-    }
-
-    private static Date parseFechaJava(String fechaNac) throws Exception {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return sdf.parse(fechaNac);
     }
 
 }

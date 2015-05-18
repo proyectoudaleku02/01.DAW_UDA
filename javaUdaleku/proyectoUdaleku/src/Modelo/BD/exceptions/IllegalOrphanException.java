@@ -1,4 +1,4 @@
-package Excepciones.exceptions;
+package Modelo.BD.exceptions;
 
 import java.util.ArrayList;
 import java.util.List;

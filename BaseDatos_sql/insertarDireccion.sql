@@ -28,8 +28,8 @@
 	AS 
 	
 	BEGIN
-		pidDireccion:=idDireccion_seq.NEXTVAL;
-		INSERT INTO DIRECCIONES VALUES (pidDireccion,pnumDir, pletra, ppiso, pescalera, pmano, pcp, pidViaFK);
+
+		INSERT INTO DIRECCIONES VALUES (idDireccion_seq.NEXTVAL,pnumDir, pletra, ppiso, pescalera, pmano, pcp, pidViaFK);
 		COMMIT;
 	
 	EXCEPTION

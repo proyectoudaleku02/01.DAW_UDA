@@ -5,8 +5,8 @@
  */
 package Modelo.BD;
 
-import Excepciones.exceptions.NonexistentEntityException;
-import Excepciones.exceptions.PreexistingEntityException;
+import Modelo.BD.exceptions.NonexistentEntityException;
+import Modelo.BD.exceptions.PreexistingEntityException;
 import Modelo.UML.Centro;
 import java.io.Serializable;
 import javax.persistence.Query;
@@ -23,7 +23,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author 1gprog07
+ * @author 1glm02
  */
 public class CentroJpaController implements Serializable {
 
