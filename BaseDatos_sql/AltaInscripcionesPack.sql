@@ -24,7 +24,7 @@ IS
 	PROCEDURE insertar_solicitud (
 		psituacionSolic IN solicitudes.situacionSolic%TYPE,
 		pidSolicitud out solicitudes.idSolicitud%TYPE,
-		perror OUT varchar2(45),
+		perror OUT varchar2
 		);
 	PROCEDURE insert_inscripcion(
 		idSolicitud IN solicitudes.idSolicitud%TYPE,
@@ -64,7 +64,7 @@ IS
 		pcontrol OUT varchar2
 		);
 		
-END;
+END alta_inscripciones;
 
 
 
@@ -86,8 +86,8 @@ IS
 	AS 
 	
 	BEGIN
-		pidDireccion:=idDireccion_seq.NEXTVAL;
-		INSERT INTO DIRECCIONES VALUES (pidDireccion,pnumDir, pletra, ppiso, pescalera, pmano, pcp, pidViaFK);
+		
+		INSERT INTO DIRECCIONES VALUES (idDireccion_seq.NEXTVAL,pnumDir, pletra, ppiso, pescalera, pmano, pcp, pidViaFK);
 		COMMIT;
 	
 	EXCEPTION
@@ -111,8 +111,7 @@ IS
 
 		BEGIN
 
-			pidSolicitud:=idSolicitud_seq.NEXTVAL;
-			INSERT INTO SOLICITUDES (idSolicitud,situacionSolic) VALUES (pidSolicitud,psituacionSolic);
+			INSERT INTO SOLICITUDES (idSolicitud,situacionSolic) VALUES (idSolicitud_seq.NEXTVAL,psituacionSolic);
 			COMMIT;
 	
 			EXCEPTION
