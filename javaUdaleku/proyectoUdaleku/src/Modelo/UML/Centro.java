@@ -23,15 +23,15 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 1gprog07
+ * @author sergio
  */
 @Entity
 @Table(name = "CENTROS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Centro.findAll", query = "SELECT c FROM Centro c"),
-    @NamedQuery(name = "Centro.findByIdcentro", query = "SELECT c FROM Centro c WHERE c.idcentro = :idcentro"),
-    @NamedQuery(name = "Centro.findByNombrecent", query = "SELECT c FROM Centro c WHERE c.nombrecent = :nombrecent")})
+    @NamedQuery(name = "Centros.findAll", query = "SELECT c FROM Centros c"),
+    @NamedQuery(name = "Centros.findByIdcentro", query = "SELECT c FROM Centros c WHERE c.idcentro = :idcentro"),
+    @NamedQuery(name = "Centros.findByNombrecent", query = "SELECT c FROM Centros c WHERE c.nombrecent = :nombrecent")})
 public class Centro implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -45,7 +45,7 @@ public class Centro implements Serializable {
         @JoinColumn(name = "IDCENTRO", referencedColumnName = "IDCENTRO")}, inverseJoinColumns = {
         @JoinColumn(name = "IDMODELO", referencedColumnName = "IDMODELO")})
     @ManyToMany
-    private Collection<Modelo> modeloCollection;
+    private Collection<Modelo> modelosCollection;
     @JoinColumn(name = "IDPROVINCIA", referencedColumnName = "IDPROVINCIA")
     @ManyToOne
     private Provincia idprovincia;
@@ -79,12 +79,12 @@ public class Centro implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Modelo> getModeloCollection() {
-        return modeloCollection;
+    public Collection<Modelo> getModelosCollection() {
+        return modelosCollection;
     }
 
-    public void setModeloCollection(Collection<Modelo> modeloCollection) {
-        this.modeloCollection = modeloCollection;
+    public void setModelosCollection(Collection<Modelo> modelosCollection) {
+        this.modelosCollection = modelosCollection;
     }
 
     public Provincia getIdprovincia() {
@@ -117,7 +117,7 @@ public class Centro implements Serializable {
 
     @Override
     public String toString() {
-        return "Modelo.UML.Centro[ idcentro=" + idcentro + " ]";
+        return "Modelo.UML.Centros[ idcentro=" + idcentro + " ]";
     }
     
 }

@@ -6,7 +6,6 @@
 package Modelo.UML;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,23 +14,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 1gprog07
+ * @author sergio
  */
 @Entity
 @Table(name = "VIAS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Via.findAll", query = "SELECT v FROM Via v"),
-    @NamedQuery(name = "Via.findByIdvia", query = "SELECT v FROM Via v WHERE v.idvia = :idvia"),
-    @NamedQuery(name = "Via.findByTipovia", query = "SELECT v FROM Via v WHERE v.tipovia = :tipovia"),
-    @NamedQuery(name = "Via.findByNombrevia", query = "SELECT v FROM Via v WHERE v.nombrevia = :nombrevia")})
+    @NamedQuery(name = "Vias.findAll", query = "SELECT v FROM Vias v"),
+    @NamedQuery(name = "Vias.findByIdvia", query = "SELECT v FROM Vias v WHERE v.idvia = :idvia"),
+    @NamedQuery(name = "Vias.findByTipovia", query = "SELECT v FROM Vias v WHERE v.tipovia = :tipovia"),
+    @NamedQuery(name = "Vias.findByNombrevia", query = "SELECT v FROM Vias v WHERE v.nombrevia = :nombrevia")})
 public class Via implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,8 +41,6 @@ public class Via implements Serializable {
     @Basic(optional = false)
     @Column(name = "NOMBREVIA")
     private String nombrevia;
-    @OneToMany(mappedBy = "idvia")
-    private Collection<Direccion> direccionCollection;
     @JoinColumn(name = "IDLOCALIDAD", referencedColumnName = "IDLOCALIDAD")
     @ManyToOne
     private Localidad idlocalidad;
@@ -87,15 +82,6 @@ public class Via implements Serializable {
         this.nombrevia = nombrevia;
     }
 
-    @XmlTransient
-    public Collection<Direccion> getDireccionCollection() {
-        return direccionCollection;
-    }
-
-    public void setDireccionCollection(Collection<Direccion> direccionCollection) {
-        this.direccionCollection = direccionCollection;
-    }
-
     public Localidad getIdlocalidad() {
         return idlocalidad;
     }
@@ -126,7 +112,7 @@ public class Via implements Serializable {
 
     @Override
     public String toString() {
-        return "Modelo.UML.Via[ idvia=" + idvia + " ]";
+        return "Modelo.UML.Vias[ idvia=" + idvia + " ]";
     }
     
 }

@@ -22,15 +22,15 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 1gprog07
+ * @author sergio
  */
 @Entity
 @Table(name = "MUNICIPIOS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Municipio.findAll", query = "SELECT m FROM Municipio m"),
-    @NamedQuery(name = "Municipio.findByIdmunicipio", query = "SELECT m FROM Municipio m WHERE m.idmunicipio = :idmunicipio"),
-    @NamedQuery(name = "Municipio.findByNombremunic", query = "SELECT m FROM Municipio m WHERE m.nombremunic = :nombremunic")})
+    @NamedQuery(name = "Municipios.findAll", query = "SELECT m FROM Municipios m"),
+    @NamedQuery(name = "Municipios.findByIdmunicipio", query = "SELECT m FROM Municipios m WHERE m.idmunicipio = :idmunicipio"),
+    @NamedQuery(name = "Municipios.findByNombremunic", query = "SELECT m FROM Municipios m WHERE m.nombremunic = :nombremunic")})
 public class Municipio implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,7 +44,7 @@ public class Municipio implements Serializable {
     @ManyToOne
     private Provincia idprovincia;
     @OneToMany(mappedBy = "idmunicipio")
-    private Collection<Localidad> localidadCollection;
+    private Collection<Localidad> localidadesCollection;
 
     public Municipio() {
     }
@@ -83,12 +83,12 @@ public class Municipio implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Localidad> getLocalidadCollection() {
-        return localidadCollection;
+    public Collection<Localidad> getLocalidadesCollection() {
+        return localidadesCollection;
     }
 
-    public void setLocalidadCollection(Collection<Localidad> localidadCollection) {
-        this.localidadCollection = localidadCollection;
+    public void setLocalidadesCollection(Collection<Localidad> localidadesCollection) {
+        this.localidadesCollection = localidadesCollection;
     }
 
     @Override
@@ -113,7 +113,7 @@ public class Municipio implements Serializable {
 
     @Override
     public String toString() {
-        return "Modelo.UML.Municipio[ idmunicipio=" + idmunicipio + " ]";
+        return "Modelo.UML.Municipios[ idmunicipio=" + idmunicipio + " ]";
     }
     
 }

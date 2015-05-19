@@ -22,15 +22,15 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 1gprog07
+ * @author sergio
  */
 @Entity
 @Table(name = "LOCALIDADES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Localidad.findAll", query = "SELECT l FROM Localidad l"),
-    @NamedQuery(name = "Localidad.findByIdlocalidad", query = "SELECT l FROM Localidad l WHERE l.idlocalidad = :idlocalidad"),
-    @NamedQuery(name = "Localidad.findByNombreloc", query = "SELECT l FROM Localidad l WHERE l.nombreloc = :nombreloc")})
+    @NamedQuery(name = "Localidades.findAll", query = "SELECT l FROM Localidades l"),
+    @NamedQuery(name = "Localidades.findByIdlocalidad", query = "SELECT l FROM Localidades l WHERE l.idlocalidad = :idlocalidad"),
+    @NamedQuery(name = "Localidades.findByNombreloc", query = "SELECT l FROM Localidades l WHERE l.nombreloc = :nombreloc")})
 public class Localidad implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,7 +44,7 @@ public class Localidad implements Serializable {
     @ManyToOne
     private Municipio idmunicipio;
     @OneToMany(mappedBy = "idlocalidad")
-    private Collection<Via> viaCollection;
+    private Collection<Via> viasCollection;
 
     public Localidad() {
     }
@@ -83,12 +83,12 @@ public class Localidad implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Via> getViaCollection() {
-        return viaCollection;
+    public Collection<Via> getViasCollection() {
+        return viasCollection;
     }
 
-    public void setViaCollection(Collection<Via> viaCollection) {
-        this.viaCollection = viaCollection;
+    public void setViasCollection(Collection<Via> viasCollection) {
+        this.viasCollection = viasCollection;
     }
 
     @Override
@@ -113,7 +113,7 @@ public class Localidad implements Serializable {
 
     @Override
     public String toString() {
-        return "Modelo.UML.Localidad[ idlocalidad=" + idlocalidad + " ]";
+        return "Modelo.UML.Localidades[ idlocalidad=" + idlocalidad + " ]";
     }
     
 }

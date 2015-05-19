@@ -1,9 +1,6 @@
 package proyectoudaleku;
 
-import Modelo.BD.LocalidadJpaController;
-import Modelo.BD.ModeloJpaController;
-import Modelo.BD.MunicipioJpaController;
-import Modelo.BD.ViaJpaController;
+import Modelo.BD.*;
 import Modelo.UML.*;
 import conexionoracle.ConexionOracle;
 import gui.*;
@@ -12,31 +9,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import oracle.jdbc.OracleTypes;
-import static org.eclipse.persistence.expressions.ExpressionOperator.all;
 
 public class Main {
 
     private static boolean periodoIns;
     private static boolean sorteo;
+    private static String situacion="pendiente";
     // Declaración del número máximo de inscripciones por solicitud.
     private static final int maxInscrip = 3;
 
@@ -71,12 +59,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        municipios = new ArrayList();
-        localidades = new ArrayList();
-        vias = new ArrayList();
-        centros = new ArrayList();
-        modelos = new ArrayList();
-
         modelosSelected = new ArrayList();
         provSelected = new Provincia();
         munSelected = new Municipio();
@@ -89,91 +71,6 @@ public class Main {
         dProv.setVisible(true);
     }
 
-//    // SECCION DE PRUEBAS
-//    private static void llenarPaPruebas() {
-//        municipios.add(new Municipio());
-//        municipios.get(0).setNombremunic("mun1");
-//        municipios.add(new Municipio());
-//        municipios.get(1).setNombremunic("mun2");
-//        municipios.add(new Municipio());
-//        municipios.get(2).setNombremunic("mun3");
-//
-//        localidades.add(new Localidad());
-//        localidades.get(0).setNombreloc("loc1");
-//        localidades.add(new Localidad());
-//        localidades.get(1).setNombreloc("loc2");
-//        localidades.add(new Localidad());
-//        localidades.get(2).setNombreloc("loc3");
-//
-//        vias.add(new Via());
-//        vias.get(0).setNombrevia("via1");
-//        vias.get(0).setTipovia("calle");
-//        vias.add(new Via());
-//        vias.get(1).setNombrevia("via2");
-//        vias.get(1).setTipovia("calle");
-//        vias.add(new Via());
-//        vias.get(2).setNombrevia("via3");
-//        vias.get(2).setTipovia("calle");
-//
-//        centros.add(new Centro());
-//        centros.get(0).setNombrecent("cent1");
-//        centros.add(new Centro());
-//        centros.get(1).setNombrecent("cent2");
-//        centros.add(new Centro());
-//        centros.get(2).setNombrecent("cent3");
-//
-////        insSelected.setMenor(new Menor());insSelected.getMenor().setNombre("a");insSelected.getMenor().setApel1("a");insSelected.getMenor().setApel2("a");
-////        insSelected.setMenor(new Menor());insSelected.getMenor().setNombre("b");insSelected.getMenor().setApel1("b");insSelected.getMenor().setApel2("b");
-//        modelosSelected.add(new Modelo("A"));
-//        modelosSelected.add(new Modelo("B"));
-//        modelosSelected.add(new Modelo("C"));
-//    }
-//
-//    public static ArrayList<Via> getVias() {
-//        return vias;
-//    }
-//
-//    public static void setVias(ArrayList<Via> vias) {
-//        Main.vias = vias;
-//    }
-//
-//    public static ArrayList<Municipio> getMunicipios() {
-//        return municipios;
-//    }
-//
-//    public static void setMunicipios(ArrayList<Municipio> municipios) {
-//        Main.municipios = municipios;
-//    }
-//
-//    public static ArrayList<Localidad> getLocalidades() {
-//        return localidades;
-//    }
-//
-//    public static void setLocalidades(ArrayList<Localidad> localidades) {
-//        Main.localidades = localidades;
-//    }
-//
-//    public static ArrayList<Centro> getCentros() {
-//        return centros;
-//    }
-//
-//    public static void setCentros(ArrayList<Centro> centros) {
-//        Main.centros = centros;
-//    }
-//
-//    public static ArrayList<Modelo> getModelos() {
-//        return modelos;
-//    }
-//
-//    public static void setModelos(ArrayList<Modelo> modelos) {
-//        Main.modelos = modelos;
-//    }
-//
-//    public static ArrayList<Modelo> getModelosSelected() {
-//        return modelosSelected;
-//    }
-//
-//    //////////////////////////// FIN SECCION DE PRUEBAS
     public static void cambioProv(String prov) {
         provSelected = new Provincia();
         provSelected.setIdprovincia(prov);
@@ -196,9 +93,8 @@ public class Main {
     }
 
     public static void verPanInscrip() {
-        // Inicialización de la solicitud e inscripción.
-        solSelected = new Solicitud();
-        insSelected = new Inscripcion();
+        // Inicialización de la solicitud y de la inscripción.
+        solSelected=new Solicitud();insSelected = new Inscripcion();
         // Creación del arbol de objetos que cuelgan de la inscripción.
         crearArbolInscripción();
 
@@ -242,19 +138,20 @@ public class Main {
     }
 
     public static void buildLupa(String tipo, String prov, int indice) {
-
+        vias=new ArrayList();centros=new ArrayList();
+        locSelected=localidades.get(indice);
         switch (tipo) {
             case "calles":
                 // El índice elegido en el combo box coincide con el del array de localidades.
-                panLupa = new PanLupa(tipo, String.valueOf(locSelected.getNombreloc()));
+                panLupa = new PanLupa(tipo, null,locSelected.getIdlocalidad().toString());
                 panLupa.setVisible(true);
                 break;
             case "centros":
                 if (prov.equalsIgnoreCase("seleccionada")) {
-                    panLupa = new PanLupa(tipo, "tu provincia");
+                    panLupa = new PanLupa(tipo, "tu provincia",provSelected.getIdprovincia());
                     panLupa.setVisible(true);
                 } else {
-                    panLupa = new PanLupa(tipo, "otra provincia");
+                    panLupa = new PanLupa(tipo, "otra provincia",provSelected.getIdprovincia());
                 }
                 panLupa.setVisible(true);
                 break;
@@ -262,15 +159,16 @@ public class Main {
         }
     }
 
-    public static void sendViaToInscripcion(int viaIndex) {
+    public static void sendViaToInscripcion(int viaIndex) throws SQLException {
         cancelarLupa();
-        viaSelected = vias.get(viaIndex);
+        viaSelected = vias.get(viaIndex);        
         panInscrip.rellenarTfCalle(viaSelected);
     }
 
     public static void sendCentroToInscripcion(int cenIndex) {
         cancelarLupa();
         cenSelected = centros.get(cenIndex);
+        modelos = findModByCent(cenSelected.getIdcentro().toString());
         panInscrip.rellenarTfCentro(cenSelected);
     }
 
@@ -284,7 +182,7 @@ public class Main {
 
     public static boolean controlInscripciones() {
         if (solSelected.getInscripciones().size() < maxInscrip) {
-            dConfirmacion = new ConfInscrip(inic, true, solSelected, insSelected);
+            dConfirmacion = new ConfInscrip(inic, true, solSelected, insSelected, maxInscrip);
             dConfirmacion.setVisible(true);
             return true;
         } else {
@@ -302,28 +200,8 @@ public class Main {
      * provincia seleccionada.
      * @return
      */
-    public static ArrayList<Municipio> findMunicipios() {
-
-        //MunicipioJpaController munJpa= new MunicipioJpaController(Persistence.createEntityManagerFactory("udalekuPU"));    
-        //municipios=(ArrayList<Municipio>) munJpa.findMunicipioEntities2(idProvincia);
-        conn = new ConexionOracle();
-        //conectamos
-        conn.setConexion();
-
-        try {
-            sentencia = conn.getConexion().prepareStatement("select idMunicipio, nombreMunic from municipios where upper(idProvincia)=? order by nombremunic");
-            sentencia.setString(1, provSelected.getIdprovincia());
-            rset = sentencia.executeQuery();
-
-            while (rset.next()) {
-                municipios.add(new Municipio(rset.getLong("idMunicipio"), rset.getString(2)));
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "ERROR" + e.getMessage());
-        }
-        //desconectamos
-        conn.desconectar();
+    public static ArrayList<Municipio> findMunByProv() {
+        municipios=ConsultasBD.findMunByProv(provSelected.getIdprovincia());
         return municipios;
     }
 
@@ -333,49 +211,9 @@ public class Main {
      * municipio seleccionado.
      * @return
      */
-    public static ArrayList<Localidad> findLocalidades(String idMunicipio) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("proyectoUdalekuPU");
-        EntityManager em = emf.createEntityManager();
-        
-        LocalidadJpaController locJpa= new LocalidadJpaController(Persistence.createEntityManagerFactory("proyectoUdalekuPU"));
-        
-        localidades=(ArrayList<Localidad>) locJpa.findLocalidadEntities();
-        
-
-        em.getTransaction().begin();
-
-        Query q = em.createQuery("select loc.* FROM LOCALIDADES loc order by loc.nombreLoc");
-        //q.setParameter("mun", idMunicipio);
-        List<Object[]> result = q.getResultList();
-        for (Object[] resultElement : result) {
-            Long idLocalidad = (Long) resultElement[0];
-            String nombreLoc = (String) resultElement[1];
-            localidades.add(new Localidad(idLocalidad,nombreLoc));
-        }
-
-            em.close();
-            emf.close();
-            return localidades;
-//        
-//        conn = new ConexionOracle();
-//        //conectamos
-//        conn.setConexion();
-//
-//        try {
-//            sentencia = conn.getConexion().prepareStatement("select IDLOCALIDAD, NOMBRELOC from localidades where IDMUNICIPIO=? order by NOMBRELOC");
-//            sentencia.setString(1, idMunicipio);
-//            rset = sentencia.executeQuery();
-//
-//            while (rset.next()) {
-//                localidades.add(new Localidad(rset.getLong("IDLOCALIDAD"), rset.getString(2)));
-//            }
-//
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(null, "ERROR" + e.getMessage());
-//        }
-//        //desconectamos
-//        conn.desconectar();
-
+    public static ArrayList<Localidad> findLocByMun(String idMunicipio) {
+        localidades=ConsultasBD.findLocByMun(idMunicipio);
+        return localidades;
         }
         /**
          *
@@ -383,28 +221,10 @@ public class Main {
          * la localidad seleccionada
          * @return
          */
-    public static ArrayList<Via> findVias(String idLocalidad) {
-        conn = new ConexionOracle();
-        //conectamos
-        conn.setConexion();
-
-        try {
-            sentencia = conn.getConexion().prepareStatement("select * from vias where idlocalidad=? order by nombreVia");
-            sentencia.setString(1, idLocalidad);
-            rset = sentencia.executeQuery();
-
-            while (rset.next()) {
-                vias.add(new Via(rset.getLong("idVia"), rset.getString("tipoVia"), rset.getString(3)));
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "ERROR" + e.getMessage());
-        }
-        //desconectamos
-        conn.desconectar();
+    public static ArrayList<Via> findViasByLoc(String idLocalidad) {
+        vias=ConsultasBD.findViasByLoc(idLocalidad);
         return vias;
     }
-
     /**
      *
      * @param idProvincia
@@ -414,32 +234,8 @@ public class Main {
      * seleccionada al comienzo de la aplicacion
      * @return
      */
-    public static ArrayList<Centro> findCentros(String idProvincia) {
-
-        conn = new ConexionOracle();
-        //conectamos
-        conn.setConexion();
-
-        try {
-            if (idProvincia.equalsIgnoreCase("ARB") || idProvincia.equalsIgnoreCase("GZK") || idProvincia.equalsIgnoreCase("BZK")) {
-                sentencia = conn.getConexion().prepareStatement("select idCentro, nombreCent from centros where upper(idProvincia)=? order by nombreCent");
-                sentencia.setString(1, idProvincia);
-                rset = sentencia.executeQuery();
-            } else {
-                sentencia = conn.getConexion().prepareStatement("select idCentro, nombreCent from centros where upper(idProvincia)<>? order by nombreCent");
-                sentencia.setString(1, provSelected.getIdprovincia());
-                rset = sentencia.executeQuery();
-            }
-
-            while (rset.next()) {
-                centros.add(new Centro(rset.getLong("idCentro"), rset.getString("nombreCent")));
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "ERROR" + e.getMessage());
-        }
-        //desconectamos
-        conn.desconectar();
+    public static ArrayList<Centro> findCentByProv(String idProvincia, String text) {
+        centros=ConsultasBD.findCentByProv(idProvincia,text);
         return centros;
     }
 
@@ -449,25 +245,9 @@ public class Main {
      * @return sentencia para que devuelva todos los modelos que se imparten en
      * el centro seleccionado
      */
-    public static ArrayList<Modelo> findModelosCentro(Long idCentro) {
-        conn = new ConexionOracle();
-        //conectamos
-        conn.setConexion();
-
-        try {
-            sentencia = conn.getConexion().prepareStatement("select idModelo from Centros_Has_Modelos where idCentro=?");
-            sentencia.setLong(1, idCentro);
-            rset = sentencia.executeQuery();
-            while (rset.next()) {
-                modelos.add(new Modelo(rset.getString("idModelo")));
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "ERROR" + e.getMessage());
-        }
-        //desconectamos
-        conn.desconectar();
-        return modelosSelected;
+    public static ArrayList<Modelo> findModByCent(String idCentro) {
+        modelos=ConsultasBD.findModByCent(idCentro);
+        return modelos;
     }
 
     // Construccion de objetos para registros en base de datos;
@@ -512,121 +292,30 @@ public class Main {
         return sdf.parse(fechaNac);
     }
 
-    public static void inscribir(String tipo) {
+    public static boolean inscribir(String tipo) {
         // Relacionamos bidireccionalmente la inscripción con la solicitud.
         solSelected.getInscripciones().add(insSelected);
         insSelected.setSolicitud(solSelected);
         ////
         /// IDSOLICITUD / IDINSCRIPCIÓN
         ////
+        if(tipo.equalsIgnoreCase("end"))
+        {
+           for(int x=0;x<solSelected.getInscripciones().size();x++){
+               try {
+                   AltasBD.insertSolicitud(situacion);
+                   AltasBD.insertDireccion(dirSelected.getNumdir(), dirSelected.getLetra(), dirSelected.getPiso(), dirSelected.getEscalera(), dirSelected.getMano(), dirSelected.getCp(), viaSelected.getIdvia());
+                   
+                   AltasBD.insertInscrip(ConsultasBD.findIdSolicitud(), solSelected.getInscripciones().size(), ConsultasBD.findIdDireccion());
+               } catch (SQLException ex) {
+                   return false;
+               }
+           }
+           
+        }
         dConfirmacion.mostrarHecho(tipo);
         cancelarDialogo(dConfirmacion);
-        if (tipo.equalsIgnoreCase("end")) {
-            cancelarPanel();
+        cancelarPanel();
+        return true;
         }
-
-    }
-
-    public static void insertDireccion(int num, String letra, int piso, String escalera, String mano, String cp, Long idVia) throws SQLException {
-        // Ejecución de un procedimiento contenido dentro del paquete que gestiona las altas de inscripciones
-        conn = new ConexionOracle();
-        //conectamos
-        conn.setConexion();
-
-        String sql = "{call alta_inscripciones.insertar_direccion(?,?,?,?,?,?,?)}";
-        CallableStatement cs = conexion.prepareCall(sql);
-        try {
-            // Cargamos los parametros de entrada IN
-            cs.setInt(1, num);
-            cs.setString(2, letra);
-            cs.setInt(3, piso);
-            cs.setString(4, escalera);
-            cs.setString(5, mano);
-            cs.setString(6, cp);
-            cs.setLong(7, idVia);
-
-            // la select devuelve datos (parámetro de salida)
-            cs.registerOutParameter(1, OracleTypes.NUMBER);
-            cs.registerOutParameter(2, OracleTypes.VARCHAR);
-
-            // Con getObject Obtenemos un valor generico al que posteriormente se le hará cast para convertirlo en el tipo adecuado en este caso ResultSet
-            rset = (ResultSet) cs.getObject(1);
-            // Ejecutamos
-            cs.execute();
-
-            //desconectamos
-            conn.desconectar();
-        } catch (Exception e) {
-        }
-    }
-
-    /**
-     *
-     * @throws SQLException constructor de Solicitud. llama a un procedimiento
-     * definido dentro de un paquete de base de datos mediante el cual insertará
-     * ala solicitud
-     */
-    public static void insertSolicitud() throws SQLException {
-        // Ejecución de un procedimiento contenido dentro del paquete que gestiona las altas de inscripciones
-        conn = new ConexionOracle();
-        //conectamos
-        conn.setConexion();
-
-        String sql = "{call alta_inscripciones.insertar_solicitud(?)}";
-        CallableStatement cs = conexion.prepareCall(sql);
-        try {
-            // Cargamos los parametros de entrada IN
-            cs.setString(1, "Solicitud realizada a espera de sorteo");
-
-            // la select devuelve datos (parámetro de salida)
-            cs.registerOutParameter(1, OracleTypes.NUMBER);
-            cs.registerOutParameter(2, OracleTypes.VARCHAR);
-
-            // Con getObject Obtenemos un valor generico al que posteriormente se le hará cast para convertirlo en el tipo adecuado en este caso ResultSet
-            rset = (ResultSet) cs.getObject(1);
-            // Ejecutamos
-            cs.execute();
-
-            //desconectamos
-            conn.desconectar();
-        } catch (Exception e) {
-        }
-    }
-
-    /**
-     *
-     * @param idSolicitud
-     * @param numero
-     * @param idDireccion
-     * @throws SQLException
-     */
-    public static void insertInscrip(long idSolicitud, int numero, long idDireccion) throws SQLException {
-        // Ejecución de un procedimiento contenido dentro del paquete que gestiona las altas de inscripciones
-        conn = new ConexionOracle();
-        //conectamos
-        conn.setConexion();
-
-        String sql = "{call alta_inscripciones.insertar_inscripcion(?,?,?)}";
-        CallableStatement cs = conexion.prepareCall(sql);
-        try {
-            // Cargamos los parametros de entrada IN
-            cs.setLong(1, idSolicitud);
-            cs.setInt(2, numero);
-            cs.setLong(3, idDireccion);
-
-            // la select devuelve datos (parámetro de salida)
-            cs.registerOutParameter(1, OracleTypes.VARCHAR);
-            cs.registerOutParameter(2, OracleTypes.VARCHAR);
-
-            // Con getObject Obtenemos un valor generico al que posteriormente se le hará cast para convertirlo en el tipo adecuado en este caso ResultSet
-            rset = (ResultSet) cs.getObject(1);
-            // Ejecutamos
-            cs.execute();
-
-            //desconectamos
-            conn.desconectar();
-        } catch (Exception e) {
-        }
-    }
-
 }

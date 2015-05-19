@@ -8,7 +8,10 @@ package gui;
 import Modelo.UML.Centro;
 import Modelo.UML.Localidad;
 import Modelo.UML.Via;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import proyectoudaleku.Main;
 
@@ -27,15 +30,15 @@ public class PanLupa extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
-    public PanLupa(String tipo, String parametro) {
+    public PanLupa(String tipo, String text, String parametro) {
         initComponents();
         setLocationRelativeTo(null);
         lTitulo.setText(tipo.toUpperCase()); 
-        lProv.setText(parametro.toUpperCase());
+        //lProv.setText(text.toUpperCase());
         switch(tipo){
             case "calles":
                 DefaultListModel modeloCalles = new DefaultListModel();
-                ArrayList<Via> vias= Main.findVias(parametro);//Main.getVias();//
+                ArrayList<Via> vias= Main.findViasByLoc(parametro);
                 for(int x=0;x<vias.size();x++)
                 {
                     modeloCalles.add(x, vias.get(x).getNombrevia());
@@ -45,7 +48,9 @@ public class PanLupa extends javax.swing.JFrame {
                 
             case "centros":
                 DefaultListModel modeloCentros = new DefaultListModel();
-                ArrayList<Centro> centros= Main.findCentros(parametro);//Main.getCentros();//
+                // Si queremos los centros de la misma provincia.
+                ArrayList<Centro> centros=Main.findCentByProv(parametro,text);
+                                    
                 for(int x=0;x<centros.size();x++)
                 {
                     modeloCentros.add(x, centros.get(x).getNombrecent());
@@ -150,8 +155,14 @@ public class PanLupa extends javax.swing.JFrame {
     private void bAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAceptarActionPerformed
         switch (lTitulo.getText()){
             case "CALLES":
+        {
+            try {
                 // El ArrayList de municipios del Main es coincidente con esta lista. Así sabemos qué municipio seleccionamos.
                 Main.sendViaToInscripcion(list.getSelectedIndex());
+            } catch (SQLException ex) {
+                Logger.getLogger(PanLupa.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
                 break;
             case "CENTROS":
                 // El ArrayList de centros del Main es coincidente con esta lista. Así sabemos qué municipio seleccionamos.

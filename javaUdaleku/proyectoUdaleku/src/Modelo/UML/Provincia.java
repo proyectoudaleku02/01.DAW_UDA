@@ -20,15 +20,15 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 1gprog07
+ * @author sergio
  */
 @Entity
 @Table(name = "PROVINCIAS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Provincia.findAll", query = "SELECT p FROM Provincia p"),
-    @NamedQuery(name = "Provincia.findByIdprovincia", query = "SELECT p FROM Provincia p WHERE p.idprovincia = :idprovincia"),
-    @NamedQuery(name = "Provincia.findByNombreprov", query = "SELECT p FROM Provincia p WHERE p.nombreprov = :nombreprov")})
+    @NamedQuery(name = "Provincias.findAll", query = "SELECT p FROM Provincias p"),
+    @NamedQuery(name = "Provincias.findByIdprovincia", query = "SELECT p FROM Provincias p WHERE p.idprovincia = :idprovincia"),
+    @NamedQuery(name = "Provincias.findByNombreprov", query = "SELECT p FROM Provincias p WHERE p.nombreprov = :nombreprov")})
 public class Provincia implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,9 +39,9 @@ public class Provincia implements Serializable {
     @Column(name = "NOMBREPROV")
     private String nombreprov;
     @OneToMany(mappedBy = "idprovincia")
-    private Collection<Municipio> municipioCollection;
+    private Collection<Municipio> municipiosCollection;
     @OneToMany(mappedBy = "idprovincia")
-    private Collection<Centro> centroCollection;
+    private Collection<Centro> centrosCollection;
 
     public Provincia() {
     }
@@ -72,21 +72,21 @@ public class Provincia implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Municipio> getMunicipioCollection() {
-        return municipioCollection;
+    public Collection<Municipio> getMunicipiosCollection() {
+        return municipiosCollection;
     }
 
-    public void setMunicipioCollection(Collection<Municipio> municipioCollection) {
-        this.municipioCollection = municipioCollection;
+    public void setMunicipiosCollection(Collection<Municipio> municipiosCollection) {
+        this.municipiosCollection = municipiosCollection;
     }
 
     @XmlTransient
-    public Collection<Centro> getCentroCollection() {
-        return centroCollection;
+    public Collection<Centro> getCentrosCollection() {
+        return centrosCollection;
     }
 
-    public void setCentroCollection(Collection<Centro> centroCollection) {
-        this.centroCollection = centroCollection;
+    public void setCentrosCollection(Collection<Centro> centrosCollection) {
+        this.centrosCollection = centrosCollection;
     }
 
     @Override
@@ -111,7 +111,7 @@ public class Provincia implements Serializable {
 
     @Override
     public String toString() {
-        return "Modelo.UML.Provincia[ idprovincia=" + idprovincia + " ]";
+        return "Modelo.UML.Provincias[ idprovincia=" + idprovincia + " ]";
     }
     
 }

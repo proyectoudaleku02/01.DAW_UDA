@@ -7,6 +7,7 @@ package gui;
 
 import Modelo.UML.Inscripcion;
 import Modelo.UML.Solicitud;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import proyectoudaleku.Main;
 
@@ -17,19 +18,20 @@ import proyectoudaleku.Main;
 public class ConfInscrip extends javax.swing.JDialog {
 
     private Solicitud solSelected;
+    private Inscripcion insSelected;
+    private final int maxInscrip;
     
-    public ConfInscrip(java.awt.Frame parent, boolean modal) {
+    
+    public ConfInscrip(java.awt.Frame parent, boolean modal, Solicitud solSelected, Inscripcion insSelected,int maxInscrip) {
         super(parent, modal);
         initComponents();
+        this.solSelected=solSelected;this.insSelected=insSelected;this.maxInscrip=maxInscrip;
         setLocationRelativeTo(null);
+        controlInicio();
     }
-    
-    public ConfInscrip(java.awt.Frame parent, boolean modal, Solicitud solSelected, Inscripcion insSelected) {
-        super(parent, modal);
-        initComponents();
-        this.solSelected=solSelected;
-        setLocationRelativeTo(null);
-        controlInicio(solSelected,insSelected);
+
+    private ConfInscrip(JFrame jFrame, boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -73,7 +75,7 @@ public class ConfInscrip extends javax.swing.JDialog {
         jScrollPane1.setViewportView(taInfo);
 
         lAviso1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        lAviso1.setText("Quedan 3 plazas en esta solcitud");
+        lAviso1.setText("Hay 3 plazas en esta solcitud");
 
         bAdd.setText("Añadir participante");
         bAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -86,33 +88,32 @@ public class ConfInscrip extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lAviso2, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(63, 63, 63))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(25, 25, 25)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 761, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(202, 202, 202)
-                        .addComponent(lAviso1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(26, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(87, 87, 87)
-                .addComponent(bTerminar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bAdd)
-                .addGap(76, 76, 76)
-                .addComponent(bCancelar)
-                .addGap(71, 71, 71))
+                        .addGap(179, 179, 179)
+                        .addComponent(bTerminar)
+                        .addGap(93, 93, 93)
+                        .addComponent(bAdd)
+                        .addGap(84, 84, 84)
+                        .addComponent(bCancelar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(209, 209, 209)
+                        .addComponent(lAviso2, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(39, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(lAviso1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(301, 301, 301))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(27, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lAviso1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -129,7 +130,7 @@ public class ConfInscrip extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bTerminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bTerminarActionPerformed
-        if(solSelected.getInscripciones().size()==3)
+        if(solSelected.getInscripciones().size()<=maxInscrip)
         {
             Main.inscribir("end");
         }else
@@ -200,11 +201,14 @@ public class ConfInscrip extends javax.swing.JDialog {
     private javax.swing.JTextArea taInfo;
     // End of variables declaration//GEN-END:variables
 
-    private void controlInicio(Solicitud solSelected, Inscripcion insSelected) {
-        String text = "RESUMEN DE LA SOLICITUD\n\n";
-        taInfo.setText(text+"Participante: "+insSelected.getMenor().getNomAps()+" ---- "
-                +"Padre/madre o Tutor/a: "+insSelected.getTutor().getNomAps()+"\n");
-        lAviso1.setText("Quedan "+String.valueOf(3 - solSelected.getInscripciones().size())+" plazas en esta solicitud");
+    private void controlInicio() {
+        // Controlamos si hemos llegago al límite de inscripciones.
+        if(solSelected.getInscripciones().size()>=maxInscrip)
+            bAdd.setEnabled(false);
+        String text = "RESUMEN DE LA SOLICITUD\n---------------------------------------------------\n";
+        taInfo.setText(text+"Participante: "+insSelected.getMenor().getNomAps()+"\n"
+                +"Padre/madre o Tutor/a: "+insSelected.getTutor().getNomAps()+"\n---------------------------------------------------\n");
+        lAviso1.setText("Hay "+String.valueOf(maxInscrip - solSelected.getInscripciones().size())+" plazas en esta solicitud");
 
     }
 
@@ -212,7 +216,7 @@ public class ConfInscrip extends javax.swing.JDialog {
         
         if(tipo.equalsIgnoreCase("add"))
         {
-            mostrar("Inscripción registrada.\nQueda "+String.valueOf(3 - solSelected.getInscripciones().size())+" plazas en esta solicitud");
+            mostrar("Inscripción registrada.\nQueda "+String.valueOf(maxInscrip - solSelected.getInscripciones().size())+" plazas en esta solicitud");
         }else{
             mostrar("Solicitud registrada. Su numero de solicitud es\n"+"XXXXXXXXX");
         }

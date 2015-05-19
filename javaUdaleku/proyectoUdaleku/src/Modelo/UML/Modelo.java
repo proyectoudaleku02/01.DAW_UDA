@@ -20,15 +20,15 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 1gprog07
+ * @author sergio
  */
 @Entity
 @Table(name = "MODELOS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Modelo.findAll", query = "SELECT m FROM Modelo m"),
-    @NamedQuery(name = "Modelo.findByIdmodelo", query = "SELECT m FROM Modelo m WHERE m.idmodelo = :idmodelo"),
-    @NamedQuery(name = "Modelo.findByDescmodelo", query = "SELECT m FROM Modelo m WHERE m.descmodelo = :descmodelo")})
+    @NamedQuery(name = "Modelos.findAll", query = "SELECT m FROM Modelos m"),
+    @NamedQuery(name = "Modelos.findByIdmodelo", query = "SELECT m FROM Modelos m WHERE m.idmodelo = :idmodelo"),
+    @NamedQuery(name = "Modelos.findByDescmodelo", query = "SELECT m FROM Modelos m WHERE m.descmodelo = :descmodelo")})
 public class Modelo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -38,8 +38,8 @@ public class Modelo implements Serializable {
     @Basic(optional = false)
     @Column(name = "DESCMODELO")
     private String descmodelo;
-    @ManyToMany(mappedBy = "modeloCollection")
-    private Collection<Centro> centroCollection;
+    @ManyToMany(mappedBy = "modelosCollection")
+    private Collection<Centro> centrosCollection;
 
     public Modelo() {
     }
@@ -70,12 +70,12 @@ public class Modelo implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Centro> getCentroCollection() {
-        return centroCollection;
+    public Collection<Centro> getCentrosCollection() {
+        return centrosCollection;
     }
 
-    public void setCentroCollection(Collection<Centro> centroCollection) {
-        this.centroCollection = centroCollection;
+    public void setCentrosCollection(Collection<Centro> centrosCollection) {
+        this.centrosCollection = centrosCollection;
     }
 
     @Override
@@ -100,7 +100,7 @@ public class Modelo implements Serializable {
 
     @Override
     public String toString() {
-        return "Modelo.UML.Modelo[ idmodelo=" + idmodelo + " ]";
+        return "Modelo.UML.Modelos[ idmodelo=" + idmodelo + " ]";
     }
     
 }

@@ -35,6 +35,8 @@ public class DSimulacion extends javax.swing.JDialog {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup3 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         rbAraba = new javax.swing.JRadioButton();
         rbBizkaia = new javax.swing.JRadioButton();
@@ -63,12 +65,21 @@ public class DSimulacion extends javax.swing.JDialog {
         buttonGroup1.add(rbGipuzkoa);
         rbGipuzkoa.setText("Gipuzkoa");
 
+        buttonGroup2.add(rbAbierto);
         rbAbierto.setText("Abierto");
+        rbAbierto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbAbiertoActionPerformed(evt);
+            }
+        });
 
+        buttonGroup2.add(rbCerrado);
         rbCerrado.setText("Cerrado");
 
+        buttonGroup3.add(rbNoSorteo);
         rbNoSorteo.setText("Sin realizar");
 
+        buttonGroup3.add(rbSiSorteo);
         rbSiSorteo.setText("Realizado");
         rbSiSorteo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -186,6 +197,10 @@ public class DSimulacion extends javax.swing.JDialog {
         Main.salir();
     }//GEN-LAST:event_bCancelarActionPerformed
 
+    private void rbAbiertoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbAbiertoActionPerformed
+        rbNoSorteo.doClick();
+    }//GEN-LAST:event_rbAbiertoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -235,6 +250,8 @@ public class DSimulacion extends javax.swing.JDialog {
     private javax.swing.JButton bAceptar;
     private javax.swing.JButton bCancelar;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.ButtonGroup buttonGroup3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

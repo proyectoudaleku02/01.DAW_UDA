@@ -17,22 +17,20 @@ IS
 	pescalera IN direcciones.escalera%TYPE,
 	pmano IN direcciones.mano%TYPE,
 	pcp IN direcciones.cp%TYPE,
-	pidViaFK IN direcciones.idVia%TYPE,
-	pidDireccion OUT direcciones.idDireccion%TYPE,
-	perror OUT varchar2);
+	pidViaFK IN direcciones.idVia%TYPE);
+	--pidDireccion OUT direcciones.idDireccion%TYPE,
+	--perror OUT varchar2);
 	
 	PROCEDURE insertar_solicitud (
-		psituacionSolic IN solicitudes.situacionSolic%TYPE,
-		pidSolicitud out solicitudes.idSolicitud%TYPE,
-		perror OUT varchar2
+		psituacionSolic IN solicitudes.situacionSolic%TYPE
 		);
+
 	PROCEDURE insert_inscripcion(
 		idSolicitud IN solicitudes.idSolicitud%TYPE,
 		pnum IN NUMBER, --NUMERO DE INSCRIPCIONES POR NUMERO DE SOLICITUD (MÁXIMO SERÁ TRES)
-		idDireccion IN direcciones.idDireccion%TYPE,
-		idInscripcion OUT inscripciones.idInscripcion%TYPE,
-		pcontrol OUT varchar2
+		idDireccion IN direcciones.idDireccion%TYPE		
 		);
+
 	PROCEDURE alta_tutor (
 		dniTutor IN tutores.dniTutor%TYPE,
 		nombreTutor IN tutores.nombreTutor%TYPE,
@@ -80,9 +78,8 @@ IS
 	pescalera IN direcciones.escalera%TYPE,
 	pmano IN direcciones.mano%TYPE,
 	pcp IN direcciones.cp%TYPE,
-	pidViaFK IN direcciones.idVia%TYPE,
-	pidDireccion OUT direcciones.idDireccion%TYPE,
-	perror OUT varchar2)
+	pidViaFK IN direcciones.idVia%TYPE)
+
 	AS 
 	
 	BEGIN
@@ -92,10 +89,10 @@ IS
 	
 	EXCEPTION
 	WHEN DUP_VAL_ON_INDEX THEN
-	 perror:='Imposible insertar dirección.Se ha intentado duplicar la clave primaria';
+	 
 	 rollback;
 	WHEN OTHERS THEN
-	perror:='Han Ocurrido Errores';
+	
 	rollback;
 	
 	END insertar_direccion;
@@ -103,10 +100,9 @@ IS
 	
 	
 	PROCEDURE insertar_solicitud (
-		psituacionSolic IN solicitudes.situacionSolic%TYPE,
-		pidSolicitud out solicitudes.idSolicitud%TYPE,
-		perror OUT varchar2
+		psituacionSolic IN solicitudes.situacionSolic%TYPE
 		)
+
 		AS
 
 		BEGIN
@@ -116,10 +112,10 @@ IS
 	
 			EXCEPTION
 			WHEN DUP_VAL_ON_INDEX THEN
-			perror:='Imposible crear solicitud.Se ha intentado duplicar la clave primaria';
+			
 			rollback;
 			WHEN OTHERS THEN
-			perror:='Han Ocurrido Errores';
+			
 			rollback;
 
 		END insertar_solicitud;
@@ -129,9 +125,7 @@ IS
 	PROCEDURE insert_inscripcion(
 		idSolicitud IN solicitudes.idSolicitud%TYPE,
 		pnum IN NUMBER, --NUMERO DE INSCRIPCIONES POR NUMERO DE SOLICITUD (MÁXIMO SERÁ TRES)
-		idDireccion IN direcciones.idDireccion%TYPE,
-		idInscripcion OUT inscripciones.idInscripcion%TYPE,
-		pcontrol OUT varchar2
+		idDireccion IN direcciones.idDireccion%TYPE
 		)
 	AS
 	inscrip_noValid EXCEPTION;
@@ -147,12 +141,12 @@ IS
 
 	EXCEPTION
 	WHEN inscrip_noValid THEN
-	pcontrol:='Este número de solicitud ya no puede abarcar más inscripciones';
+	
 	WHEN DUP_VAL_ON_INDEX THEN
-	pcontrol:='Imposible crear solicitud.Se ha intentado duplicar la clave primaria';
+	
 	 rollback;
 	WHEN OTHERS THEN
-	pcontrol:='Han Ocurrido Errores';
+	
 	rollback;
 END insert_inscripcion;
 
