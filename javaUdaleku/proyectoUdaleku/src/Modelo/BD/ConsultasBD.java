@@ -228,7 +228,7 @@ public class ConsultasBD {
             sentencia = ConexionOracle.getConexion().createStatement();
             rset = sentencia.executeQuery("select max(idSolicitante) as idSolicitante from tutores");
             while (rset.next()) {
-                idSolicitante = rset.getLong("idDireccion");
+                idSolicitante = rset.getLong("idSolicitante");
             }
 
         } catch (Exception e) {

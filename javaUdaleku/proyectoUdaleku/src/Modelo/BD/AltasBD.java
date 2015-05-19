@@ -123,14 +123,15 @@ public class AltasBD {
     }
 
     public static boolean insertMenor(String dni, String nombre, String apel1, String apel2, String sexo, Date fechaNac, String discapacidad, String idInscripcion, Long idCentro, String modelo) {
-        ConexionOracle conn = new ConexionOracle();
-        Statement sentencia;
-        ResultSet rset = null;
+     
+         ResultSet rset;
+        //conectamos
+        ConexionOracle.setConexion();
+        
+        String sql = "{call alta_inscripciones.insert_menor(?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
-            String sql = "{call alta_inscripciones.insert_menor(?,?,?,?,?,?,?,?,?,?,?)}";
-            CallableStatement cs = ConexionOracle.getConexion().prepareCall(sql);
-
+         CallableStatement cs = ConexionOracle.getConexion().prepareCall(sql);
             // Cargamos los parametros de entrada IN
             cs.setString(1, dni);
             cs.setString(2, nombre);
@@ -139,33 +140,46 @@ public class AltasBD {
             cs.setString(5, sexo);
             cs.setDate(6, (java.sql.Date) fechaNac);
             cs.setString(7, discapacidad);
-            cs.setString(8, discapacidad);
-            cs.setString(9, idInscripcion);
-            cs.setLong(10, idCentro);
-            cs.setString(11, modelo);
+            cs.setString(8, idInscripcion);
+            cs.setLong(9, idCentro);
+            cs.setString(10, modelo);
 
             // Ejecutamos
             cs.execute();
-            if (rset.getLong(1) != 0) //desconectamos
-            {
-                ConexionOracle.desconectar();
-                return true;
-            } else {
-                ConexionOracle.desconectar();
-
-                return false;
-            }
+            //desconectamos
+            ConexionOracle.desconectar();
 
         } catch (Exception e) {
             return false;
         }
+        return true;
     }
 
     public static boolean insertTelefono(Long idSolicitante, ArrayList<String> telefonos) {
-        String telefono1 = telefonos.get(1);
-        String telefono2 = telefonos.get(2);
-        String telefono3 = telefonos.get(3);
-        String telefono4 = telefonos.get(4);
+        String telefono1 = null;
+        String telefono2 = null;
+        String telefono3 = null;
+        String telefono4 = null;
+        switch (telefonos.size()) {
+            case 1:
+                telefono1 = telefonos.get(0);
+                break;
+            case 2:
+                telefono1 = telefonos.get(0);
+                telefono2 = telefonos.get(1);
+                break;
+            case 3:
+                telefono1 = telefonos.get(0);
+                telefono2 = telefonos.get(1);
+                telefono3 = telefonos.get(2);
+                break;
+            case 4:
+                telefono1 = telefonos.get(0);
+                telefono2 = telefonos.get(1);
+                telefono3 = telefonos.get(2);
+                telefono4 = telefonos.get(3);
+                break;
+        }
 
         ResultSet rset;
         //conectamos
