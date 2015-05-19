@@ -31,6 +31,8 @@ public class Menor extends Solicitante{
     public Menor() {
     
     }
+
+    
     
     public String getDni() {
         return dni;

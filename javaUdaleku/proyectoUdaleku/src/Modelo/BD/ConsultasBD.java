@@ -7,6 +7,7 @@ package Modelo.BD;
 
 import Modelo.UML.Centro;
 import Modelo.UML.Localidad;
+import Modelo.UML.Menor;
 import Modelo.UML.Modelo;
 import Modelo.UML.Municipio;
 import Modelo.UML.Via;
@@ -311,6 +312,7 @@ public class ConsultasBD {
         conn.desconectar();
         return idInscripcion;
     }
+    
 /**
  * Método mediante el que comprobamos que el menor no ha sido aún apuntado a las colonias
  * comparando los datos introducidos por el solicitante con los ya contenidos en base de datos.
@@ -368,5 +370,32 @@ public class ConsultasBD {
             return false;
         }
         
+    }
+/**
+ * select que nos devuelve un listado con todos los inscritos hasta el momento
+ */
+    public static void ListadoTotalInscrip() {
+        ConexionOracle conn = new ConexionOracle();
+        Statement sentencia;
+        ResultSet rset = null;
+        ArrayList<Menor> totalMenoresInscrip = new ArrayList();
+
+        //conectamos
+        conn.setConexion();
+
+        try {
+            sentencia = ConexionOracle.getConexion().createStatement();
+            rset = sentencia.executeQuery("select idinscripcion,apel1Menor,apel2Menor,nombreMenor from MENORES ORDER BY apel1menor");
+            while (rset.next()) {
+               // totalMenoresInscrip.add(new Menor(rset.getString(1),rset.getString(2),rset.getString(3),rset.getString(4)));
+             
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "ERROR" + e.getMessage());
+        }
+        //desconectamos
+        conn.desconectar();
+       
     }
 }
