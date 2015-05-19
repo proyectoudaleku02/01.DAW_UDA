@@ -290,7 +290,6 @@ public class Main {
     }
 
     public static boolean inscribir(String tipo) {
-<<<<<<< HEAD
         try {
         if(tipo.equalsIgnoreCase("end"))
         {
@@ -312,31 +311,6 @@ public class Main {
         {
             cancelarDialogo(dConfirmacion);
             cancelarPanel();
-=======
-        // Relacionamos bidireccionalmente la inscripción con la solicitud.
-        solSelected.getInscripciones().add(insSelected);
-        insSelected.setSolicitud(solSelected);
-        if (tipo.equalsIgnoreCase("end")) {
-            for (int x = 0; x < solSelected.getInscripciones().size(); x++) {
-                try {
-                    AltasBD.insertSolicitud(situacion);
-                    AltasBD.insertDireccion(dirSelected.getNumdir(), dirSelected.getLetra(), dirSelected.getPiso(), dirSelected.getEscalera(), dirSelected.getMano(), dirSelected.getCp(), viaSelected.getIdvia());
-                    AltasBD.insertInscrip(ConsultasBD.findIdSolicitud(), solSelected.getInscripciones().size(), ConsultasBD.findIdDireccion());
-                    AltasBD.insertTutor(tutorSelected.getDni(), tutorSelected.getNombre(), tutorSelected.getApel1(), tutorSelected.getApel2(), ConsultasBD.findIdInscripcion());
-                    AltasBD.insertTelefono(ConsultasBD.findLastSolicitante(),tutorSelected.getTelefonos());
-                    if (ConsultasBD.findMenor(menorSelected.getDni(), menorSelected.getNombre(), menorSelected.getApel1(), menorSelected.getApel2(), menorSelected.getSexo(), menorSelected.getFechaNac(), menorSelected.getDiscapacidad(), cenSelected.getIdcentro(),menorSelected.getModelo().getIdmodelo())) {
-                        return false;//el menor ya esta dado de alta no se puede otra vez 
-                    } else {
-                        //faltaria pasarle el idModelo aqui
-                        AltasBD.insertMenor(menorSelected.getDni(), menorSelected.getNombre(), menorSelected.getApel1(), menorSelected.getApel2(), menorSelected.getSexo(), menorSelected.getFechaNac(), menorSelected.getDiscapacidad(), ConsultasBD.findIdInscripcion(),cenSelected.getIdcentro(),menorSelected.getModelo().getIdmodelo());
-                    }
-                 
-               } catch (SQLException ex) {
-                    return false;
-                }
-            }
-
->>>>>>> bc78ddf48564be0d68bdb6fd04c990164027e076
         }
         } catch (SQLException ex) {return false;}
         return true;
