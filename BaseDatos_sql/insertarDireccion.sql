@@ -22,9 +22,9 @@
 	pescalera IN direcciones.escalera%TYPE,
 	pmano IN direcciones.mano%TYPE,
 	pcp IN direcciones.cp%TYPE,
-	pidViaFK IN direcciones.idVia%TYPE,
-	pidDireccion OUT direcciones.idDireccion%TYPE,
-	perror OUT varchar2)
+	pidViaFK IN direcciones.idVia%TYPE)
+	--pidDireccion OUT direcciones.idDireccion%TYPE,
+	--perror OUT varchar2)
 	AS 
 	
 	BEGIN
@@ -34,10 +34,10 @@
 	
 	EXCEPTION
 	WHEN DUP_VAL_ON_INDEX THEN
-	 perror:='Imposible insertar dirección.Se ha intentado duplicar la clave primaria';
+	 --perror:='Imposible insertar dirección.Se ha intentado duplicar la clave primaria';
 	 rollback;
 	WHEN OTHERS THEN
-	perror:='Han Ocurrido Errores';
+	--perror:='Han Ocurrido Errores';
 	rollback;
 	
 	END insertar_direccion;

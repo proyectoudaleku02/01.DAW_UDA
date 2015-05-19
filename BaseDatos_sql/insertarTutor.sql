@@ -9,8 +9,8 @@ dniTutor IN tutores.dniTutor%TYPE,
 nombreTutor IN tutores.nombreTutor%TYPE,
 apel1 IN tutores.ape1Tutor%TYPE,
 apel2 IN tutores.ape2Tutor%TYPE,
-idInscripcion IN inscripciones.idInscripcion%TYPE,
-pcontrol OUT varchar2
+idInscripcion IN inscripciones.idInscripcion%TYPE
+--pcontrol OUT varchar2
 )
 AS
 
@@ -20,9 +20,9 @@ INSERT INTO TUTORES VALUES (idSolicitante_seq.NEXTVAL,dniTutor,nombreTutor,apel1
 COMMIT;
 EXCEPTION
 	WHEN DUP_VAL_ON_INDEX THEN
-	 pcontrol:='Imposible crear solicitud.Se ha intentado duplicar la clave primaria';
+	 --pcontrol:='Imposible crear solicitud.Se ha intentado duplicar la clave primaria';
 	 rollback;
 	WHEN OTHERS THEN
-	pcontrol:='Han Ocurrido Errores';
+	--pcontrol:='Han Ocurrido Errores';
 	rollback;
 END alta_tutor;

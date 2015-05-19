@@ -1,8 +1,17 @@
 /*
 	Autor: Grupo Sergio, Álvaro y Noemi
 
-	Descripcion: se crea un paquete que se ejecutará cuando todos los datos introducidos en la vista de inscripción estén rellenados y validados y se quiera formalizar la inscripción.
-	1. Se dará de alta al tutor y al menor mediante procedimientos independientes
+	Descripcion: Paquete  donde se engloban todos los procedimientos relacionados con las insercciones de datos en la Base de Datos.
+	1.- insertar_direccion: pasándole los parámetros introducidos por el usuario insertamos la dirección en base de datos tabla direcciones, 
+							asignándole un id  auto incremental (en adelante a.i.).
+	2.- insertar_solicitud: le pásamos el la situación o estado de la solicitud (en primera instancia creará una solicitud nueva adjudicándole un id a.i.
+							insertar solicitud en tabla solicitudes.
+	3.- insert_inscripcion: le pasamos el idSolicitud correspondiente, idDireccion correspondiente y el número de inscripción (1,2 o 3) dentro de ese número de solicitud. 
+							Creará una nueva inscripción asignandole un id (varchar2 resultado de una concatenación de valores) relacionandola también con la dirección del solicitante.
+	4.-alta_tutor: Da de alta al tutor que realiza la solicitud asignándole un id a.i.
+	5.- insertar_tlfn: dependiendo del número de números de telefonos que haya introducido el solicitante, insertará los mismos en base de datos, tabla teléfonos. 
+					id será el número en sí y se le relacionará con el solicitante.
+	6.- insert_menor: insertamos en la tabla menores, el menor solicitante con todos sus datos asociados. Asignamos al menor un idSolicitante a.i.
 
 */
 
@@ -208,7 +217,6 @@ END insert_inscripcion;
 	END insertar_tlfn;
 	
 	 PROCEDURE insert_menor(
-		idSolicitante IN menores.idSolicitante%TYPE,
 		dniMenor IN menores.dniMenor%TYPE,
 		nombreMenor IN menores.nombreMenor%TYPE,
 		apel1Menor IN menores.apel1Menor%TYPE,
