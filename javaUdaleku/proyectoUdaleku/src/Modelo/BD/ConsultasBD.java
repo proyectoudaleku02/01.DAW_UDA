@@ -11,19 +11,22 @@ import Modelo.UML.Modelo;
 import Modelo.UML.Municipio;
 import Modelo.UML.Via;
 import conexionoracle.ConexionOracle;
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 public class ConsultasBD {
-    
-    public static ArrayList<Centro> findCentByProv(String idProvincia,String text) {
+
+    public static ArrayList<Centro> findCentByProv(String idProvincia, String text) {
         PreparedStatement sentencia;
         ResultSet rset;
-        ArrayList<Centro> centros=new ArrayList();
+        ArrayList<Centro> centros = new ArrayList();
         //conectamos
         ConexionOracle.setConexion();
 
@@ -49,7 +52,7 @@ public class ConsultasBD {
         ConexionOracle.desconectar();
         return centros;
     }
-    
+
     public static ArrayList<Localidad> findLocByMun(String idMunicipio) {
 //        EntityManagerFactory emf = Persistence.createEntityManagerFactory("proyectoUdalekuPU");
 //        EntityManager em = emf.createEntityManager();
@@ -71,7 +74,7 @@ public class ConsultasBD {
 //        
         PreparedStatement sentencia;
         ResultSet rset;
-        ArrayList<Localidad> localidades=new ArrayList();
+        ArrayList<Localidad> localidades = new ArrayList();
         //conectamos
         ConexionOracle.setConexion();
 
@@ -79,7 +82,7 @@ public class ConsultasBD {
             sentencia = ConexionOracle.getConexion().prepareStatement("select IDLOCALIDAD, NOMBRELOC from localidades where IDMUNICIPIO=? order by NOMBRELOC");
             sentencia.setString(1, idMunicipio);
             rset = sentencia.executeQuery();
-            localidades=new ArrayList();
+            localidades = new ArrayList();
             while (rset.next()) {
                 localidades.add(new Localidad(rset.getLong("IDLOCALIDAD"), rset.getString(2)));
             }
@@ -90,12 +93,12 @@ public class ConsultasBD {
         //desconectamos
         ConexionOracle.desconectar();
         return localidades;
-        }
-    
+    }
+
     public static ArrayList<Modelo> findModByCent(String idCentro) {
         PreparedStatement sentencia;
         ResultSet rset;
-        ArrayList<Modelo> modelos=new ArrayList();
+        ArrayList<Modelo> modelos = new ArrayList();
 
         //conectamos
         ConexionOracle.setConexion();
@@ -115,11 +118,11 @@ public class ConsultasBD {
         ConexionOracle.desconectar();
         return modelos;
     }
-    
+
     public static ArrayList<Municipio> findMunByProv(String idProvincia) {
         PreparedStatement sentencia;
         ResultSet rset;
-        ArrayList<Municipio> municipios=new ArrayList();
+        ArrayList<Municipio> municipios = new ArrayList();
         //conectamos
         ConexionOracle.setConexion();
 
@@ -139,12 +142,12 @@ public class ConsultasBD {
         ConexionOracle.desconectar();
         return municipios;
     }
-    
+
     public static ArrayList<Via> findViasByLoc(String idLocalidad) {
         ConexionOracle conn = new ConexionOracle();
         PreparedStatement sentencia;
         ResultSet rset;
-        ArrayList<Via> vias=new ArrayList();
+        ArrayList<Via> vias = new ArrayList();
         //conectamos
         conn.setConexion();
 
@@ -164,25 +167,26 @@ public class ConsultasBD {
         conn.desconectar();
         return vias;
     }
+
     public static Long findIdSolicitud() throws SQLException {
         ConexionOracle conn = new ConexionOracle();
         Statement sentencia;
         ResultSet rset = null;
         Long idSolicitud = null;
-      
+
         //conectamos
         conn.setConexion();
 
         try {
-                sentencia = ConexionOracle.getConexion().createStatement();
-                rset = sentencia.executeQuery("select max(idSolicitud) as idSolicitud from solicitudes");
-           while (rset.next()){
-                 idSolicitud=rset.getLong("idSolicitud"); 
+            sentencia = ConexionOracle.getConexion().createStatement();
+            rset = sentencia.executeQuery("select max(idSolicitud) as idSolicitud from solicitudes");
+            while (rset.next()) {
+                idSolicitud = rset.getLong("idSolicitud");
             }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "ERROR" + e.getMessage());
-        }      
+        }
         //desconectamos
         conn.desconectar();
         return idSolicitud;
@@ -193,23 +197,46 @@ public class ConsultasBD {
         Statement sentencia;
         ResultSet rset = null;
         Long idDireccion = null;
-      
+
         //conectamos
         conn.setConexion();
 
         try {
-                sentencia = ConexionOracle.getConexion().createStatement();
-                rset = sentencia.executeQuery("select max(idDireccion) as idDireccion from direcciones");
-           while (rset.next()){
-                 idDireccion=rset.getLong("idDireccion"); 
+            sentencia = ConexionOracle.getConexion().createStatement();
+            rset = sentencia.executeQuery("select max(idDireccion) as idDireccion from direcciones");
+            while (rset.next()) {
+                idDireccion = rset.getLong("idDireccion");
             }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "ERROR" + e.getMessage());
-        }      
+        }
         //desconectamos
         conn.desconectar();
         return idDireccion;
+    }
+        public static Long findLastSolicitante() throws SQLException {
+        ConexionOracle conn = new ConexionOracle();
+        Statement sentencia;
+        ResultSet rset = null;
+        Long idSolicitante=null;
+
+        //conectamos
+        conn.setConexion();
+
+        try {
+            sentencia = ConexionOracle.getConexion().createStatement();
+            rset = sentencia.executeQuery("select max(idSolicitante) as idSolicitante from tutores");
+            while (rset.next()) {
+                idSolicitante = rset.getLong("idDireccion");
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "ERROR" + e.getMessage());
+        }
+        //desconectamos
+        conn.desconectar();
+        return idSolicitante;
     }
 
     public static String findIdInscripcion() {
@@ -217,22 +244,65 @@ public class ConsultasBD {
         Statement sentencia;
         ResultSet rset = null;
         String idInscripcion = null;
-      
+
         //conectamos
         conn.setConexion();
 
         try {
-                sentencia = ConexionOracle.getConexion().createStatement();
-                rset = sentencia.executeQuery("select max(idInscripcion) as idInscripcion from inscripciones");
-           while (rset.next()){
-                 idInscripcion=rset.getString("idInscripcion"); 
+            sentencia = ConexionOracle.getConexion().createStatement();
+            rset = sentencia.executeQuery("select max(idInscripcion) as idInscripcion from inscripciones");
+            while (rset.next()) {
+                idInscripcion = rset.getString("idInscripcion");
             }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "ERROR" + e.getMessage());
-        }      
+        }
         //desconectamos
         conn.desconectar();
         return idInscripcion;
+    }
+
+    public static boolean findMenor(String dni, String nombre, String apel1, String apel2, String sexo, Date fechaNac, String discapacidad, Long idCentro) {
+        // Ejecución de un procedimiento contenido dentro del paquete que gestiona las altas de inscripciones
+        ConexionOracle conn = new ConexionOracle();
+        Statement sentencia;
+        ResultSet rset = null;
+        String idInscripcion = null;
+
+        try {
+            String sql = "{?=call find_menor(?,?,?,?,?,?,?,?)}";
+            CallableStatement cs = ConexionOracle.getConexion().prepareCall(sql);
+            //cargamos el parametro de salida
+
+            cs.registerOutParameter(1, Types.NUMERIC);
+            // Cargamos los parametros de entrada IN
+            cs.setString(2, dni);
+            cs.setString(3, nombre);
+            cs.setString(4, apel1);
+            cs.setString(5, apel2);
+            cs.setString(6, sexo);
+            cs.setDate(7, (java.sql.Date) fechaNac);
+            cs.setString(8, discapacidad);
+            cs.setLong(9, idCentro);
+
+            // Ejecutamos
+            cs.execute();
+            if (rset.getLong(1) != 0) //desconectamos
+            {
+                ConexionOracle.desconectar();
+                return true;
+            }
+            
+            else 
+            {
+                ConexionOracle.desconectar();
+            
+                 return false;}
+
+        } catch (Exception e) {
+            return false;
+        }
+        
     }
 }

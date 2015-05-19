@@ -10,6 +10,9 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
+import java.util.Date;
 import oracle.jdbc.OracleTypes;
 
 public class AltasBD {
@@ -97,7 +100,7 @@ public class AltasBD {
         //conectamos
         ConexionOracle.setConexion();
 
-        String sql = "{call alta_inscripciones.insert_inscripcion(?,?,?,?,?)}";
+        String sql = "{call alta_inscripciones.alta_tutor(?,?,?,?,?)}";
         CallableStatement cs = ConexionOracle.getConexion().prepareCall(sql);
         try {
             // Cargamos los parametros de entrada IN
@@ -116,5 +119,50 @@ public class AltasBD {
             return false;
         }
         return true;
+    }
+
+    public static boolean insertMenor(String dni, String nombre, String apel1, String apel2, String sexo, Date fechaNac, String discapacidad, String idInscripcion, Long idCentro) {
+        ConexionOracle conn = new ConexionOracle();
+        Statement sentencia;
+        ResultSet rset = null;
+
+        try {
+            String sql = "{call alta_inscripciones.insert_menor(?,?,?,?,?,?,?,?,?,?)}";
+            CallableStatement cs = ConexionOracle.getConexion().prepareCall(sql);
+
+            // Cargamos los parametros de entrada IN
+            cs.setString(1, dni);
+            cs.setString(2, nombre);
+            cs.setString(3, apel1);
+            cs.setString(4, apel2);
+            cs.setString(5, sexo);
+            cs.setDate(6, (java.sql.Date) fechaNac);
+            cs.setString(7, discapacidad);
+            cs.setString(8, discapacidad);
+            cs.setString(9, idInscripcion);
+            cs.setLong(10, idCentro);
+
+            // Ejecutamos
+            cs.execute();
+            if (rset.getLong(1) != 0) //desconectamos
+            {
+                ConexionOracle.desconectar();
+                return true;
+            }
+           
+            
+            else 
+            {
+                ConexionOracle.desconectar();
+            
+                 return false;}
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static void insertTelefono(Long findLastSolicitante) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

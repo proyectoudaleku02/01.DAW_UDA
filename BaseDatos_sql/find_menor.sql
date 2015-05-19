@@ -13,8 +13,8 @@ CREATE OR REPLACE FUNCTION find_menor (
 		sexo IN menores.sexoMenor%TYPE,
 		fechaNac IN menores.fechaNacMenor%TYPE,
 		discapacidad IN menores.discapacidadMenor%TYPE,
-		pidCentro IN centros.idCentro%TYPE,
-		pidModelo IN modelos.idModelo%TYPE
+		pidCentro IN centros.idCentro%TYPE
+		--pidModelo IN modelos.idModelo%TYPE
 )
 
 return  menores.idSolicitante%TYPE
