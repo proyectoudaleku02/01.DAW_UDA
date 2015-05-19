@@ -17,6 +17,8 @@ public class Menor extends Solicitante{
     private String dni;
     private String sexo;
     private Date fechaNac;
+
+   
     private String discapacidad;
     
     // Relaciones
@@ -55,6 +57,9 @@ public class Menor extends Solicitante{
     }
 
     public String isDiscapacidad() {
+        return discapacidad;
+    }
+     public String getDiscapacidad() {
         return discapacidad;
     }
 

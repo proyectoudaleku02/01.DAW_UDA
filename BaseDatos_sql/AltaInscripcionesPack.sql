@@ -71,6 +71,16 @@ END alta_inscripciones;
 
 
 
+
+
+
+
+
+
+
+
+
+
  -----------DEFINIMOS EL CUERPO DEL PAQUETE-----------------------------
 
 CREATE OR REPLACE PACKAGE BODY alta_inscripciones

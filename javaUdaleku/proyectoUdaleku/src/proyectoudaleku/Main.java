@@ -16,7 +16,7 @@ public class Main {
 
     private static boolean periodoIns;
     private static boolean sorteo;
-    private static String situacion="pendiente";
+    private static String situacion = "pendiente";
     // Declaración del número máximo de inscripciones por solicitud.
     private static final int maxInscrip = 3;
 
@@ -83,7 +83,8 @@ public class Main {
 
     public static void verPanInscrip() {
         // Inicialización de la solicitud y de la inscripción.
-        solSelected=new Solicitud();insSelected = new Inscripcion();
+        solSelected = new Solicitud();
+        insSelected = new Inscripcion();
         // Creación del arbol de objetos que cuelgan de la inscripción.
         crearArbolInscripción();
 
@@ -127,20 +128,21 @@ public class Main {
     }
 
     public static void buildLupa(String tipo, String prov, int indice) {
-        vias=new ArrayList();centros=new ArrayList();
-        locSelected=localidades.get(indice);
+        vias = new ArrayList();
+        centros = new ArrayList();
+        locSelected = localidades.get(indice);
         switch (tipo) {
             case "calles":
                 // El índice elegido en el combo box coincide con el del array de localidades.
-                panLupa = new PanLupa(tipo, null,locSelected.getIdlocalidad().toString());
+                panLupa = new PanLupa(tipo, null, locSelected.getIdlocalidad().toString());
                 panLupa.setVisible(true);
                 break;
             case "centros":
                 if (prov.equalsIgnoreCase("seleccionada")) {
-                    panLupa = new PanLupa(tipo, "tu provincia",provSelected.getIdprovincia());
+                    panLupa = new PanLupa(tipo, "tu provincia", provSelected.getIdprovincia());
                     panLupa.setVisible(true);
                 } else {
-                    panLupa = new PanLupa(tipo, "otra provincia",provSelected.getIdprovincia());
+                    panLupa = new PanLupa(tipo, "otra provincia", provSelected.getIdprovincia());
                 }
                 panLupa.setVisible(true);
                 break;
@@ -150,7 +152,7 @@ public class Main {
 
     public static void sendViaToInscripcion(int viaIndex) throws SQLException {
         cancelarLupa();
-        viaSelected = vias.get(viaIndex);        
+        viaSelected = vias.get(viaIndex);
         panInscrip.rellenarTfCalle(viaSelected);
     }
 
@@ -194,7 +196,7 @@ public class Main {
      * @return
      */
     public static ArrayList<Municipio> findMunByProv() {
-        municipios=ConsultasBD.findMunByProv(provSelected.getIdprovincia());
+        municipios = ConsultasBD.findMunByProv(provSelected.getIdprovincia());
         return municipios;
     }
 
@@ -205,19 +207,21 @@ public class Main {
      * @return
      */
     public static ArrayList<Localidad> findLocByMun(String idMunicipio) {
-        localidades=ConsultasBD.findLocByMun(idMunicipio);
+        localidades = ConsultasBD.findLocByMun(idMunicipio);
         return localidades;
-        }
-        /**
-         *
-         * @param idLocalidad Método que devuelva todas las vías perteneciente a
-         * la localidad seleccionada
-         * @return
-         */
+    }
+
+    /**
+     *
+     * @param idLocalidad Método que devuelva todas las vías perteneciente a la
+     * localidad seleccionada
+     * @return
+     */
     public static ArrayList<Via> findViasByLoc(String idLocalidad) {
-        vias=ConsultasBD.findViasByLoc(idLocalidad);
+        vias = ConsultasBD.findViasByLoc(idLocalidad);
         return vias;
     }
+
     /**
      *
      * @param idProvincia
@@ -228,7 +232,7 @@ public class Main {
      * @return
      */
     public static ArrayList<Centro> findCentByProv(String idProvincia, String text) {
-        centros=ConsultasBD.findCentByProv(idProvincia,text);
+        centros = ConsultasBD.findCentByProv(idProvincia, text);
         return centros;
     }
 
@@ -239,7 +243,7 @@ public class Main {
      * el centro seleccionado
      */
     public static ArrayList<Modelo> findModByCent(String idCentro) {
-        modelos=ConsultasBD.findModByCent(idCentro);
+        modelos = ConsultasBD.findModByCent(idCentro);
         return modelos;
     }
 
@@ -286,6 +290,7 @@ public class Main {
     }
 
     public static boolean inscribir(String tipo) {
+<<<<<<< HEAD
         try {
         if(tipo.equalsIgnoreCase("end"))
         {
@@ -307,8 +312,33 @@ public class Main {
         {
             cancelarDialogo(dConfirmacion);
             cancelarPanel();
+=======
+        // Relacionamos bidireccionalmente la inscripción con la solicitud.
+        solSelected.getInscripciones().add(insSelected);
+        insSelected.setSolicitud(solSelected);
+        if (tipo.equalsIgnoreCase("end")) {
+            for (int x = 0; x < solSelected.getInscripciones().size(); x++) {
+                try {
+                    AltasBD.insertSolicitud(situacion);
+                    AltasBD.insertDireccion(dirSelected.getNumdir(), dirSelected.getLetra(), dirSelected.getPiso(), dirSelected.getEscalera(), dirSelected.getMano(), dirSelected.getCp(), viaSelected.getIdvia());
+                    AltasBD.insertInscrip(ConsultasBD.findIdSolicitud(), solSelected.getInscripciones().size(), ConsultasBD.findIdDireccion());
+                    AltasBD.insertTutor(tutorSelected.getDni(), tutorSelected.getNombre(), tutorSelected.getApel1(), tutorSelected.getApel2(), ConsultasBD.findIdInscripcion());
+                    AltasBD.insertTelefono(ConsultasBD.findLastSolicitante(),tutorSelected.getTelefonos());
+                    if (ConsultasBD.findMenor(menorSelected.getDni(), menorSelected.getNombre(), menorSelected.getApel1(), menorSelected.getApel2(), menorSelected.getSexo(), menorSelected.getFechaNac(), menorSelected.getDiscapacidad(), cenSelected.getIdcentro(),menorSelected.getModelo().getIdmodelo())) {
+                        return false;//el menor ya esta dado de alta no se puede otra vez 
+                    } else {
+                        //faltaria pasarle el idModelo aqui
+                        AltasBD.insertMenor(menorSelected.getDni(), menorSelected.getNombre(), menorSelected.getApel1(), menorSelected.getApel2(), menorSelected.getSexo(), menorSelected.getFechaNac(), menorSelected.getDiscapacidad(), ConsultasBD.findIdInscripcion(),cenSelected.getIdcentro(),menorSelected.getModelo().getIdmodelo());
+                    }
+                 
+               } catch (SQLException ex) {
+                    return false;
+                }
+            }
+
+>>>>>>> bc78ddf48564be0d68bdb6fd04c990164027e076
         }
         } catch (SQLException ex) {return false;}
         return true;
-        }
+    }
 }
