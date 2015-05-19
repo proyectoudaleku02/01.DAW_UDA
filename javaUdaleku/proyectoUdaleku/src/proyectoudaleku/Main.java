@@ -20,6 +20,7 @@ public class Main {
     // Declaración del número máximo de inscripciones por solicitud.
     private static final int maxInscrip = 3;
 
+    // Objetos del modelo
     private static ArrayList<Via> vias;
     private static ArrayList<Municipio> municipios;
     private static ArrayList<Localidad> localidades;
@@ -38,16 +39,12 @@ public class Main {
     private static Inscripcion insSelected;
     private static Solicitud solSelected;
 
+    // Objetos de vista
     private static Inicio inic;
     private static PanInicio panInic;
     private static PanInscripcion panInscrip;
     private static PanLupa panLupa;
     private static ConfInscrip dConfirmacion;
-
-    private static ConexionOracle conn;
-    private static Connection conexion;
-    private static PreparedStatement sentencia;
-    private static ResultSet rset;
 
     public static void main(String[] args) {
 
@@ -173,8 +170,12 @@ public class Main {
     }
 
     public static boolean controlInscripciones() {
-        if (solSelected.getInscripciones().size() < maxInscrip) {
-            dConfirmacion = new ConfInscrip(inic, true, solSelected, insSelected, maxInscrip);
+        
+        // Relacionamos bidireccionalmente la inscripción con la solicitud.
+            solSelected.getInscripciones().add(insSelected);
+            insSelected.setSolicitud(solSelected);
+        if (solSelected.getInscripciones().size() <= maxInscrip) {
+            dConfirmacion = new ConfInscrip(inic, true, solSelected, maxInscrip);
             dConfirmacion.setVisible(true);
             return true;
         } else {
@@ -285,26 +286,29 @@ public class Main {
     }
 
     public static boolean inscribir(String tipo) {
-        // Relacionamos bidireccionalmente la inscripción con la solicitud.
-        solSelected.getInscripciones().add(insSelected);
-        insSelected.setSolicitud(solSelected);
+        try {
         if(tipo.equalsIgnoreCase("end"))
         {
-           for(int x=0;x<solSelected.getInscripciones().size();x++){
-               try {
-                   AltasBD.insertSolicitud(situacion);
-                   AltasBD.insertDireccion(dirSelected.getNumdir(), dirSelected.getLetra(), dirSelected.getPiso(), dirSelected.getEscalera(), dirSelected.getMano(), dirSelected.getCp(), viaSelected.getIdvia());
-                   AltasBD.insertInscrip(ConsultasBD.findIdSolicitud(), solSelected.getInscripciones().size(), ConsultasBD.findIdDireccion());
-                   AltasBD.insertTutor(tutorSelected.getDni(), tutorSelected.getNombre(), tutorSelected.getApel1(), tutorSelected.getApel2(), ConsultasBD.findIdInscripcion());
-               } catch (SQLException ex) {
-                   return false;
-               }
-           }
-           
+            AltasBD.insertSolicitud(situacion);
+            for(int x=0;x<solSelected.getInscripciones().size();x++)
+            {
+               AltasBD.insertDireccion(dirSelected.getNumdir(), dirSelected.getLetra(), dirSelected.getPiso(), dirSelected.getEscalera(), dirSelected.getMano(), dirSelected.getCp(), viaSelected.getIdvia());
+               AltasBD.insertInscrip(ConsultasBD.findIdSolicitud(), x+1, ConsultasBD.findIdDireccion());
+               AltasBD.insertTutor(tutorSelected.getDni(), tutorSelected.getNombre(), tutorSelected.getApel1(), tutorSelected.getApel2(), ConsultasBD.findIdInscripcion());
+            }
         }
-        dConfirmacion.mostrarHecho(tipo);
-        cancelarDialogo(dConfirmacion);
-        cancelarPanel();
+        dConfirmacion.mostrarHecho(tipo,ConsultasBD.findIdSolicitud().toString());
+        if(tipo.equalsIgnoreCase("add"))
+        {
+            // Nueva inscripcion
+            insSelected = new Inscripcion();crearArbolInscripción();
+            cancelarDialogo(dConfirmacion);
+        }else
+        {
+            cancelarDialogo(dConfirmacion);
+            cancelarPanel();
+        }
+        } catch (SQLException ex) {return false;}
         return true;
         }
 }

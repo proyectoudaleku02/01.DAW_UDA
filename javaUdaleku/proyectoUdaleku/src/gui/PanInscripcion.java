@@ -772,7 +772,7 @@ public class PanInscripcion extends javax.swing.JPanel {
                 mostrar("La solicitud tienes las tres plazas ocupadas.\nSi desea registrar esta inscripción debe abrir una nueva solicitud.");
                 Main.cancelarPanel();
             }                      
-            borrarFormulario();
+            //borrarFormulario();
         }
         catch(TfnIncorrecto ex){mostrar(ex.getMensaje());}
         catch(ExEnteros ex){mostrar(ex.getMensaje());}
@@ -942,9 +942,8 @@ public class PanInscripcion extends javax.swing.JPanel {
             throw new ExGenerica("El DNI del padre/madre o tutor/a no es correcto.");
         }
         // DNI del menor.
-            // Controlamos si está vacío comprobando que el primer caracter no sea un espacio en blanco.
-            // Hacemos esto porque no es un dato obligatorio.
-        if(tfDniMenor.getText().charAt(0)!=' ')
+            // El dni del menor no es obligatorio.
+        if(tfDniMenor.getText().isEmpty()==false)
         {
             if(verificarDni(tfDniMenor.getText().toUpperCase())==false)
             {
@@ -952,7 +951,7 @@ public class PanInscripcion extends javax.swing.JPanel {
                 throw new ExGenerica("El DNI del menor no es correcto.");
             }      
         }
-        // Fecha de nacimiento del menor. Tiene que tener entre 7 y 13 años.
+        // Fecha de nacimiento del menor. Tiene que tener entre 7 y 13 años y cumplir con el patrón.
         if(verificarFechaNacMenor(tfFechaNacMenor.getText())==false)
         {
             ponerRojoTextField(tfFechaNacMenor);
@@ -990,13 +989,8 @@ public class PanInscripcion extends javax.swing.JPanel {
             ponerRojoTextField(tfPiso);
                 throw new ExEnteros();   
         }
-        // Escalera
-        if(tfEscalera.getText().isEmpty()==false&&stringToInteger(tfEscalera.getText())==false)
-        {
-            ponerRojoTextField(tfEscalera);
-                throw new ExEnteros();    
-        }
-        // El campo 'Mano' lo dejamos sin verificar por la variedad de opciones.
+        
+        // El campo 'Escalera' y 'Mano' lo dejamos sin verificar por la variedad de opciones.
         // Teléfonos secundarios.
         if(tfTfn2.getText().isEmpty()==false&&(stringToInteger(tfTfn2.getText())==false||tfTfn2.getText().length()>9))
         {
@@ -1016,7 +1010,11 @@ public class PanInscripcion extends javax.swing.JPanel {
     }
     
     private boolean verificarDni(String dni) throws Exception{
-        // Patrón. Ya viene preparado del Formatted Field correspondiente.
+        // Patrón
+        Pattern pat=Pattern.compile("[0-9]{8}[a-zA-Z]");
+        Matcher mat=pat.matcher(dni);
+        if(mat.matches()==false)
+            return false;
         // Letra del DNI.
         String caracteres="TRWAGMYFPDXBNJZSQVHLCKE";
         String dniNumeros=dni.substring(0,8);
@@ -1029,28 +1027,32 @@ public class PanInscripcion extends javax.swing.JPanel {
         return true;
     }
         
-    private boolean verificarFechaNacMenor(String fechaString) throws Exception{
-        // Patrón. Ya viene preparado del Formatted Field correspondiente.
-        Calendar actual=Calendar.getInstance();
-        Calendar fechaNac=Calendar.getInstance();
-        Calendar x=new GregorianCalendar(); 
-        SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
-        fechaNac.setTime(sdf.parse(fechaString));
-        
-        // Si mayor de 13 años.
-        x.setTime(sdf.parse(fechaString));
-        x.add(Calendar.YEAR, 13);
-        if(x.before(actual))
+    private boolean verificarFechaNacMenor(String fechaString) {
+        // Controlamos que sea un formato válido con la excepción que se genera si no lo es.
+        try {
+            Calendar actual=Calendar.getInstance();
+            Calendar fechaNac=Calendar.getInstance();
+            Calendar x=new GregorianCalendar();
+            SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+            fechaNac.setTime(sdf.parse(fechaString));
+            
+            // Si mayor de 13 años.
+            x.setTime(sdf.parse(fechaString));
+            x.add(Calendar.YEAR, 13);
+            if(x.before(actual))
+                return false;
+            
+            // Si menor de 7 años.
+            x.setTime(sdf.parse(fechaString));
+            x.add(Calendar.YEAR, 7);
+            if(x.after(actual))
+                return false;
+            
+            // Fecha dentro de los valores.
+            return true;
+        } catch (ParseException ex) {
             return false;
-        
-        // Si menor de 7 años.
-        x.setTime(sdf.parse(fechaString));
-        x.add(Calendar.YEAR, 7);
-        if(x.after(actual))
-            return false;    
-                     
-        // Fecha dentro de los valores.
-        return true;
+        }
     }
     
     private boolean stringToInteger(String text) {

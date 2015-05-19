@@ -18,14 +18,13 @@ import proyectoudaleku.Main;
 public class ConfInscrip extends javax.swing.JDialog {
 
     private Solicitud solSelected;
-    private Inscripcion insSelected;
     private final int maxInscrip;
     
     
-    public ConfInscrip(java.awt.Frame parent, boolean modal, Solicitud solSelected, Inscripcion insSelected,int maxInscrip) {
+    public ConfInscrip(java.awt.Frame parent, boolean modal, Solicitud solSelected,int maxInscrip) {
         super(parent, modal);
         initComponents();
-        this.solSelected=solSelected;this.insSelected=insSelected;this.maxInscrip=maxInscrip;
+        this.solSelected=solSelected;this.maxInscrip=maxInscrip;
         setLocationRelativeTo(null);
         controlInicio();
     }
@@ -175,6 +174,8 @@ public class ConfInscrip extends javax.swing.JDialog {
         }
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -204,21 +205,26 @@ public class ConfInscrip extends javax.swing.JDialog {
     private void controlInicio() {
         // Controlamos si hemos llegago al límite de inscripciones.
         if(solSelected.getInscripciones().size()>=maxInscrip)
-            bAdd.setEnabled(false);
+            bAdd.setEnabled(false);lAviso2.setText("Plazas completadas para esta solicitud. Pulse terminar.");
+        // Construcción del textArea.
         String text = "RESUMEN DE LA SOLICITUD\n---------------------------------------------------\n";
-        taInfo.setText(text+"Participante: "+insSelected.getMenor().getNomAps()+"\n"
-                +"Padre/madre o Tutor/a: "+insSelected.getTutor().getNomAps()+"\n---------------------------------------------------\n");
-        lAviso1.setText("Hay "+String.valueOf(maxInscrip - solSelected.getInscripciones().size())+" plazas en esta solicitud");
+        for(int x=0;x<solSelected.getInscripciones().size();x++)
+        {
+            text=text+"Participante: "+solSelected.getInscripciones().get(x).getMenor().getNomAps()+"\n"+"Padre/madre o Tutor/a: "
+                    +solSelected.getInscripciones().get(x).getTutor().getNomAps()+"\n---------------------------------------------------\n";
+        }
+        taInfo.setText(text);
+        lAviso1.setText("Plazas restantes: "+String.valueOf(maxInscrip - solSelected.getInscripciones().size()));
 
     }
 
-    public void mostrarHecho(String tipo) {
+    public void mostrarHecho(String tipo,String idSolicitud) {
         
         if(tipo.equalsIgnoreCase("add"))
         {
             mostrar("Inscripción registrada.\nQueda "+String.valueOf(maxInscrip - solSelected.getInscripciones().size())+" plazas en esta solicitud");
         }else{
-            mostrar("Solicitud registrada. Su numero de solicitud es\n"+"XXXXXXXXX");
+            mostrar("Solicitud registrada. Su numero de solicitud es\n"+idSolicitud);
         }
             
     }
