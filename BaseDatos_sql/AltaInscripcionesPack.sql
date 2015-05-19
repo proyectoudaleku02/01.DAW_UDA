@@ -55,7 +55,6 @@ IS
 		idSolicitante IN tutores.idSolicitante%TYPE
 		);
 	PROCEDURE insert_menor(
-		idSolicitante IN menores.idSolicitante%TYPE,
 		dniMenor IN menores.dniMenor%TYPE,
 		nombreMenor IN menores.nombreMenor%TYPE,
 		apel1Menor IN menores.apel1Menor%TYPE,
