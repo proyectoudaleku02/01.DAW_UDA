@@ -22,7 +22,16 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 
 public class ConsultasBD {
-
+/**
+ * 
+ * @param idProvincia
+ * @param text
+ * @return 
+ * mostramos los centros contenidos en la base de datos en función de la provincia seleccionada.
+ * Si el centro se encuentra en la misma provincia por la que hace la inscripcion buscamos todos los centros contenidos en la misma
+ * y sino buscamos todos los que NO se contienen en ella.
+ * La variable text nos informa sobre si ha elegido la misma o no.
+ */
     public static ArrayList<Centro> findCentByProv(String idProvincia, String text) {
         PreparedStatement sentencia;
         ResultSet rset;
@@ -52,7 +61,13 @@ public class ConsultasBD {
         ConexionOracle.desconectar();
         return centros;
     }
-
+/**
+ * 
+ * @param idMunicipio
+ * @return 
+ * Buscamos todas las localidades que pertenecen al municipio seleccionado por el solicitante.
+ * 
+ */
     public static ArrayList<Localidad> findLocByMun(String idMunicipio) {
 //        EntityManagerFactory emf = Persistence.createEntityManagerFactory("proyectoUdalekuPU");
 //        EntityManager em = emf.createEntityManager();
@@ -118,7 +133,13 @@ public class ConsultasBD {
         ConexionOracle.desconectar();
         return modelos;
     }
-
+/**
+ * 
+ * @param idProvincia
+ * @return 
+ * Buscamos todos los municipios perteneciente a la provincia seleccionada por el solicitante
+ * devolvemos un array con todos los resultados
+ */
     public static ArrayList<Municipio> findMunByProv(String idProvincia) {
         PreparedStatement sentencia;
         ResultSet rset;
@@ -142,7 +163,13 @@ public class ConsultasBD {
         ConexionOracle.desconectar();
         return municipios;
     }
-
+/**
+ * 
+ * @param idLocalidad
+ * @return 
+ * buscamos todas las vías pertenecientes a una localidad, la seleccionada por el solicitante
+ * Devuelve un ArrayList que contiene los datos de dichas vías
+ */
     public static ArrayList<Via> findViasByLoc(String idLocalidad) {
         ConexionOracle conn = new ConexionOracle();
         PreparedStatement sentencia;
@@ -167,7 +194,13 @@ public class ConsultasBD {
         conn.desconectar();
         return vias;
     }
-
+/**
+ * 
+ * @return
+ * @throws SQLException 
+ * método por el cual obtenemos el id de la última solicitud realizada.
+ * id que se le ha asignado mediante un procedimiento.sql
+ */
     public static Long findIdSolicitud() throws SQLException {
         ConexionOracle conn = new ConexionOracle();
         Statement sentencia;
@@ -191,7 +224,13 @@ public class ConsultasBD {
         conn.desconectar();
         return idSolicitud;
     }
-
+/**
+ * 
+ * @return
+ * @throws SQLException 
+ * método por el cual obtenemos el id de la última dirección insertada en base de datos y que se corresponderá con la última inscripción realizada.
+ * 
+ */
     public static Long findIdDireccion() throws SQLException {
         ConexionOracle conn = new ConexionOracle();
         Statement sentencia;
@@ -215,6 +254,12 @@ public class ConsultasBD {
         conn.desconectar();
         return idDireccion;
     }
+    /**
+     * 
+     * @return
+     * @throws SQLException 
+     * Método por el cual obtenemos el Id del último solicitante
+     */
         public static Long findLastSolicitante() throws SQLException {
         ConexionOracle conn = new ConexionOracle();
         Statement sentencia;
@@ -238,7 +283,11 @@ public class ConsultasBD {
         conn.desconectar();
         return idSolicitante;
     }
-
+/**
+ * 
+ * @return 
+ * Búsqueda de la última inscripcion insertada en base de datos
+ */
     public static String findIdInscripcion() {
         ConexionOracle conn = new ConexionOracle();
         Statement sentencia;
@@ -262,7 +311,21 @@ public class ConsultasBD {
         conn.desconectar();
         return idInscripcion;
     }
-
+/**
+ * Método mediante el que comprobamos que el menor no ha sido aún apuntado a las colonias
+ * comparando los datos introducidos por el solicitante con los ya contenidos en base de datos.
+ * para ello llamamos a una función que nos devuelve el idSolicitante=0 si no ha encontrado nada y diferente si es que encuentra algo
+ * @param dni
+ * @param nombre
+ * @param apel1
+ * @param apel2
+ * @param sexo
+ * @param fechaNac
+ * @param discapacidad
+ * @param idCentro
+ * @param modelo
+ * @return 
+ */
     public static boolean findMenor(String dni, String nombre, String apel1, String apel2, String sexo, Date fechaNac, String discapacidad, Long idCentro, String modelo) {
         // Ejecución de un procedimiento contenido dentro del paquete que gestiona las altas de inscripciones
         ConexionOracle conn = new ConexionOracle();
