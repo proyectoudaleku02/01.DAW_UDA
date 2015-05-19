@@ -24,6 +24,7 @@ public class ConexionOracle {
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             conn = DriverManager.getConnection("jdbc:oracle:thin:@server224:1521:orcl", "daw02", "daw02");
             //conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "system", "asd2100");
+            //conn= DriverManager.getConnection("jdbc:oracle:thin:@Noemi:1521:orcl", "SCOTT", "sysnoemi");
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());
