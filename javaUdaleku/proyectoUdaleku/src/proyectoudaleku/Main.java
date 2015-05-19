@@ -299,13 +299,12 @@ public class Main {
                     AltasBD.insertDireccion(dirSelected.getNumdir(), dirSelected.getLetra(), dirSelected.getPiso(), dirSelected.getEscalera(), dirSelected.getMano(), dirSelected.getCp(), viaSelected.getIdvia());
                     AltasBD.insertInscrip(ConsultasBD.findIdSolicitud(), solSelected.getInscripciones().size(), ConsultasBD.findIdDireccion());
                     AltasBD.insertTutor(tutorSelected.getDni(), tutorSelected.getNombre(), tutorSelected.getApel1(), tutorSelected.getApel2(), ConsultasBD.findIdInscripcion());
-                    //faltan los telefonos aqui
-                    AltasBD.insertTelefono(ConsultasBD.findLastSolicitante());
-                    if (ConsultasBD.findMenor(menorSelected.getDni(), menorSelected.getNombre(), menorSelected.getApel1(), menorSelected.getApel2(), menorSelected.getSexo(), menorSelected.getFechaNac(), menorSelected.getDiscapacidad(), cenSelected.getIdcentro())) {
+                    AltasBD.insertTelefono(ConsultasBD.findLastSolicitante(),tutorSelected.getTelefonos());
+                    if (ConsultasBD.findMenor(menorSelected.getDni(), menorSelected.getNombre(), menorSelected.getApel1(), menorSelected.getApel2(), menorSelected.getSexo(), menorSelected.getFechaNac(), menorSelected.getDiscapacidad(), cenSelected.getIdcentro(),menorSelected.getModelo().getIdmodelo())) {
                         return false;//el menor ya esta dado de alta no se puede otra vez 
                     } else {
                         //faltaria pasarle el idModelo aqui
-                        AltasBD.insertMenor(menorSelected.getDni(), menorSelected.getNombre(), menorSelected.getApel1(), menorSelected.getApel2(), menorSelected.getSexo(), menorSelected.getFechaNac(), menorSelected.getDiscapacidad(), ConsultasBD.findIdInscripcion(),cenSelected.getIdcentro());
+                        AltasBD.insertMenor(menorSelected.getDni(), menorSelected.getNombre(), menorSelected.getApel1(), menorSelected.getApel2(), menorSelected.getSexo(), menorSelected.getFechaNac(), menorSelected.getDiscapacidad(), ConsultasBD.findIdInscripcion(),cenSelected.getIdcentro(),menorSelected.getModelo().getIdmodelo());
                     }
                  
                } catch (SQLException ex) {

@@ -12,11 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Date;
 import oracle.jdbc.OracleTypes;
 
 public class AltasBD {
-    
+
     public static boolean insertDireccion(String num, String letra, String piso, String escalera, String mano, String cp, Long idVia) throws SQLException {
         // Ejecución de un procedimiento contenido dentro del paquete que gestiona las altas de inscripciones
         ResultSet rset;
@@ -45,7 +46,7 @@ public class AltasBD {
         }
         return true;
     }
-    
+
     public static boolean insertSolicitud(String situacion) throws SQLException {
         // Ejecución de un procedimiento contenido dentro del paquete que gestiona las altas de inscripciones
         ResultSet rset;
@@ -57,7 +58,7 @@ public class AltasBD {
         try {
             // Cargamos los parametros de entrada IN
             cs.setString(1, situacion);
-            
+
             // Ejecutamos
             cs.execute();
 
@@ -68,7 +69,7 @@ public class AltasBD {
         }
         return true;
     }
-    
+
     public static boolean insertInscrip(long idSolicitud, int numero, long idDireccion) throws SQLException {
         // Ejecución de un procedimiento contenido dentro del paquete que gestiona las altas de inscripciones
         ResultSet rset;
@@ -82,7 +83,7 @@ public class AltasBD {
             cs.setLong(1, idSolicitud);
             cs.setInt(2, numero);
             cs.setLong(3, idDireccion);
-            
+
             // Ejecutamos
             cs.execute();
 
@@ -93,8 +94,8 @@ public class AltasBD {
         }
         return true;
     }
-    
-    public static boolean insertTutor(String dni,String nombre, String apel1, String apel2, String idInscripcion) throws SQLException {
+
+    public static boolean insertTutor(String dni, String nombre, String apel1, String apel2, String idInscripcion) throws SQLException {
         // Ejecución de un procedimiento contenido dentro del paquete que gestiona las altas de inscripciones
         ResultSet rset;
         //conectamos
@@ -107,9 +108,9 @@ public class AltasBD {
             cs.setString(1, dni);
             cs.setString(2, nombre);
             cs.setString(3, apel1);
-            cs.setString(4, apel2);        
+            cs.setString(4, apel2);
             cs.setString(5, idInscripcion);
-            
+
             // Ejecutamos
             cs.execute();
 
@@ -121,13 +122,13 @@ public class AltasBD {
         return true;
     }
 
-    public static boolean insertMenor(String dni, String nombre, String apel1, String apel2, String sexo, Date fechaNac, String discapacidad, String idInscripcion, Long idCentro) {
+    public static boolean insertMenor(String dni, String nombre, String apel1, String apel2, String sexo, Date fechaNac, String discapacidad, String idInscripcion, Long idCentro, String modelo) {
         ConexionOracle conn = new ConexionOracle();
         Statement sentencia;
         ResultSet rset = null;
 
         try {
-            String sql = "{call alta_inscripciones.insert_menor(?,?,?,?,?,?,?,?,?,?)}";
+            String sql = "{call alta_inscripciones.insert_menor(?,?,?,?,?,?,?,?,?,?,?)}";
             CallableStatement cs = ConexionOracle.getConexion().prepareCall(sql);
 
             // Cargamos los parametros de entrada IN
@@ -141,6 +142,7 @@ public class AltasBD {
             cs.setString(8, discapacidad);
             cs.setString(9, idInscripcion);
             cs.setLong(10, idCentro);
+            cs.setString(11, modelo);
 
             // Ejecutamos
             cs.execute();
@@ -148,21 +150,46 @@ public class AltasBD {
             {
                 ConexionOracle.desconectar();
                 return true;
-            }
-           
-            
-            else 
-            {
+            } else {
                 ConexionOracle.desconectar();
-            
-                 return false;}
+
+                return false;
+            }
 
         } catch (Exception e) {
             return false;
         }
     }
 
-    public static void insertTelefono(Long findLastSolicitante) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static boolean insertTelefono(Long idSolicitante, ArrayList<String> telefonos) {
+        String telefono1 = telefonos.get(1);
+        String telefono2 = telefonos.get(2);
+        String telefono3 = telefonos.get(3);
+        String telefono4 = telefonos.get(4);
+
+        ResultSet rset;
+        //conectamos
+        ConexionOracle.setConexion();
+
+        String sql = "{call alta_inscripciones.insertar_tlfn(?,?,?,?,?)}";
+
+        try {
+            CallableStatement cs = ConexionOracle.getConexion().prepareCall(sql);
+            // Cargamos los parametros de entrada IN
+            cs.setLong(1, idSolicitante);
+            cs.setString(2, telefono1);
+            cs.setString(3, telefono2);
+            cs.setString(4, telefono3);
+            cs.setString(5, telefono4);
+
+            // Ejecutamos
+            cs.execute();
+
+            //desconectamos
+            ConexionOracle.desconectar();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }

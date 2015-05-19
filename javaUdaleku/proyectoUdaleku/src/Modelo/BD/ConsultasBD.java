@@ -263,7 +263,7 @@ public class ConsultasBD {
         return idInscripcion;
     }
 
-    public static boolean findMenor(String dni, String nombre, String apel1, String apel2, String sexo, Date fechaNac, String discapacidad, Long idCentro) {
+    public static boolean findMenor(String dni, String nombre, String apel1, String apel2, String sexo, Date fechaNac, String discapacidad, Long idCentro, String modelo) {
         // Ejecución de un procedimiento contenido dentro del paquete que gestiona las altas de inscripciones
         ConexionOracle conn = new ConexionOracle();
         Statement sentencia;
@@ -271,7 +271,7 @@ public class ConsultasBD {
         String idInscripcion = null;
 
         try {
-            String sql = "{?=call find_menor(?,?,?,?,?,?,?,?)}";
+            String sql = "{?=call find_menor(?,?,?,?,?,?,?,?,?)}";
             CallableStatement cs = ConexionOracle.getConexion().prepareCall(sql);
             //cargamos el parametro de salida
 
@@ -285,6 +285,7 @@ public class ConsultasBD {
             cs.setDate(7, (java.sql.Date) fechaNac);
             cs.setString(8, discapacidad);
             cs.setLong(9, idCentro);
+            cs.setString(10,modelo);
 
             // Ejecutamos
             cs.execute();
