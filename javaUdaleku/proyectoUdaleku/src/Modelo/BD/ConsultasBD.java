@@ -211,4 +211,28 @@ public class ConsultasBD {
         conn.desconectar();
         return idDireccion;
     }
+
+    public static String findIdInscripcion() {
+        ConexionOracle conn = new ConexionOracle();
+        Statement sentencia;
+        ResultSet rset = null;
+        String idInscripcion = null;
+      
+        //conectamos
+        conn.setConexion();
+
+        try {
+                sentencia = ConexionOracle.getConexion().createStatement();
+                rset = sentencia.executeQuery("select max(idInscripcion) as idInscripcion from inscripciones");
+           while (rset.next()){
+                 idInscripcion=rset.getString("idInscripcion"); 
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "ERROR" + e.getMessage());
+        }      
+        //desconectamos
+        conn.desconectar();
+        return idInscripcion;
+    }
 }

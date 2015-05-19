@@ -36,16 +36,14 @@ IS
 		nombreTutor IN tutores.nombreTutor%TYPE,
 		apel1 IN tutores.ape1Tutor%TYPE,
 		apel2 IN tutores.ape2Tutor%TYPE,
-		idInscripcion IN inscripciones.idInscripcion%TYPE,
-		pcontrol OUT varchar2
+		idInscripcion IN inscripciones.idInscripcion%TYPE
 		);
 	PROCEDURE insertar_tlfn(
 		telefono1 IN telefonos.numerotelf%TYPE,
 		telefono2 IN telefonos.numerotelf%TYPE,
 		telefono3 IN telefonos.numerotelf%TYPE,
 		telefono4 IN telefonos.numerotelf%TYPE,
-		idSolicitante IN tutores.idSolicitante%TYPE,
-		pcontrol OUT varchar2
+		idSolicitante IN tutores.idSolicitante%TYPE
 		);
 	PROCEDURE insert_menor(
 		idSolicitante IN menores.idSolicitante%TYPE,
@@ -58,8 +56,7 @@ IS
 		discapacidadMenor IN menores.discapacidadMenor%TYPE,
 		idInscripcion IN inscripciones.idInscripcion%TYPE,
 		idCentro IN centros.idCentro%TYPE,
-		idModelo IN modelos.idModelo%TYPE,
-		pcontrol OUT varchar2
+		idModelo IN modelos.idModelo%TYPE
 		);
 		
 END alta_inscripciones;
@@ -128,6 +125,7 @@ IS
 		idDireccion IN direcciones.idDireccion%TYPE
 		)
 	AS
+	idInscripcion inscripciones.idInscripcion%TYPE;
 	inscrip_noValid EXCEPTION;
 	BEGIN 
 		IF (pnum>3) THEN
@@ -141,7 +139,7 @@ IS
 
 	EXCEPTION
 	WHEN inscrip_noValid THEN
-	
+	 rollback;
 	WHEN DUP_VAL_ON_INDEX THEN
 	
 	 rollback;
@@ -156,8 +154,7 @@ END insert_inscripcion;
 		nombreTutor IN tutores.nombreTutor%TYPE,
 		apel1 IN tutores.ape1Tutor%TYPE,
 		apel2 IN tutores.ape2Tutor%TYPE,
-		idInscripcion IN inscripciones.idInscripcion%TYPE,
-		pcontrol OUT varchar2
+		idInscripcion IN inscripciones.idInscripcion%TYPE
 			)
 		AS
 
@@ -167,10 +164,8 @@ END insert_inscripcion;
 		COMMIT;
 	EXCEPTION
 		WHEN DUP_VAL_ON_INDEX THEN
-		pcontrol:='Imposible crear solicitud.Se ha intentado duplicar la clave primaria';
 		rollback;
 		WHEN OTHERS THEN
-		pcontrol:='Han Ocurrido Errores';
 		rollback;
 	END alta_tutor;
 	
@@ -179,28 +174,23 @@ END insert_inscripcion;
 		telefono2 IN telefonos.numerotelf%TYPE,
 		telefono3 IN telefonos.numerotelf%TYPE,
 		telefono4 IN telefonos.numerotelf%TYPE,
-		idSolicitante IN tutores.idSolicitante%TYPE,
-		pcontrol OUT varchar2
+		idSolicitante IN tutores.idSolicitante%TYPE
 		)
 		AS
 			error_telefono EXCEPTION;
 	BEGIN
-		IF (telefono1='         ')THEN
+		IF (telefono1=null)THEN
 			RAISE error_telefono;
-		ELSIF (telefono2='         ') THEN
-			pcontrol:='solo un teléfono de contacto para este solicitante';
+		ELSIF (telefono2=null) THEN
 			INSERT INTO TELEFONOS VALUES (telefono1,idSolicitante);
-		ELSIF (telefono3='         ') THEN
-			pcontrol:='Hay dos teléfonos de contacto para este solicitante';
+		ELSIF (telefono3=null) THEN
 			INSERT INTO TELEFONOS VALUES (telefono1,idSolicitante);
 			INSERT INTO TELEFONOS VALUES (telefono2,idSolicitante);
-		ELSIF (telefono4='         ') THEN
-			pcontrol:='Hay tres teléfonos de contacto para este solicitante';
+		ELSIF (telefono4=null) THEN
 			INSERT INTO TELEFONOS VALUES (telefono1,idSolicitante);
 			INSERT INTO TELEFONOS VALUES (telefono2,idSolicitante);
 			INSERT INTO TELEFONOS VALUES (telefono3,idSolicitante);
 		ELSE
-			pcontrol:='Hay tres teléfonos de contacto para este solicitante';
 			INSERT INTO TELEFONOS VALUES (telefono1,idSolicitante);
 			INSERT INTO TELEFONOS VALUES (telefono2,idSolicitante);
 			INSERT INTO TELEFONOS VALUES (telefono3,idSolicitante);
@@ -209,12 +199,10 @@ END insert_inscripcion;
 		COMMIT;
 	EXCEPTION
 		WHEN error_telefono THEN
-			pcontrol:='No se han introducido teléfonos de contacto';
+			rollback;
 		WHEN DUP_VAL_ON_INDEX THEN
-			pcontrol:='Imposible crear solicitud.Se ha intentado duplicar la clave primaria';
 			rollback;
 		WHEN OTHERS THEN
-			pcontrol:='Han Ocurrido Errores';
 			rollback;
 
 	END insertar_tlfn;
@@ -230,8 +218,7 @@ END insert_inscripcion;
 		discapacidadMenor IN menores.discapacidadMenor%TYPE,
 		idInscripcion IN inscripciones.idInscripcion%TYPE,
 		idCentro IN centros.idCentro%TYPE,
-		idModelo IN modelos.idModelo%TYPE,
-		pcontrol OUT varchar2
+		idModelo IN modelos.idModelo%TYPE
 		)AS
 
 		BEGIN
@@ -241,10 +228,8 @@ END insert_inscripcion;
 
 		EXCEPTION
 			WHEN DUP_VAL_ON_INDEX THEN
-					pcontrol:='Imposible crear solicitud.Se ha intentado duplicar la clave primaria';
 					rollback;
 			WHEN OTHERS THEN
-					pcontrol:='Han Ocurrido Errores';
 					rollback;
 		END insert_menor;
 

@@ -4,7 +4,6 @@ import Modelo.BD.*;
 import Modelo.UML.*;
 import conexionoracle.ConexionOracle;
 import gui.*;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,13 +11,6 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.swing.JOptionPane;
-import oracle.jdbc.OracleTypes;
 
 public class Main {
 
@@ -296,17 +288,14 @@ public class Main {
         // Relacionamos bidireccionalmente la inscripción con la solicitud.
         solSelected.getInscripciones().add(insSelected);
         insSelected.setSolicitud(solSelected);
-        ////
-        /// IDSOLICITUD / IDINSCRIPCIÓN
-        ////
         if(tipo.equalsIgnoreCase("end"))
         {
            for(int x=0;x<solSelected.getInscripciones().size();x++){
                try {
                    AltasBD.insertSolicitud(situacion);
                    AltasBD.insertDireccion(dirSelected.getNumdir(), dirSelected.getLetra(), dirSelected.getPiso(), dirSelected.getEscalera(), dirSelected.getMano(), dirSelected.getCp(), viaSelected.getIdvia());
-                   
                    AltasBD.insertInscrip(ConsultasBD.findIdSolicitud(), solSelected.getInscripciones().size(), ConsultasBD.findIdDireccion());
+                   AltasBD.insertTutor(tutorSelected.getDni(), tutorSelected.getNombre(), tutorSelected.getApel1(), tutorSelected.getApel2(), ConsultasBD.findIdInscripcion());
                } catch (SQLException ex) {
                    return false;
                }

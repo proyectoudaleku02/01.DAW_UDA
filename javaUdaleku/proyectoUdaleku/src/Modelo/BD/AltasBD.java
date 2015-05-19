@@ -90,4 +90,31 @@ public class AltasBD {
         }
         return true;
     }
+    
+    public static boolean insertTutor(String dni,String nombre, String apel1, String apel2, String idInscripcion) throws SQLException {
+        // Ejecución de un procedimiento contenido dentro del paquete que gestiona las altas de inscripciones
+        ResultSet rset;
+        //conectamos
+        ConexionOracle.setConexion();
+
+        String sql = "{call alta_inscripciones.insert_inscripcion(?,?,?,?,?)}";
+        CallableStatement cs = ConexionOracle.getConexion().prepareCall(sql);
+        try {
+            // Cargamos los parametros de entrada IN
+            cs.setString(1, dni);
+            cs.setString(2, nombre);
+            cs.setString(3, apel1);
+            cs.setString(4, apel2);        
+            cs.setString(5, idInscripcion);
+            
+            // Ejecutamos
+            cs.execute();
+
+            //desconectamos
+            ConexionOracle.desconectar();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 }
