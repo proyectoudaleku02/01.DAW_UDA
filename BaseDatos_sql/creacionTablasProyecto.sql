@@ -24,7 +24,7 @@ DROP TABLE SORTEOS CASCADE CONSTRAINTS;
 DROP SEQUENCE idDireccion_seq;
 DROP SEQUENCE idSolicitud_seq;
 DROP SEQUENCE idSolicitante_seq; 
-DROP SEQUENCE idMunicipio_seq;
+--DROP SEQUENCE idMunicipio_seq;
 
 
 CREATE TABLE SORTEOS (
@@ -136,7 +136,7 @@ CREATE TABLE INSCRIPCIONES (
 
 CREATE TABLE TUTORES (
   idSolicitante NUMBER(10),
-  dniTutor VARCHAR2(13) UNIQUE NOT NULL,
+  dniTutor VARCHAR2(13) NOT NULL,
   nombreTutor VARCHAR2(20) NOT NULL,
   ape1Tutor VARCHAR2(30) NOT NULL,
   ape2Tutor VARCHAR2(30) NOT NULL,
@@ -149,10 +149,10 @@ CREATE TABLE TUTORES (
 
 CREATE TABLE TELEFONOS (
   numeroTelf VARCHAR2(9),
-  idSolicitante NUMBER(10),
+  idInscrip VARCHAR2(10),
   CONSTRAINT telefonos_pk PRIMARY KEY (numeroTelf),
-  CONSTRAINT telTut_fk FOREIGN KEY (idSolicitante)
-    REFERENCES TUTORES (idSolicitante));
+  CONSTRAINT telInscrip_fk FOREIGN KEY (idInscrip)
+    REFERENCES INSCRIPCIONES (idInscripcion));
 
 
 
@@ -176,6 +176,7 @@ CREATE TABLE MENORES (
     REFERENCES CENTROS (idCentro),
      CONSTRAINT menores_modelo_fk FOREIGN KEY (idModelo)
     REFERENCES MODELOS (idModelo));
+	--CONSTRAINT menor_uk UNIQUE (dniMenor,nombreMenor,apel1Menor,apel2Menor,sexoMenor,fechaNacMenor,discapacidadMenor,idCentro,idModelo));
 
 
 
@@ -774,6 +775,22 @@ INSERT INTO LOCALIDADES VALUES(252,'Zumaia',252);
 
 	
 --Alava--
+INSERT INTO VIAS VALUES(39,'Barrio','Azkoaga',1);
+INSERT INTO VIAS VALUES(40,'Plaza','Iturbe',2);
+INSERT INTO VIAS VALUES(41,'Calle','Mayor',3);
+INSERT INTO VIAS VALUES(42,'Barrio','Azkoaga',4);
+INSERT INTO VIAS VALUES(43,'Barrio','Azkoaga',5);
+INSERT INTO VIAS VALUES(44,'Calle','Mayor',,6);
+INSERT INTO VIAS VALUES(45,'Calle','Mayor',,7);
+INSERT INTO VIAS VALUES(46,'Barrio','Azkoaga',8);
+INSERT INTO VIAS VALUES(47,'Barrio','Etxaguen',9);
+INSERT INTO VIAS VALUES(48,'Barrio','Azkoaga',10);
+INSERT INTO VIAS VALUES(49,'Calle','Mayor',,11);
+INSERT INTO VIAS VALUES(50,'Calle','Mayor',,12);
+INSERT INTO VIAS VALUES(51,'Calle','Mayor',,13);
+INSERT INTO VIAS VALUES(52,'Barrio','Azkoaga',14);
+INSERT INTO VIAS VALUES(53,'Barrio','Azkoaga',15);
+INSERT INTO VIAS VALUES(54,'Calle','Mayor',,16);
 INSERT INTO VIAS VALUES(1,'Calle','Barratxi',47);
 INSERT INTO VIAS VALUES(2,'Calle','Portal de Zurbano',47);
 INSERT INTO VIAS VALUES(3,'Avenida','Olmos',47);
