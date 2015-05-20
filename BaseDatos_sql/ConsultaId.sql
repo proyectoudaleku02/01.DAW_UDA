@@ -4,6 +4,8 @@
 	Descripcion: Paquete  con funciones para hacer la búsqueda de los id
 	1.- find_menor: Funcion que busca la menor que se desea inscribir en las colonias. Si lo encuentra en base de datos, no permite la solicitud
 	2.- find_solicitud: Devuelve el id de la última solicitud realizada 
+	3.- find_direccion_ Devuelve el id de la última direccion insertada en base de datos
+	4.- find_inscripcion: Devuelve el id de la última inscripción insertada en base de datos
 
 */
 

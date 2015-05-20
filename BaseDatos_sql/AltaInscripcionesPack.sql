@@ -192,7 +192,7 @@ END insert_inscripcion;
 		telefono2 IN telefonos.numerotelf%TYPE,
 		telefono3 IN telefonos.numerotelf%TYPE,
 		telefono4 IN telefonos.numerotelf%TYPE,
-		idInscrip IN inscripciones.idInscripcion%TYPE%TYPE
+		idInscrip IN inscripciones.idInscripcion%TYPE
 		)
 		AS
 			error_telefono EXCEPTION;

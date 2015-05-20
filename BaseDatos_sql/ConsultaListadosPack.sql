@@ -8,9 +8,14 @@
 */
 CREATE OR REPLACE PACKAGE consulta_listados
 IS
-
+TYPE tcursor IS REF CURSOR;
 	PROCEDURE listado_previo_total (
 	
+	);
+	
+	PROCEDURE consulta_solicitud_personal (
+	pdniTutor IN tutores.dniTutor%TYPE,
+	pfechNac IN menores.fechNacMenor%TYPE
 	);
 
 END consulta_listados;
@@ -19,7 +24,7 @@ END consulta_listados;
 CREATE OR REPLACE PACKAGE BODY consulta_listados
 IS
 
-	Create or Replace PROCEDURE listado_previo_total(
+	 PROCEDURE listado_previo_total(
 	pmensaje OUT varchar2
 	)
 	AS
@@ -46,6 +51,11 @@ IS
 		CLOSE clistado;
 	
 	END listado_previo_total;
+-------------------------------------------------------------------------------------------------------------------
+PROCEDURE consulta_solicitud_personal (
+	pdniTutor IN tutores.dniTutor%TYPE,
+	pfechNac IN menores.fechNacMenor%TYPE
+	)AS
 
 
 END consulta_listados;
