@@ -52,7 +52,7 @@ IS
 		telefono2 IN telefonos.numerotelf%TYPE,
 		telefono3 IN telefonos.numerotelf%TYPE,
 		telefono4 IN telefonos.numerotelf%TYPE,
-		idSolicitante IN tutores.idSolicitante%TYPE
+		idIncrip IN inscripciones.idInscripcion%TYPE
 		);
 	PROCEDURE insert_menor(
 		dniMenor IN menores.dniMenor%TYPE,
@@ -192,7 +192,7 @@ END insert_inscripcion;
 		telefono2 IN telefonos.numerotelf%TYPE,
 		telefono3 IN telefonos.numerotelf%TYPE,
 		telefono4 IN telefonos.numerotelf%TYPE,
-		idSolicitante IN tutores.idSolicitante%TYPE
+		idInscrip IN inscripciones.idInscripcion%TYPE%TYPE
 		)
 		AS
 			error_telefono EXCEPTION;
@@ -200,19 +200,19 @@ END insert_inscripcion;
 		IF (telefono1=null)THEN
 			RAISE error_telefono;
 		ELSIF (telefono2=null) THEN
-			INSERT INTO TELEFONOS VALUES (telefono1,idSolicitante);
+			INSERT INTO TELEFONOS VALUES (telefono1,idInscrip);
 		ELSIF (telefono3=null) THEN
-			INSERT INTO TELEFONOS VALUES (telefono1,idSolicitante);
-			INSERT INTO TELEFONOS VALUES (telefono2,idSolicitante);
+			INSERT INTO TELEFONOS VALUES (telefono1,idInscrip);
+			INSERT INTO TELEFONOS VALUES (telefono2,idInscrip);
 		ELSIF (telefono4=null) THEN
-			INSERT INTO TELEFONOS VALUES (telefono1,idSolicitante);
-			INSERT INTO TELEFONOS VALUES (telefono2,idSolicitante);
-			INSERT INTO TELEFONOS VALUES (telefono3,idSolicitante);
+			INSERT INTO TELEFONOS VALUES (telefono1,idInscrip);
+			INSERT INTO TELEFONOS VALUES (telefono2,idInscrip);
+			INSERT INTO TELEFONOS VALUES (telefono3,idInscrip);
 		ELSE
-			INSERT INTO TELEFONOS VALUES (telefono1,idSolicitante);
-			INSERT INTO TELEFONOS VALUES (telefono2,idSolicitante);
-			INSERT INTO TELEFONOS VALUES (telefono3,idSolicitante);
-			INSERT INTO TELEFONOS VALUES (telefono4,idSolicitante);
+			INSERT INTO TELEFONOS VALUES (telefono1,idInscrip);
+			INSERT INTO TELEFONOS VALUES (telefono2,idInscrip);
+			INSERT INTO TELEFONOS VALUES (telefono3,idInscrip);
+			INSERT INTO TELEFONOS VALUES (telefono4,idInscrip);
 		END IF;
 		COMMIT;
 	EXCEPTION
